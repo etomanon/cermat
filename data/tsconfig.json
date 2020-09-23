@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": ["es6", "DOM"],
+    "target": "es2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "importHelpers": true,
+    "outDir": "./build",
+  },
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
+  "include": [
+    "src/**/*.ts",
+  ]
+}
