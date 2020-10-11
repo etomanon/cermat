@@ -48,7 +48,6 @@ module.exports = {
             options: {
               plugins: isDev
                 ? [
-                  'babel-plugin-styled-components',
                   '@babel/plugin-syntax-dynamic-import',
                   'react-hot-loader/babel'
                 ]
@@ -78,7 +77,7 @@ module.exports = {
       new webpack.HashedModuleIdsPlugin(),
       new HtmlWebpackPlugin({
         template: path.join(PATH_PUBLIC, 'index.html'),
-        favicon: path.join(PATH_PUBLIC, 'icon.svg'),
+        // favicon: path.join(PATH_PUBLIC, 'icon.svg'),
       }),
       // extracts CSS into separate files.
       // It creates a CSS file per JS file which contains CSS.
@@ -93,7 +92,7 @@ module.exports = {
         chunks: 'all'
     }},
     devServer: {
-      open: true,
+      open: false,
       hot: true,
       port: 3000,
       historyApiFallback: true,

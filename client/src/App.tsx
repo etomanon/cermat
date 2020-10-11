@@ -1,27 +1,20 @@
 import { hot } from 'react-hot-loader/root'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
-import 'sanitize.css'
-import { ThemeProvider } from 'styled-components'
-import { ToastContainer } from 'react-toastify'
-import { ModalProvider } from 'styled-react-modal'
-import 'react-toastify/dist/ReactToastify.css'
-
-import { GlobalStyles } from './theme/global'
+import { ThemeProvider } from '@material-ui/core'
 import { theme } from './theme/theme'
-import { Router } from './router/Router'
-import { GlobalLoader } from './components/loader/GlobalLoader'
+import { Router } from './router/router'
+import { SwrConfig } from './api/swr-config'
 
 const App: React.FC = () => {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <GlobalStyles />
-          <GlobalLoader />
-          <ToastContainer position="bottom-left" />
+      <SwrConfig>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Router />
-        </ModalProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </SwrConfig>
     </>
   )
 }

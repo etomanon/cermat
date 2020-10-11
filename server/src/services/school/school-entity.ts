@@ -6,6 +6,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm'
 
 @Entity()
@@ -13,9 +14,11 @@ export class School {
   @PrimaryGeneratedColumn()
   id: number
 
+  @Index()
   @Column()
   name: string
 
+  @Index({ unique: true })
   @Column()
   redizo: string
 
@@ -24,6 +27,7 @@ export class School {
 
   // https://github.com/typeorm/typeorm/issues/2610#issuecomment-473903882
   @Column({ type: 'geography', srid: 4326, spatialFeatureType: 'Point' })
+  @Index({ spatial: true })
   geom: GeoJSON.Point
 
   @OneToMany(() => Result, (result) => result.school)
