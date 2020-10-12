@@ -1,4 +1,5 @@
 import { ApiArgs, useApi } from '@/api/swr'
+import { School } from '@/store/modules/school/school-types'
 import { useDebounce } from '@/utils/hooks/useDebounce'
 import { useMemo } from 'react'
 
@@ -21,10 +22,11 @@ export const useSchool = (name: string) => {
 
     [nameDebounced]
   )
-  const { data, error } = useApi(params)
+  const { data, error, isValidating } = useApi<School[]>(params)
 
   return {
     data,
     error,
+    isValidating,
   }
 }

@@ -1,32 +1,44 @@
 import { useSchool } from '@/api/fetchers/school/school'
-import {
-  AppBar,
-  IconButton,
-  InputBase,
-  Toolbar,
-  Typography,
-} from '@material-ui/core'
+import { schoolSet } from '@/store/modules/school/school'
+import { useAppDispatch } from '@/store/store'
+import { useForm } from 'react-hook-form'
+import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useStyles } from './navbar-styles'
+import { FormAutocomplete, Option } from '../form/form-autocomplete'
+
+type FormData = {
+  school: Option | null
+}
+
+const defaultValues: Partial<FormData> = {
+  school: null,
+}
 
 export const Navbar = () => {
   const classes = useStyles()
   const [name, setName] = useState('')
+  const dispatch = useAppDispatch()
+  const { data, isValidating } = useSchool(name)
+  const { handleSubmit, control } = useForm<FormData>({ defaultValues })
 
-  const { data } = useSchool(name)
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value),
-    []
+  const options = useMemo(
+    () =>
+      data?.map?.((d) => ({ value: d.id, label: `${d.name} (${d.redizo})` })) ??
+      [],
+    [data]
   )
-
-  const onKeyUp = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      console.log('fetch', e.currentTarget.value)
-    }
-  }, [])
+  const onInputChange = useCallback((value: string) => setName(value), [])
+  const onSubmit = useCallback(
+    (formData: FormData) => {
+      const school = data?.find?.((d) => d.id === formData.school?.value)
+      dispatch(schoolSet(school))
+      // TODO: Change URL to school/id
+    },
+    [data, dispatch]
+  )
   return (
     <>
       <AppBar position="fixed">
@@ -45,15 +57,22 @@ export const Navbar = () => {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <InputBase
-              placeholder="Hledej název školy / REDIZO"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              onChange={onChange}
-              onKeyUp={onKeyUp}
-            />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormAutocomplete
+                id="school"
+                options={options}
+                control={control}
+                classesInput={{
+                  root: classes.inputRoot,
+                }}
+                onChange={handleSubmit(onSubmit)}
+                onInputChange={onInputChange}
+                isLoading={isValidating}
+                placeholder="Hledej název školy / REDIZO"
+                classNameTextField={classes.autocompleteTextField}
+                disableUnderline
+              />
+            </form>
           </div>
         </Toolbar>
       </AppBar>

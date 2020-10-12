@@ -9,14 +9,16 @@ export type ApiArgs = {
 export const useApi = <T>(api: ApiArgs) => {
   const { data, error, revalidate, mutate, isValidating } = useSWR<T>(
     api ? api.key : null,
-    () => {
+    async () => {
       if (api) {
-        return fetch(`/api/${api.url}`, {
+        const response = await fetch(`/api/${api.url}`, {
           headers: {
             'Content-Type': 'application/json',
           },
           ...(api?.init ?? {}),
-        }).then((res) => res.json() as Promise<T>)
+        })
+        const result = (await response.json()) as Promise<T>
+        return result
       }
       return null as any
     }

@@ -12,7 +12,10 @@ export const schoolGetName = async (
   }
   const results = await getRepository(School)
     .createQueryBuilder('school')
-    .where('school.name ILIKE :name', { name: `%${name}%` })
+    .where(`(school.name ILIKE :name OR school.redizo = :redizo)`, {
+      name: `%${name}%`,
+      redizo: name,
+    })
     .take(8)
     .getMany()
 
