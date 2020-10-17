@@ -1,6 +1,7 @@
-import { LinearProgress, Typography } from '@material-ui/core'
+import { LinearProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -39,13 +40,15 @@ export const Loading = ({ isValidating, error }: Props) => {
       }
     }
   }, [isValidating])
-  if (error) {
-    return (
-      <Typography color="secondary" variant="h5">
-        Chyba serveru.
-      </Typography>
-    )
-  }
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Chyba serveru', {
+        toastId: 'Chyba serveru',
+      })
+    }
+  }, [error])
+
   if (isValidating && showLoader) {
     return <LinearProgress classes={{ root: classes.root }} />
   }
