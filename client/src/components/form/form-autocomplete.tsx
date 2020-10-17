@@ -1,7 +1,12 @@
-import { InputBaseClassKey, makeStyles, TextField } from '@material-ui/core'
+import {
+  InputBaseClassKey,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import React from 'react'
-import { Control, Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 const useStyles = makeStyles((theme) => ({
   option: {
@@ -19,13 +24,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export type Option = {
-  value: string | number
+  value: number
   label: string
 }
 type Props<T> = {
   id: string
   options: Option[]
-  control: Control<T>
   label?: string
   onInputChange?: (value: string) => void
   classesInput?: Partial<Record<InputBaseClassKey, string>>
@@ -34,13 +38,13 @@ type Props<T> = {
   onChange?: () => void
   classNameTextField?: string
   disableUnderline?: boolean
+  disableClearable?: boolean
 }
 
 export const FormAutocomplete = <T extends {}>({
   id,
   options,
   label,
-  control,
   onInputChange,
   classesInput,
   isLoading,
@@ -48,46 +52,57 @@ export const FormAutocomplete = <T extends {}>({
   onChange,
   classNameTextField,
   disableUnderline,
+  disableClearable,
 }: Props<T>) => {
+  const { control, errors } = useFormContext()
+  const error = errors[id]?.message
   const classes = useStyles()
   return (
-    <Controller
-      render={(props) => (
-        <Autocomplete
-          id={id}
-          loading={isLoading}
-          options={options}
-          getOptionLabel={(option) => option.label}
-          getOptionSelected={(option) => option.value === props.value?.value}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              classes={classesInput}
-              label={label}
-              variant="standard"
-              placeholder={placeholder}
-              className={classNameTextField}
-              InputProps={{
-                disableUnderline,
-                ...params.InputProps,
-              }}
-            />
-          )}
-          onChange={(_, data) => {
-            props.onChange(data)
-            onChange?.()
-          }}
-          onInputChange={(e, value) => onInputChange?.(value)}
-          noOptionsText="Nic nenalezeno"
-          loadingText="Načítám..."
-          autoHighlight
-          classes={{
-            option: classes.option,
-          }}
-        />
-      )}
-      name={id}
-      control={control as any}
-    />
+    <>
+      <Controller
+        render={(props) => (
+          <Autocomplete
+            id={id}
+            loading={isLoading}
+            options={options}
+            value={props.value}
+            getOptionLabel={(option) => option.label}
+            getOptionSelected={(option) => option.value === props.value?.value}
+            renderInput={(params) => (
+              <>
+                <TextField
+                  {...params}
+                  classes={classesInput}
+                  label={label}
+                  variant="standard"
+                  placeholder={placeholder}
+                  className={classNameTextField}
+                  error={error}
+                  InputProps={{
+                    disableUnderline,
+                    ...params.InputProps,
+                  }}
+                />
+                {error && <Typography color="error">{error}</Typography>}
+              </>
+            )}
+            onChange={(_, data) => {
+              props.onChange(data)
+              onChange?.()
+            }}
+            onInputChange={(e, value) => onInputChange?.(value)}
+            noOptionsText="Nic nenalezeno"
+            loadingText="Načítám..."
+            autoHighlight
+            classes={{
+              option: classes.option,
+            }}
+            disableClearable={disableClearable}
+          />
+        )}
+        name={id}
+        control={control as any}
+      />
+    </>
   )
 }

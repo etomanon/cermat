@@ -10,6 +10,7 @@ import { useStyles } from './navbar-styles'
 import { FormAutocomplete, Option } from '../form/form-autocomplete'
 import { useHistory } from 'react-router-dom'
 import { RoutePathEnum } from '@/router/routes'
+import { Form } from '../form/form'
 
 type FormData = {
   school: Option | null
@@ -25,7 +26,8 @@ export const Navbar = () => {
   const dispatch = useAppDispatch()
   const { data, isValidating } = useSchool(name)
   const { push } = useHistory()
-  const { handleSubmit, control } = useForm<FormData>({ defaultValues })
+  const methods = useForm<FormData>({ defaultValues })
+  const { handleSubmit } = methods
 
   const options = useMemo(
     () =>
@@ -59,11 +61,10 @@ export const Navbar = () => {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={onSubmit} methods={methods}>
               <FormAutocomplete
                 id="school"
                 options={options}
-                control={control}
                 classesInput={{
                   root: classes.inputRoot,
                 }}
@@ -74,7 +75,7 @@ export const Navbar = () => {
                 classNameTextField={classes.autocompleteTextField}
                 disableUnderline
               />
-            </form>
+            </Form>
           </div>
         </Toolbar>
       </AppBar>

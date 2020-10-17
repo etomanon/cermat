@@ -22,7 +22,7 @@ export const School = () => {
   return (
     <>
       <Loading error={error} isValidating={isValidating} />
-      {data && <SchoolInfo schoolResults={data} year="2019" />}
+      {data && <SchoolInfo schoolResults={data} />}
     </>
   )
 }

@@ -1,5 +1,16 @@
 import { LinearProgress, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import React, { useEffect, useState } from 'react'
+
+const useStyles = makeStyles(() => ({
+  root: {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '1rem',
+  },
+}))
 
 type Props = {
   isValidating?: boolean
@@ -7,6 +18,7 @@ type Props = {
 }
 
 export const Loading = ({ isValidating, error }: Props) => {
+  const classes = useStyles()
   const [showLoader, setShowLoader] = useState(false)
 
   useEffect(() => {
@@ -35,7 +47,7 @@ export const Loading = ({ isValidating, error }: Props) => {
     )
   }
   if (isValidating && showLoader) {
-    return <LinearProgress />
+    return <LinearProgress classes={{ root: classes.root }} />
   }
   return null
 }

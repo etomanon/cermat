@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hookform/resolvers": "^1.0.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -16,7 +17,8 @@
     "react-router-dom": "^5.2.0",
     "react-toastify": "^6.0.8",
     "recharts": "^1.8.5",
-    "swr": "^0.3.5"
+    "swr": "^0.3.5",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack/webpack.js",
@@ -38,6 +40,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/recharts": "^1.8.16",
     "@types/webpack-env": "^1.15.3",
+    "@types/yup": "^0.29.8",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
     "babel-loader": "^8.1.0",
