@@ -13,6 +13,7 @@ const {
   TYPEORM_PORT,
   TYPEORM_SYNCHRONIZE,
   TYPEORM_LOGGING,
+  TYPEORM_DROP_SCHEMA,
 } = process.env
 
 export const typeormConnection = (): Promise<Connection> =>
@@ -26,4 +27,5 @@ export const typeormConnection = (): Promise<Connection> =>
     synchronize: TYPEORM_SYNCHRONIZE === 'true',
     logging: JSON.parse(TYPEORM_LOGGING),
     entities: ['src/**/*entity{.ts,.js}'],
+    dropSchema: TYPEORM_DROP_SCHEMA === 'true',
   } as PostgresConnectionOptions)

@@ -19,7 +19,7 @@ export const routes: Route[] = [
   },
   {
     component: School,
-    path: `${RoutePathEnum.SCHOOL}`,
+    path: `${RoutePathEnum.SCHOOL}/:redizo`,
     disableExact: false,
   },
 ]

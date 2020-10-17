@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
-      width: 'auto',
+      width: '100%',
     },
   },
   searchIcon: {
@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '40ch',
+      width: '100%',
     },
   },
   autocompleteTextField: {

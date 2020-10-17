@@ -2,12 +2,14 @@ import { useSchool } from '@/api/fetchers/school/school'
 import { schoolSet } from '@/store/modules/school/school'
 import { useAppDispatch } from '@/store/store'
 import { useForm } from 'react-hook-form'
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, IconButton, Toolbar } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useStyles } from './navbar-styles'
 import { FormAutocomplete, Option } from '../form/form-autocomplete'
+import { useHistory } from 'react-router-dom'
+import { RoutePathEnum } from '@/router/routes'
 
 type FormData = {
   school: Option | null
@@ -22,6 +24,7 @@ export const Navbar = () => {
   const [name, setName] = useState('')
   const dispatch = useAppDispatch()
   const { data, isValidating } = useSchool(name)
+  const { push } = useHistory()
   const { handleSubmit, control } = useForm<FormData>({ defaultValues })
 
   const options = useMemo(
@@ -35,9 +38,11 @@ export const Navbar = () => {
     (formData: FormData) => {
       const school = data?.find?.((d) => d.id === formData.school?.value)
       dispatch(schoolSet(school))
-      // TODO: Change URL to school/id
+      if (school) {
+        push(`${RoutePathEnum.SCHOOL}/${school.redizo}`)
+      }
     },
-    [data, dispatch]
+    [data, dispatch, push]
   )
   return (
     <>
@@ -50,9 +55,6 @@ export const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Cermat
-          </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

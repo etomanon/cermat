@@ -18,7 +18,7 @@ export class Result {
   id: number
 
   @Column()
-  year: string
+  year: number
 
   @Column({ type: 'enum', enum: Subject })
   subject: Subject

@@ -6,7 +6,9 @@ const router = Router({
   mergeParams: true,
 })
 
-router.post('/name', school.schoolGetName)
+router.post('/name', school.schoolPostName)
+
+router.post('/results', school.schoolPostResults)
 
 export const schoolRoute = {
   path: 'school',
