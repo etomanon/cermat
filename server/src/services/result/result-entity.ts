@@ -9,7 +9,11 @@ import {
 } from 'typeorm'
 
 export enum Subject {
-  MATH = 'math',
+  MA = 'MA',
+  CJ_DT = 'CJ_DT',
+  CJ_UZ = 'CJ_UZ',
+  AJ_DT = 'AJ_DT',
+  AJ_UZ = 'AJ_UZ',
 }
 
 @Entity()
@@ -23,7 +27,7 @@ export class Result {
   @Column({ type: 'enum', enum: Subject })
   subject: Subject
 
-  @Column()
+  @Column({ nullable: true, type: 'numeric' })
   shareChosen: number
 
   @Column()
@@ -44,7 +48,7 @@ export class Result {
   @Column()
   success: number
 
-  @Column()
+  @Column({ type: 'numeric', nullable: true })
   successPercentil: number
 
   @ManyToOne(() => School, (school) => school.results)

@@ -10,6 +10,7 @@
     "removeComments": true,
     "importHelpers": true,
     "outDir": "./build",
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",

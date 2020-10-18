@@ -6,8 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node-dev --respawn --no-notify --transpileOnly ./src/index.ts",
-    "lint:es": "eslint ./src/**/*.ts --fix",
-    "db:seed": "ts-node-dev --no-notify ./src/seed/index.ts"
+    "lint:es": "eslint ./src/**/*.ts --fix"
   },
   "dependencies": {
     "puppeteer": "^5.2.1"
