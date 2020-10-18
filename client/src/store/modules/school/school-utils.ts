@@ -1,3 +1,4 @@
+import { EnumSubject } from './school-types'
 import { SchoolResults, School } from './school-types'
 
 export const getSchoolUrl = (redizo: string) =>
@@ -16,17 +17,39 @@ export const schoolResultsToSchool = (
 })
 
 const subjectMap = {
-  math: {
+  [EnumSubject.MA]: {
     name: 'Matematika',
     color: '#ccaa21',
   },
+  [EnumSubject.CJ_DT]: {
+    name: 'Český jazyk - didaktický test',
+    color: 'blue',
+  },
+
+  [EnumSubject.CJ_UZ]: {
+    name: 'Český jazyk - ústní zkouška',
+    color: 'green',
+  },
+
+  [EnumSubject.AJ_DT]: {
+    name: 'Anglický jazyk - didaktický test',
+    color: 'purple',
+  },
+
+  [EnumSubject.AJ_UZ]: {
+    name: 'Anglický jazyk - ústní zkouška',
+    color: 'orange',
+  },
 } as {
-  [subject: string]: {
+  [subject in EnumSubject]: {
     name: string
     color: string
   }
 }
 
-export const parseSchoolSubject = (subject: string) => subjectMap[subject].name
-export const parseSchoolSubjectColor = (subject: string) =>
+export const parseSchoolSubject = (subject: EnumSubject) =>
+  subjectMap[subject].name
+export const parseSchoolSubjectColor = (subject: EnumSubject) =>
   subjectMap[subject].color
+export const showSubjectShare = (subject: EnumSubject) =>
+  [EnumSubject.CJ_DT, EnumSubject.CJ_UZ].indexOf(subject) === -1

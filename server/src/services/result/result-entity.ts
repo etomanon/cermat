@@ -27,7 +27,7 @@ export class Result {
   @Column({ type: 'enum', enum: Subject })
   subject: Subject
 
-  @Column({ nullable: true, type: 'numeric' })
+  @Column({ type: 'decimal', nullable: true, precision: 4, scale: 1 })
   shareChosen: number
 
   @Column()
@@ -48,7 +48,7 @@ export class Result {
   @Column()
   success: number
 
-  @Column({ type: 'numeric', nullable: true })
+  @Column({ type: 'decimal', nullable: true, precision: 4, scale: 1 })
   successPercentil: number
 
   @ManyToOne(() => School, (school) => school.results)

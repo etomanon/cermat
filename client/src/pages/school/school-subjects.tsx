@@ -1,6 +1,9 @@
 import { GraphPie } from '@/components/graph/graph-pie'
-import { SchoolResults } from '@/store/modules/school/school-types'
-import { parseSchoolSubject } from '@/store/modules/school/school-utils'
+import { EnumSubject, SchoolResults } from '@/store/modules/school/school-types'
+import {
+  parseSchoolSubject,
+  showSubjectShare,
+} from '@/store/modules/school/school-utils'
 import { theme } from '@/theme/theme'
 import { Box, Typography } from '@material-ui/core'
 import { groupBy, isNil, round } from 'lodash'
@@ -52,14 +55,18 @@ export const SchoolSubjects = ({ schoolResults, year }: Props) => {
               flexDirection="column"
               alignItems={['center', 'center', 'flex-end']}
             >
-              <Box
-                display="flex"
-                flexDirection={['column', 'column', 'row']}
-                alignItems="center"
-              >
-                <Typography>PODÍL VOLBY PŘEDMĚTU (%)&nbsp;</Typography>
-                <Typography variant="h4">{round(r.shareChosen, 1)}</Typography>
-              </Box>
+              {showSubjectShare(r.subject) && (
+                <Box
+                  display="flex"
+                  flexDirection={['column', 'column', 'row']}
+                  alignItems="center"
+                >
+                  <Typography>PODÍL VOLBY PŘEDMĚTU (%)&nbsp;</Typography>
+                  <Typography variant="h4">
+                    {round(r.shareChosen, 1)}
+                  </Typography>
+                </Box>
+              )}
               <Box
                 display="flex"
                 flexDirection={['column', 'column', 'row']}

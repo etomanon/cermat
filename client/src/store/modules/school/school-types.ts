@@ -17,10 +17,17 @@ export interface SchoolResults {
   updatedAt: string
   results?: ResultsEntity[] | null
 }
+export enum EnumSubject {
+  MA = 'MA',
+  CJ_DT = 'CJ_DT',
+  CJ_UZ = 'CJ_UZ',
+  AJ_DT = 'AJ_DT',
+  AJ_UZ = 'AJ_UZ',
+}
 export interface ResultsEntity {
   id: number
   year: number
-  subject: string
+  subject: EnumSubject
   shareChosen: number
   signed: number
   excused: number

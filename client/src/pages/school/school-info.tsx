@@ -43,7 +43,7 @@ const years = range(2013, 2021).map((n) => ({
 
 const defaultValues: FormData = {
   view: EnumView.SUBJECTS,
-  year: years[years.length - 2],
+  year: years[years.length - 1],
 }
 
 const schema = yup.object().shape({
@@ -71,15 +71,20 @@ export const SchoolInfo = ({ schoolResults }: Props) => {
         <Typography
           align="center"
           variant="h2"
-        >{`${schoolResults.name} (redizo: ${schoolResults.redizo})`}</Typography>
+        >{`${schoolResults.name}`}</Typography>
         <Typography align="center">
-          <ControlLink url={schoolUrl} label={`Detail školy`} />
+          <ControlLink
+            url={schoolUrl}
+            label={`Detail školy (redizo: ${schoolResults.redizo})`}
+          />
         </Typography>
         <Form onSubmit={onSubmit} methods={methods}>
-          <Box display="flex" justifyContent="center" mt="2rem">
-            <FormRadioGroup id="view" radios={radios} label="Informace o" />
+          <Box display="flex" justifyContent="center" mt="2rem" flexWrap="wrap">
+            <Box width={[1, 'auto']} display="flex" justifyContent="center">
+              <FormRadioGroup id="view" radios={radios} label="Informace o" />
+            </Box>
             {watchForm.view === EnumView.SUBJECTS && (
-              <Box ml="4rem" width="20rem">
+              <Box ml={[0, '4rem']} mt={['1rem', 0]} width={'20rem'}>
                 <FormAutocomplete
                   id="year"
                   options={years}

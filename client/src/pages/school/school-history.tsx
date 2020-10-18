@@ -1,8 +1,9 @@
 import { GraphLine, GraphLineLine } from '@/components/graph/graph-line'
-import { SchoolResults } from '@/store/modules/school/school-types'
+import { EnumSubject, SchoolResults } from '@/store/modules/school/school-types'
 import {
   parseSchoolSubject,
   parseSchoolSubjectColor,
+  showSubjectShare,
 } from '@/store/modules/school/school-utils'
 import { Box, Typography } from '@material-ui/core'
 import { groupBy } from 'lodash'
@@ -30,10 +31,12 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
       name: year,
       // add each subject for this year with successPercentil as value
       ...yearsDict[year].reduce((acc, cur) => {
-        return {
-          ...acc,
-          [parseSchoolSubject(cur.subject)]: cur.shareChosen,
-        }
+        return showSubjectShare(cur.subject)
+          ? {
+              ...acc,
+              [parseSchoolSubject(cur.subject)]: cur.shareChosen,
+            }
+          : acc
       }, {}),
     }))
     return {
@@ -42,28 +45,42 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
     }
   }, [schoolResults.results])
 
-  const lines = useMemo<GraphLineLine[]>(() => {
+  const lines = useMemo<{
+    share: GraphLineLine[]
+    percentil: GraphLineLine[]
+  }>(() => {
     const subjects = groupBy(schoolResults.results, 'subject')
-    const lines = Object.keys(subjects).map((s) => ({
-      dataKey: parseSchoolSubject(s),
-      color: parseSchoolSubjectColor(s),
-    }))
-    return lines
+    const keys = Object.keys(subjects)
+    const parseSubject = (s: string) => ({
+      dataKey: parseSchoolSubject(s as EnumSubject),
+      color: parseSchoolSubjectColor(s as EnumSubject),
+    })
+    const percentil = keys.map(parseSubject)
+    const share = keys
+      .filter((s) => showSubjectShare(s as EnumSubject))
+      .map(parseSubject)
+
+    return { percentil, share }
   }, [schoolResults.results])
 
   return (
     <>
-      <Box width={1} height="40rem" mt="2rem">
-        <Typography variant="h4" align="center" gutterBottom>
+      <Box mt="2rem" mb="1rem">
+        <Typography variant="h4" align="center">
           Průměr percentilového umístění v předmětech během let
         </Typography>
-        <GraphLine data={data.percentil} lines={lines} />
       </Box>
-      <Box width={1} height="40rem" mt="6rem">
-        <Typography variant="h4" align="center" gutterBottom>
+
+      <Box width={1} height="40rem">
+        <GraphLine data={data.percentil} lines={lines.percentil} />
+      </Box>
+      <Box mt="2rem" mb="1rem">
+        <Typography variant="h4" align="center">
           Podíl volby předmětů během let (%)
         </Typography>
-        <GraphLine data={data.chosen} lines={lines} />
+      </Box>
+      <Box width={1} height="40rem">
+        <GraphLine data={data.chosen} lines={lines.share} />
       </Box>
     </>
   )
