@@ -1,7 +1,6 @@
 import { ControlLink } from '@/components/control/control-link'
 import { Form } from '@/components/form/form'
 import { FormAutocomplete, Option } from '@/components/form/form-autocomplete'
-import { FormRadioGroup, Radio } from '@/components/form/form-radio-group'
 import { LayoutWrapper } from '@/components/layout/layout-wrapper'
 import { SchoolResults } from '@/store/modules/school/school-types'
 import { getSchoolUrl } from '@/store/modules/school/school-utils'
@@ -13,26 +12,13 @@ import React, { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { SchoolHistory } from './school-history'
 import { SchoolSubjects } from './school-subjects'
+import { TabContainer } from '@/components/tab/tab-container'
 
 type Props = {
   schoolResults: SchoolResults
 }
 
-enum EnumView {
-  SUBJECTS = 'subjects',
-  HISTORY = 'history',
-}
-
-const radios: Radio[] = [
-  {
-    value: EnumView.SUBJECTS,
-    label: 'Detailech předmětů',
-  },
-  { value: EnumView.HISTORY, label: 'Historii předmětů' },
-]
-
 type FormData = {
-  view: EnumView
   year: Option
 }
 
@@ -41,8 +27,7 @@ const years = range(2013, 2021).map((n) => ({
   label: n.toString(),
 }))
 
-const defaultValues: FormData = {
-  view: EnumView.SUBJECTS,
+const defaultValuesInit: FormData = {
   year: years[years.length - 1],
 }
 
@@ -52,11 +37,12 @@ const schema = yup.object().shape({
 
 export const SchoolInfo = ({ schoolResults }: Props) => {
   const methods = useForm<FormData>({
-    defaultValues,
+    defaultValues: defaultValuesInit,
     mode: 'onChange',
     resolver: yupResolver(schema),
   })
   const { watch } = methods
+
   const schoolUrl = useMemo(() => getSchoolUrl(schoolResults.redizo), [
     schoolResults,
   ])
@@ -73,37 +59,50 @@ export const SchoolInfo = ({ schoolResults }: Props) => {
           variant="h2"
         >{`${schoolResults.name}`}</Typography>
         <Typography align="center">
-          <ControlLink
-            url={schoolUrl}
-            label={`Detail školy (redizo: ${schoolResults.redizo})`}
-          />
+          <ControlLink url={schoolUrl} label={`Detail školy`} />
+          &nbsp;(redizo: {schoolResults.redizo})
         </Typography>
-        <Form onSubmit={onSubmit} methods={methods}>
-          <Box display="flex" justifyContent="center" mt="2rem" flexWrap="wrap">
-            <Box width={[1, 'auto']} display="flex" justifyContent="center">
-              <FormRadioGroup id="view" radios={radios} label="Informace o" />
-            </Box>
-            {watchForm.view === EnumView.SUBJECTS && (
-              <Box ml={[0, '4rem']} mt={['1rem', 0]} width={'20rem'}>
-                <FormAutocomplete
-                  id="year"
-                  options={years}
-                  label="Rok"
-                  disableClearable
-                />
-              </Box>
-            )}
-          </Box>
-        </Form>
-        {watchForm.view === EnumView.SUBJECTS && watchForm.year?.value && (
-          <SchoolSubjects
-            schoolResults={schoolResults}
-            year={watchForm.year.value}
+        <Box mt="2rem">
+          <TabContainer
+            tabs={[
+              {
+                label: 'Detaily předmětů',
+                // eslint-disable-next-line react/display-name
+                render: () => (
+                  <>
+                    <Form onSubmit={onSubmit} methods={methods}>
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        mt="2rem"
+                        flexWrap="wrap"
+                      >
+                        <Box ml={[0, '4rem']} mt={['1rem', 0]} width={'20rem'}>
+                          <FormAutocomplete
+                            id="year"
+                            options={years}
+                            label="Rok"
+                            disableClearable
+                          />
+                        </Box>
+                      </Box>
+                    </Form>
+                    {watchForm.year?.value && (
+                      <SchoolSubjects
+                        schoolResults={schoolResults}
+                        year={watchForm.year.value}
+                      />
+                    )}
+                  </>
+                ),
+              },
+              {
+                label: 'Historie předmětů',
+                render: <SchoolHistory schoolResults={schoolResults} />,
+              },
+            ]}
           />
-        )}
-        {watchForm.view === EnumView.HISTORY && (
-          <SchoolHistory schoolResults={schoolResults} />
-        )}
+        </Box>
       </LayoutWrapper>
     </>
   )

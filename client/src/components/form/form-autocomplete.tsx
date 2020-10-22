@@ -60,6 +60,8 @@ export const FormAutocomplete = <T extends {}>({
   return (
     <>
       <Controller
+        name={id}
+        control={control as any}
         render={(props) => (
           <Autocomplete
             id={id}
@@ -100,8 +102,6 @@ export const FormAutocomplete = <T extends {}>({
             disableClearable={disableClearable}
           />
         )}
-        name={id}
-        control={control as any}
       />
     </>
   )

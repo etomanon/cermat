@@ -34,7 +34,7 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
         return showSubjectShare(cur.subject)
           ? {
               ...acc,
-              [parseSchoolSubject(cur.subject)]: cur.shareChosen,
+              [parseSchoolSubject(cur.subject, true)]: cur.shareChosen,
             }
           : acc
       }, {}),
@@ -51,14 +51,14 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
   }>(() => {
     const subjects = groupBy(schoolResults.results, 'subject')
     const keys = Object.keys(subjects)
-    const parseSubject = (s: string) => ({
-      dataKey: parseSchoolSubject(s as EnumSubject),
+    const parseSubject = (s: string, simple?: boolean) => ({
+      dataKey: parseSchoolSubject(s as EnumSubject, simple),
       color: parseSchoolSubjectColor(s as EnumSubject),
     })
-    const percentil = keys.map(parseSubject)
+    const percentil = keys.map((s) => parseSubject(s))
     const share = keys
       .filter((s) => showSubjectShare(s as EnumSubject))
-      .map(parseSubject)
+      .map((s) => parseSubject(s, true))
 
     return { percentil, share }
   }, [schoolResults.results])

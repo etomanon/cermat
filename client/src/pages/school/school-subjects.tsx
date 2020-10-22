@@ -1,5 +1,5 @@
 import { GraphPie } from '@/components/graph/graph-pie'
-import { EnumSubject, SchoolResults } from '@/store/modules/school/school-types'
+import { SchoolResults } from '@/store/modules/school/school-types'
 import {
   parseSchoolSubject,
   showSubjectShare,
@@ -60,6 +60,7 @@ export const SchoolSubjects = ({ schoolResults, year }: Props) => {
                   display="flex"
                   flexDirection={['column', 'column', 'row']}
                   alignItems="center"
+                  textAlign="center"
                 >
                   <Typography>PODÍL VOLBY PŘEDMĚTU (%)&nbsp;</Typography>
                   <Typography variant="h4">
@@ -72,6 +73,7 @@ export const SchoolSubjects = ({ schoolResults, year }: Props) => {
                 flexDirection={['column', 'column', 'row']}
                 alignItems="center"
                 mt={['1rem', '1rem', 0]}
+                textAlign="center"
               >
                 <Typography>PRŮMĚR PERCENTILOVÉHO UMÍSTĚNÍ&nbsp;</Typography>
                 <Typography variant="h4">
