@@ -3,6 +3,7 @@ import { SchoolState, School } from './school-types'
 
 const initialState: SchoolState = {
   schoolSelected: undefined,
+  schoolSelectedCompare: undefined,
 }
 
 const schoolSlice = createSlice({
@@ -13,9 +14,13 @@ const schoolSlice = createSlice({
       const { payload } = action
       state.schoolSelected = payload
     },
+    schoolCompareSet(state, action: PayloadAction<School | undefined>) {
+      const { payload } = action
+      state.schoolSelectedCompare = payload
+    },
   },
 })
 
-export const { schoolSet } = schoolSlice.actions
+export const { schoolSet, schoolCompareSet } = schoolSlice.actions
 
 export const school = schoolSlice.reducer

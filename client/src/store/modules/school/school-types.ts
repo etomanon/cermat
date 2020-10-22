@@ -47,4 +47,5 @@ export interface Geom {
 
 export type SchoolState = {
   schoolSelected?: School
+  schoolSelectedCompare?: School
 }

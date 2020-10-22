@@ -20,30 +20,30 @@ const subjectMap = {
   [EnumSubject.MA]: {
     name: 'Matematika',
     simple: 'Matematika',
-    color: '#ccaa21',
+    color: '#f74323',
   },
   [EnumSubject.CJ_DT]: {
     name: 'Český jazyk - didaktický test',
     simple: 'Čeština',
-    color: 'blue',
+    color: '#5203ff',
   },
 
   [EnumSubject.CJ_UZ]: {
     name: 'Český jazyk - ústní zkouška',
     simple: 'Čeština',
-    color: 'green',
+    color: '#03c8ff',
   },
 
   [EnumSubject.AJ_DT]: {
     name: 'Anglický jazyk - didaktický test',
     simple: 'Angličtina',
-    color: 'purple',
+    color: '#fa9a0a',
   },
 
   [EnumSubject.AJ_UZ]: {
     name: 'Anglický jazyk - ústní zkouška',
     simple: 'Angličtina',
-    color: 'orange',
+    color: '#e3d109',
   },
 } as {
   [subject in EnumSubject]: {

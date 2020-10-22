@@ -65,7 +65,7 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
 
   return (
     <>
-      <Box mt="2rem" mb="1rem">
+      <Box mt="2.5rem" mb="1rem">
         <Typography variant="h4" align="center">
           Průměr percentilového umístění v předmětech během let
         </Typography>

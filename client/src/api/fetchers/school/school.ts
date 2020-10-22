@@ -35,7 +35,7 @@ export const useSchool = (name: string) => {
  * Get all results for 1 school
  * @param redizo
  */
-export const useSchoolResults = (redizo: string) => {
+export const useSchoolResults = (redizo?: string) => {
   const params = useMemo<ApiArgs>(
     () =>
       redizo

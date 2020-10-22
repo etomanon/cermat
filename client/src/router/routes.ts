@@ -4,6 +4,7 @@ import { School } from '@/pages/school/school'
 export enum RoutePathEnum {
   HOME = '/',
   SCHOOL = '/school',
+  SCHOOL_COMPARE = '/compare',
 }
 
 export interface Route {
@@ -20,6 +21,11 @@ export const routes: Route[] = [
   {
     component: School,
     path: `${RoutePathEnum.SCHOOL}/:redizo`,
+    disableExact: false,
+  },
+  {
+    component: School,
+    path: `${RoutePathEnum.SCHOOL}/:redizo${RoutePathEnum.SCHOOL_COMPARE}/:redizoCompare`,
     disableExact: false,
   },
 ]

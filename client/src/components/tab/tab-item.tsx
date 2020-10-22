@@ -1,4 +1,3 @@
-import { Box } from '@material-ui/core'
 import React from 'react'
 
 interface Props {
@@ -16,7 +15,7 @@ export const TabItem = (props: Props) => {
       hidden={value !== index}
       id={`scrollable-auto-tabpanel-${index}`}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && children}
     </div>
   )
 }
