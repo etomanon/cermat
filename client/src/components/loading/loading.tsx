@@ -10,6 +10,7 @@ const useStyles = makeStyles(() => ({
     left: 0,
     width: '100%',
     height: '1rem',
+    zIndex: 9999,
   },
 }))
 

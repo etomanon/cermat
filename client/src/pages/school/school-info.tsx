@@ -15,7 +15,8 @@ import { Compare } from '../compare/compare'
 import { useParams } from 'react-router-dom'
 import { SchoolParams } from './school'
 import { CompareSubjects } from '../compare/compare-subjects'
-import { years, subjects, SchoolSubjectsFilter } from './school-subjects-filter'
+import { years, subjects, SchoolFilter } from './school-filter'
+import { CompareHistory } from '../compare/compare-history'
 
 type Props = {
   schoolResults?: SchoolResults
@@ -70,11 +71,30 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
             <TabContainer
               tabs={[
                 {
+                  label: 'Historie předmětů',
+                  render: (
+                    <>
+                      <SchoolFilter
+                        propsForm={{
+                          methods,
+                          onSubmit,
+                        }}
+                        hideYear
+                      />
+                      <CompareHistory
+                        schoolResultsA={schoolResults}
+                        schoolResultsB={schoolResultsCompare}
+                        subjects={watchForm.subjects}
+                      />
+                    </>
+                  ),
+                },
+                {
                   label: 'Detaily předmětů',
                   // eslint-disable-next-line react/display-name
-                  render: () => (
+                  render: (
                     <>
-                      <SchoolSubjectsFilter
+                      <SchoolFilter
                         propsForm={{
                           methods,
                           onSubmit,
@@ -91,10 +111,6 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
                     </>
                   ),
                 },
-                {
-                  label: 'Historie předmětů',
-                  render: <SchoolHistory schoolResults={schoolResults} />,
-                },
               ]}
             />
           ) : (
@@ -102,14 +118,28 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
               tabs={[
                 {
                   label: 'Historie předmětů',
-                  render: <SchoolHistory schoolResults={schoolResults} />,
+                  render: (
+                    <>
+                      <SchoolFilter
+                        propsForm={{
+                          methods,
+                          onSubmit,
+                        }}
+                        hideYear
+                      />
+                      <SchoolHistory
+                        schoolResults={schoolResults}
+                        subjects={watchForm.subjects}
+                      />
+                    </>
+                  ),
                 },
                 {
                   label: 'Detaily předmětů',
                   // eslint-disable-next-line react/display-name
                   render: () => (
                     <>
-                      <SchoolSubjectsFilter
+                      <SchoolFilter
                         propsForm={{
                           methods,
                           onSubmit,

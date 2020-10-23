@@ -60,3 +60,6 @@ export const parseSchoolSubjectColor = (subject: EnumSubject) =>
 export const showSubjectShare = (subject: EnumSubject) =>
   [EnumSubject.CJ_DT, EnumSubject.CJ_UZ, EnumSubject.AJ_DT].indexOf(subject) ===
   -1
+
+export const parseSchoolCompareColor = (type: 'A' | 'B') =>
+  type === 'A' ? '#18068f' : '#b50713'

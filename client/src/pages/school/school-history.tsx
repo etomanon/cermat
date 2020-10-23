@@ -1,3 +1,4 @@
+import { Option } from '@/components/form/form-autocomplete'
 import { GraphLine, GraphLineLine } from '@/components/graph/graph-line'
 import { EnumSubject, SchoolResults } from '@/store/modules/school/school-types'
 import {
@@ -11,9 +12,10 @@ import React, { useMemo } from 'react'
 
 type Props = {
   schoolResults?: SchoolResults
+  subjects: Option<string>[]
 }
 
-export const SchoolHistory = ({ schoolResults }: Props) => {
+export const SchoolHistory = ({ schoolResults, subjects }: Props) => {
   const data = useMemo(() => {
     const yearsDict = groupBy(schoolResults?.results, 'year')
     const years = Object.keys(yearsDict)
@@ -21,10 +23,12 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
       name: year,
       // add each subject for this year with successPercentil as value
       ...yearsDict[year].reduce((acc, cur) => {
-        return {
-          ...acc,
-          [parseSchoolSubject(cur.subject)]: cur.successPercentil,
-        }
+        return subjects.some((s) => s.value === cur.subject)
+          ? {
+              ...acc,
+              [parseSchoolSubject(cur.subject)]: cur.successPercentil,
+            }
+          : acc
       }, {}),
     }))
     const chosen = years.map((year) => ({
@@ -43,37 +47,43 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
       percentil,
       chosen,
     }
-  }, [schoolResults])
+  }, [schoolResults, subjects])
 
   const lines = useMemo<{
     share: GraphLineLine[]
     percentil: GraphLineLine[]
   }>(() => {
-    const subjects = groupBy(schoolResults?.results, 'subject')
-    const keys = Object.keys(subjects)
+    const resultSubjects = groupBy(schoolResults?.results, 'subject')
+    const keys = Object.keys(resultSubjects)
     const parseSubject = (s: string, simple?: boolean) => ({
       dataKey: parseSchoolSubject(s as EnumSubject, simple),
       color: parseSchoolSubjectColor(s as EnumSubject),
     })
-    const percentil = keys.map((s) => parseSubject(s))
+    const percentil = keys
+      .filter((key) => subjects.some((s) => s.value === key))
+      .map((s) => parseSubject(s))
     const share = keys
       .filter((s) => showSubjectShare(s as EnumSubject))
       .map((s) => parseSubject(s, true))
 
     return { percentil, share }
-  }, [schoolResults])
+  }, [schoolResults, subjects])
 
   return (
     <>
-      <Box mt="2.5rem" mb="1rem">
-        <Typography variant="h4" align="center">
-          Průměr percentilového umístění v předmětech během let
-        </Typography>
-      </Box>
+      {subjects.length !== 0 && (
+        <>
+          <Box mt="2.5rem" mb="1rem">
+            <Typography variant="h4" align="center">
+              Průměr percentilového umístění v předmětech během let
+            </Typography>
+          </Box>
 
-      <Box width={1} height="40rem">
-        <GraphLine data={data.percentil} lines={lines.percentil} />
-      </Box>
+          <Box width={1} height="40rem">
+            <GraphLine data={data.percentil} lines={lines.percentil} />
+          </Box>
+        </>
+      )}
       <Box mt="2rem" mb="1rem">
         <Typography variant="h4" align="center">
           Podíl volby předmětů během let (%)

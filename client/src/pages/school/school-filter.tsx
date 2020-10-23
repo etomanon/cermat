@@ -8,6 +8,7 @@ import React from 'react'
 
 type Props<T> = {
   propsForm: FormProps<T>
+  hideYear?: boolean
 }
 
 export const years = range(2013, 2021).map((n) => ({
@@ -38,8 +39,9 @@ export const subjects = [
   },
 ]
 
-export const SchoolSubjectsFilter = <T extends {}>({
+export const SchoolFilter = <T extends {}>({
   propsForm: { onSubmit, methods },
+  hideYear,
 }: Props<T>) => {
   return (
     <>
@@ -64,6 +66,7 @@ export const SchoolSubjectsFilter = <T extends {}>({
             width={[1, 1, 0.5]}
             px={[0, 0, '1.5rem']}
             mt={['2rem', '2rem', 0]}
+            hidden={hideYear}
           >
             <FormAutocomplete
               id="year"

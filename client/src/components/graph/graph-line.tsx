@@ -31,7 +31,13 @@ export const GraphLine = ({ data, lines, yAxis }: Props) => {
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
         <XAxis dataKey="name" tickMargin={8} />
-        <YAxis width={32} domain={['dataMin', 'dataMax']} {...yAxis} />
+        <YAxis
+          width={28}
+          type="number"
+          allowDecimals={false}
+          domain={['auto', 'auto']}
+          {...yAxis}
+        />
 
         <Tooltip />
         <Legend />

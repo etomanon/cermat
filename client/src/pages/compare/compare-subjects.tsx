@@ -1,10 +1,13 @@
 import { Option } from '@/components/form/form-autocomplete'
 import { GraphPie } from '@/components/graph/graph-pie'
 import { SchoolResults } from '@/store/modules/school/school-types'
-import { parseSchoolSubject } from '@/store/modules/school/school-utils'
+import {
+  parseSchoolSubject,
+  showSubjectShare,
+} from '@/store/modules/school/school-utils'
 import { theme } from '@/theme/theme'
 import { Box, Typography, useMediaQuery } from '@material-ui/core'
-import { compact, groupBy } from 'lodash'
+import { compact, groupBy, round } from 'lodash'
 import React, { useMemo } from 'react'
 
 type Props = {
@@ -73,8 +76,35 @@ export const CompareSubjects = ({
             mx="auto"
           >
             <Box width={[1, 1, 0.5]}>
+              <Typography variant="h5" align="center">
+                A
+              </Typography>
+              {showSubjectShare(r.subject) && (
+                <Box
+                  display="flex"
+                  flexDirection={'column'}
+                  alignItems="center"
+                  textAlign="center"
+                >
+                  <Typography>Podíl volby předmětu (%)&nbsp;</Typography>
+                  <Typography variant="h4">
+                    {round(r.A.shareChosen, 1)}
+                  </Typography>
+                </Box>
+              )}
+              <Box
+                display="flex"
+                flexDirection={'column'}
+                alignItems="center"
+                mt={'0.5rem'}
+                textAlign="center"
+              >
+                <Typography>Průměr percentilového umístění&nbsp;</Typography>
+                <Typography variant="h4">
+                  {round(r.A.successPercentil, 1)}
+                </Typography>
+              </Box>
               <GraphPie
-                label="A"
                 color={{
                   Úspěšní: theme.palette.success.main,
                   Neúspěšní: theme.palette.error.main,
@@ -92,8 +122,35 @@ export const CompareSubjects = ({
               />
             </Box>
             <Box width={[1, 1, 0.5]}>
+              <Typography variant="h5" align="center">
+                B
+              </Typography>
+              {showSubjectShare(r.subject) && (
+                <Box
+                  display="flex"
+                  flexDirection={'column'}
+                  alignItems="center"
+                  textAlign="center"
+                >
+                  <Typography>Podíl volby předmětu (%)&nbsp;</Typography>
+                  <Typography variant="h4">
+                    {round(r.B.shareChosen, 1)}
+                  </Typography>
+                </Box>
+              )}
+              <Box
+                display="flex"
+                flexDirection={'column'}
+                alignItems="center"
+                mt={'0.5rem'}
+                textAlign="center"
+              >
+                <Typography>Průměr percentilového umístění&nbsp;</Typography>
+                <Typography variant="h4">
+                  {round(r.B.successPercentil, 1)}
+                </Typography>
+              </Box>
               <GraphPie
-                label="B"
                 color={{
                   Úspěšní: theme.palette.success.main,
                   Neúspěšní: theme.palette.error.main,
