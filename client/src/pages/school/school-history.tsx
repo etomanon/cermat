@@ -10,12 +10,12 @@ import { groupBy } from 'lodash'
 import React, { useMemo } from 'react'
 
 type Props = {
-  schoolResults: SchoolResults
+  schoolResults?: SchoolResults
 }
 
 export const SchoolHistory = ({ schoolResults }: Props) => {
   const data = useMemo(() => {
-    const yearsDict = groupBy(schoolResults.results, 'year')
+    const yearsDict = groupBy(schoolResults?.results, 'year')
     const years = Object.keys(yearsDict)
     const percentil = years.map((year) => ({
       name: year,
@@ -43,13 +43,13 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
       percentil,
       chosen,
     }
-  }, [schoolResults.results])
+  }, [schoolResults])
 
   const lines = useMemo<{
     share: GraphLineLine[]
     percentil: GraphLineLine[]
   }>(() => {
-    const subjects = groupBy(schoolResults.results, 'subject')
+    const subjects = groupBy(schoolResults?.results, 'subject')
     const keys = Object.keys(subjects)
     const parseSubject = (s: string, simple?: boolean) => ({
       dataKey: parseSchoolSubject(s as EnumSubject, simple),
@@ -61,7 +61,7 @@ export const SchoolHistory = ({ schoolResults }: Props) => {
       .map((s) => parseSubject(s, true))
 
     return { percentil, share }
-  }, [schoolResults.results])
+  }, [schoolResults])
 
   return (
     <>

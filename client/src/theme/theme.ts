@@ -38,6 +38,9 @@ export const theme = createMuiTheme({
         letterSpacing: 1,
         color: colorPrimary,
       },
+      h5: {
+        fontSize: '2rem',
+      },
     },
   },
 })

@@ -1,6 +1,6 @@
 import { useSchool } from '@/api/fetchers/school/school'
 import { schoolSet } from '@/store/modules/school/school'
-import { useAppDispatch } from '@/store/store'
+import { useAppDispatch, useAppSelector } from '@/store/store'
 import { useForm } from 'react-hook-form'
 import { AppBar, IconButton, Toolbar } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -13,7 +13,7 @@ import { RoutePathEnum } from '@/router/routes'
 import { Form } from '../form/form'
 
 type FormData = {
-  school: Option | null
+  school: Option<number> | null
 }
 
 const defaultValues: Partial<FormData> = {
@@ -24,6 +24,9 @@ export const Navbar = () => {
   const classes = useStyles()
   const [name, setName] = useState('')
   const dispatch = useAppDispatch()
+  const schoolCompare = useAppSelector(
+    (state) => state.school.schoolSelectedCompare
+  )
   const { data, isValidating } = useSchool(name)
   const { push } = useHistory()
   const methods = useForm<FormData>({ defaultValues })
@@ -40,11 +43,17 @@ export const Navbar = () => {
     (formData: FormData) => {
       const school = data?.find?.((d) => d.id === formData.school?.value)
       dispatch(schoolSet(school))
+      if (school && schoolCompare) {
+        push(
+          `${RoutePathEnum.SCHOOL}/${school.redizo}${RoutePathEnum.SCHOOL_COMPARE}/${schoolCompare.redizo}`
+        )
+        return
+      }
       if (school) {
         push(`${RoutePathEnum.SCHOOL}/${school.redizo}`)
       }
     },
-    [data, dispatch, push]
+    [data, dispatch, push, schoolCompare]
   )
   return (
     <>

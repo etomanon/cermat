@@ -10,18 +10,18 @@ import { Box, Button, Typography } from '@material-ui/core'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory, useParams } from 'react-router-dom'
-import { SchoolParams } from './school'
+import { SchoolParams } from '../school/school'
 import CloseIcon from '@material-ui/icons/Close'
 
 type FormData = {
-  schoolCompare: Option | null
+  schoolCompare: Option<number> | null
 }
 
 const defaultValues: Partial<FormData> = {
   schoolCompare: null,
 }
 
-export const SchoolCompare = () => {
+export const Compare = () => {
   const [name, setName] = useState('')
   const dispatch = useAppDispatch()
   const school = useAppSelector((state) => state.school.schoolSelectedCompare)
@@ -51,7 +51,9 @@ export const SchoolCompare = () => {
         push(
           `${RoutePathEnum.SCHOOL}/${redizo}${RoutePathEnum.SCHOOL_COMPARE}/${school.redizo}`
         )
+        return
       }
+      push(`${RoutePathEnum.SCHOOL}/${redizo}`)
     },
     [data, dispatch, push, redizo]
   )
@@ -62,7 +64,7 @@ export const SchoolCompare = () => {
 
   return (
     <>
-      {redizoCompare && school ? (
+      {redizoCompare && school && (
         <>
           <Box display="flex" justifyContent="center">
             <CloseIcon fontSize="large" color="secondary" />
@@ -81,23 +83,22 @@ export const SchoolCompare = () => {
             </Button>
           </Box>
         </>
-      ) : (
-        <Form onSubmit={onSubmit} methods={methods}>
-          <Box display="flex" justifyContent="center">
-            <Box width={[1, '50rem']}>
-              <FormAutocomplete
-                id="schoolCompare"
-                options={options}
-                onChange={handleSubmit(onSubmit)}
-                onInputChange={onInputChange}
-                isLoading={isValidating}
-                placeholder="Hledej název školy / REDIZO"
-                label="Škola pro porovnání"
-              />
-            </Box>
-          </Box>
-        </Form>
       )}
+      <Form onSubmit={onSubmit} methods={methods}>
+        <Box display="flex" justifyContent="center" mt="1rem">
+          <Box width={[1, '50rem']}>
+            <FormAutocomplete
+              id="schoolCompare"
+              options={options}
+              onChange={handleSubmit(onSubmit)}
+              onInputChange={onInputChange}
+              isLoading={isValidating}
+              placeholder="Hledej název školy / REDIZO"
+              label="Škola pro porovnání"
+            />
+          </Box>
+        </Box>
+      </Form>
     </>
   )
 }

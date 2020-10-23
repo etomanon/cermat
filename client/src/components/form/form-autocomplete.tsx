@@ -23,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export type Option = {
-  value: number
+export type Option<T> = {
+  value: T
   label: string
 }
 type Props<T> = {
   id: string
-  options: Option[]
+  options: Option<T>[]
   label?: string
   onInputChange?: (value: string) => void
   classesInput?: Partial<Record<InputBaseClassKey, string>>
@@ -39,6 +39,7 @@ type Props<T> = {
   classNameTextField?: string
   disableUnderline?: boolean
   disableClearable?: boolean
+  multiple?: boolean
 }
 
 export const FormAutocomplete = <T extends {}>({
@@ -53,6 +54,7 @@ export const FormAutocomplete = <T extends {}>({
   classNameTextField,
   disableUnderline,
   disableClearable,
+  multiple,
 }: Props<T>) => {
   const { control, errors } = useFormContext()
   const error = errors[id]?.message
@@ -68,8 +70,8 @@ export const FormAutocomplete = <T extends {}>({
             loading={isLoading}
             options={options}
             value={props.value}
-            getOptionLabel={(option) => option.label}
-            getOptionSelected={(option) => option.value === props.value?.value}
+            getOptionLabel={(option) => option.label ?? ''}
+            getOptionSelected={(option, value) => option.value === value.value}
             renderInput={(params) => (
               <>
                 <TextField
@@ -100,6 +102,11 @@ export const FormAutocomplete = <T extends {}>({
               option: classes.option,
             }}
             disableClearable={disableClearable}
+            openOnFocus
+            multiple={multiple}
+            limitTags={1}
+            disableCloseOnSelect={multiple}
+            fullWidth
           />
         )}
       />

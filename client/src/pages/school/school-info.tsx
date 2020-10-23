@@ -1,38 +1,35 @@
 import { ControlLink } from '@/components/control/control-link'
-import { Form } from '@/components/form/form'
-import { FormAutocomplete, Option } from '@/components/form/form-autocomplete'
+import { Option } from '@/components/form/form-autocomplete'
 import { LayoutWrapper } from '@/components/layout/layout-wrapper'
 import { SchoolResults } from '@/store/modules/school/school-types'
 import { getSchoolUrl } from '@/store/modules/school/school-utils'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Box, Typography } from '@material-ui/core'
-import { range } from 'lodash'
 import React, { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { SchoolHistory } from './school-history'
 import { SchoolSubjects } from './school-subjects'
 import { TabContainer } from '@/components/tab/tab-container'
-import { SchoolCompare } from './school-compare'
+import { Compare } from '../compare/compare'
 import { useParams } from 'react-router-dom'
 import { SchoolParams } from './school'
+import { CompareSubjects } from '../compare/compare-subjects'
+import { years, subjects, SchoolSubjectsFilter } from './school-subjects-filter'
 
 type Props = {
-  schoolResults: SchoolResults
+  schoolResults?: SchoolResults
   schoolResultsCompare?: SchoolResults
 }
 
 type FormData = {
-  year: Option
+  year: Option<number>
+  subjects: Option<string>[]
 }
-
-const years = range(2013, 2021).map((n) => ({
-  value: n,
-  label: n.toString(),
-}))
 
 const defaultValuesInit: FormData = {
   year: years[years.length - 1],
+  subjects,
 }
 
 const schema = yup.object().shape({
@@ -46,10 +43,11 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
     resolver: yupResolver(schema),
   })
   const { watch } = methods
-  const { redizo, redizoCompare } = useParams<SchoolParams>()
-  const schoolUrl = useMemo(() => getSchoolUrl(schoolResults.redizo), [
-    schoolResults,
-  ])
+  const { redizoCompare } = useParams<SchoolParams>()
+  const schoolUrl = useMemo(
+    () => (schoolResults ? getSchoolUrl(schoolResults.redizo) : ''),
+    [schoolResults]
+  )
   const watchForm = watch()
 
   const onSubmit = useCallback(() => undefined, [])
@@ -60,15 +58,46 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
         <Box width={1} pt="2rem" />
         <Typography align="center" variant="h2">{`${
           redizoCompare ? '(A) ' : ''
-        }${schoolResults.name}`}</Typography>
+        }${schoolResults?.name}`}</Typography>
         <Typography align="center">
           <ControlLink url={schoolUrl} label={`Detail školy`} />
-          &nbsp;(redizo: {schoolResults.redizo})
+          &nbsp;(redizo: {schoolResults?.redizo})
         </Typography>
-        <SchoolCompare />
+        <Compare />
 
         <Box mt="2rem">
-          {redizoCompare ? null : (
+          {redizoCompare ? (
+            <TabContainer
+              tabs={[
+                {
+                  label: 'Detaily předmětů',
+                  // eslint-disable-next-line react/display-name
+                  render: () => (
+                    <>
+                      <SchoolSubjectsFilter
+                        propsForm={{
+                          methods,
+                          onSubmit,
+                        }}
+                      />
+                      {watchForm.year?.value && schoolResultsCompare && (
+                        <CompareSubjects
+                          schoolResultsA={schoolResults}
+                          schoolResultsB={schoolResultsCompare}
+                          year={watchForm.year.value}
+                          subjects={watchForm.subjects}
+                        />
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: 'Historie předmětů',
+                  render: <SchoolHistory schoolResults={schoolResults} />,
+                },
+              ]}
+            />
+          ) : (
             <TabContainer
               tabs={[
                 {
@@ -80,33 +109,18 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
                   // eslint-disable-next-line react/display-name
                   render: () => (
                     <>
-                      <Box width={1} pt="2.5rem" />
-                      <Form onSubmit={onSubmit} methods={methods}>
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          flexWrap="wrap"
-                        >
-                          <Box
-                            ml={[0, '4rem']}
-                            mt={['1rem', 0]}
-                            width={'20rem'}
-                          >
-                            <FormAutocomplete
-                              id="year"
-                              options={years}
-                              label="Rok"
-                              disableClearable
-                            />
-                          </Box>
-                        </Box>
-                      </Form>
-                      {watchForm.year?.value && (
-                        <SchoolSubjects
-                          schoolResults={schoolResults}
-                          year={watchForm.year.value}
-                        />
-                      )}
+                      <SchoolSubjectsFilter
+                        propsForm={{
+                          methods,
+                          onSubmit,
+                        }}
+                      />
+
+                      <SchoolSubjects
+                        schoolResults={schoolResults}
+                        year={watchForm.year.value}
+                        subjects={watchForm.subjects}
+                      />
                     </>
                   ),
                 },

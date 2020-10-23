@@ -1,7 +1,15 @@
 import { theme } from '@/theme/theme'
+import { Typography } from '@material-ui/core'
 import { floor, sumBy } from 'lodash'
 import React, { useMemo } from 'react'
-import { PieChart, Pie, Legend, Tooltip, Cell } from 'recharts'
+import {
+  PieChart,
+  Pie,
+  Legend,
+  Tooltip,
+  Cell,
+  ResponsiveContainer,
+} from 'recharts'
 
 type GraphPieData = {
   name: string
@@ -15,32 +23,48 @@ type GraphPieColor = {
 type Props = {
   data: GraphPieData[]
   color: GraphPieColor
+  label?: string
 }
 
-export const GraphPie = ({ data, color }: Props) => {
+export const GraphPie = ({ data, color, label }: Props) => {
   const percent = useMemo(() => sumBy(data, 'value') / 100, [data])
   return (
-    <PieChart width={300} height={275}>
-      <Pie
-        nameKey="name"
-        data={data}
-        cx={150}
-        cy={125}
-        outerRadius={100}
-        fill={theme.palette.primary.main}
-        dataKey="value"
+    <>
+      {label && (
+        <Typography align="center" variant="h5">
+          {label}
+        </Typography>
+      )}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '32rem',
+          height: 250,
+          margin: 'auto',
+        }}
       >
-        {data.map((d) => (
-          <Cell key={d.name + d.value} fill={color[d.name]} />
-        ))}
-      </Pie>
-      <Tooltip
-        separator=": "
-        formatter={(value) =>
-          `${value} (${floor((value as number) / percent, 1)} %)`
-        }
-      />
-      <Legend verticalAlign="top" />
-    </PieChart>
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              nameKey="name"
+              data={data}
+              fill={theme.palette.primary.main}
+              dataKey="value"
+            >
+              {data.map((d) => (
+                <Cell key={d.name + d.value} fill={color[d.name]} />
+              ))}
+            </Pie>
+            <Tooltip
+              separator=": "
+              formatter={(value) =>
+                `${value} (${floor((value as number) / percent, 1)} %)`
+              }
+            />
+            <Legend verticalAlign="top" />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </>
   )
 }

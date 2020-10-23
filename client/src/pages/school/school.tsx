@@ -44,9 +44,7 @@ export const School = () => {
         error={error || errorCompare}
         isValidating={isValidating || isValidatingCompare}
       />
-      {data && (
-        <SchoolInfo schoolResults={data} schoolResultsCompare={dataCompare} />
-      )}
+      <SchoolInfo schoolResults={data} schoolResultsCompare={dataCompare} />
     </>
   )
 }

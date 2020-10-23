@@ -1,3 +1,4 @@
+import { Option } from '@/components/form/form-autocomplete'
 import { GraphPie } from '@/components/graph/graph-pie'
 import { SchoolResults } from '@/store/modules/school/school-types'
 import {
@@ -10,16 +11,19 @@ import { groupBy, isNil, round } from 'lodash'
 import React, { useMemo } from 'react'
 
 type Props = {
-  schoolResults: SchoolResults
+  schoolResults?: SchoolResults
   year: number
+  subjects: Option<string>[]
 }
 
-export const SchoolSubjects = ({ schoolResults, year }: Props) => {
+export const SchoolSubjects = ({ schoolResults, year, subjects }: Props) => {
   const results = useMemo(() => {
-    const groupedYear = groupBy(schoolResults.results, 'year')
-    const yearResults = groupedYear[year]
-    return yearResults
-  }, [schoolResults, year])
+    const groupedYear = groupBy(schoolResults?.results, 'year')
+    const yearResults = groupedYear[year]?.filter((a) =>
+      subjects.some((s) => s.value === a.subject)
+    )
+    return yearResults ?? []
+  }, [schoolResults, year, subjects])
 
   return (
     <>
@@ -89,44 +93,50 @@ export const SchoolSubjects = ({ schoolResults, year }: Props) => {
             mt="2rem"
             flexDirection={['column', 'column', 'row']}
             alignItems={['center', 'center', 'flex-start']}
+            width={[1, 1, '60rem']}
+            mx="auto"
           >
-            <GraphPie
-              color={{
-                Úspěšní: theme.palette.success.main,
-                Neúspěšní: theme.palette.error.main,
-              }}
-              data={[
-                {
-                  name: 'Úspěšní',
-                  value: r.success,
-                },
-                {
-                  name: 'Neúspěšní',
-                  value: r.failed,
-                },
-              ]}
-            />
-            <GraphPie
-              color={{
-                Testovaní: theme.palette.success.main,
-                Omluvení: theme.palette.warning.main,
-                Vyloučení: theme.palette.error.main,
-              }}
-              data={[
-                {
-                  name: 'Testovaní',
-                  value: r.tested,
-                },
-                {
-                  name: 'Omluvení',
-                  value: r.excused,
-                },
-                {
-                  name: 'Vyloučení',
-                  value: r.expelled,
-                },
-              ]}
-            />
+            <Box width={[1, 1, 0.5]}>
+              <GraphPie
+                color={{
+                  Úspěšní: theme.palette.success.main,
+                  Neúspěšní: theme.palette.error.main,
+                }}
+                data={[
+                  {
+                    name: 'Úspěšní',
+                    value: r.success,
+                  },
+                  {
+                    name: 'Neúspěšní',
+                    value: r.failed,
+                  },
+                ]}
+              />
+            </Box>
+            <Box width={[1, 1, 0.5]} mt={['1rem', '1rem', 0]}>
+              <GraphPie
+                color={{
+                  Testovaní: theme.palette.success.main,
+                  Omluvení: theme.palette.warning.main,
+                  Vyloučení: theme.palette.error.main,
+                }}
+                data={[
+                  {
+                    name: 'Testovaní',
+                    value: r.tested,
+                  },
+                  {
+                    name: 'Omluvení',
+                    value: r.excused,
+                  },
+                  {
+                    name: 'Vyloučení',
+                    value: r.expelled,
+                  },
+                ]}
+              />
+            </Box>
           </Box>
         </React.Fragment>
       ))}

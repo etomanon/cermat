@@ -1,17 +1,17 @@
 import React from 'react'
 import { FormProvider, FormProviderProps } from 'react-hook-form'
 
-type Props<T> = {
-  children: React.ReactNode
+export type FormProps<T> = {
   onSubmit: (data: T) => void
   methods: Omit<FormProviderProps<T>, 'children'>
+  children?: React.ReactNode
 }
 
 export const Form = <T extends {}>({
   children,
   onSubmit,
   methods,
-}: Props<T>) => {
+}: FormProps<T>) => {
   return (
     <>
       <FormProvider {...methods}>
