@@ -7,6 +7,7 @@ import {
   ManyToOne,
   Column,
 } from 'typeorm'
+import { ColumnNumericTransformer } from '../../utils/typeorm/typeorm-transformers'
 
 export enum Subject {
   MA = 'MA',
@@ -27,7 +28,13 @@ export class Result {
   @Column({ type: 'enum', enum: Subject })
   subject: Subject
 
-  @Column({ type: 'decimal', nullable: true, precision: 4, scale: 1 })
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   shareChosen: number
 
   @Column()
@@ -48,7 +55,13 @@ export class Result {
   @Column()
   success: number
 
-  @Column({ type: 'decimal', nullable: true, precision: 4, scale: 1 })
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   successPercentil: number
 
   @ManyToOne(() => School, (school) => school.results)

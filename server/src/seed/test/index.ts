@@ -1,7 +1,7 @@
 import { getRepository, getConnection } from 'typeorm'
 import { School } from '../../services/school/school-entity'
 import { Result } from '../../services/result/result-entity'
-import { typeormConnection } from '../../utils/typeorm-connection'
+import { typeormConnection } from '../../utils/typeorm/typeorm-connection'
 import { SCHOOL } from './school'
 import { resultSeed } from './result'
 

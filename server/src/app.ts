@@ -6,7 +6,7 @@ import helmet from 'helmet'
 import noCache from 'nocache'
 
 import ROUTES from './router'
-import { typeormConnection } from './utils/typeorm-connection'
+import { typeormConnection } from './utils/typeorm/typeorm-connection'
 
 typeormConnection().then(async () => {
   // create and setup express app

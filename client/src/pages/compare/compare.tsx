@@ -46,21 +46,21 @@ export const Compare = () => {
   const onSubmit = useCallback(
     (formData: FormData) => {
       const school = data?.find?.((d) => d.id === formData.schoolCompare?.value)
-      dispatch(schoolCompareSet(school))
       if (school) {
+        dispatch(schoolCompareSet(school))
         push(
           `${RoutePathEnum.SCHOOL}/${redizo}${RoutePathEnum.SCHOOL_COMPARE}/${school.redizo}`
         )
         return
       }
-      push(`${RoutePathEnum.SCHOOL}/${redizo}`)
     },
     [data, dispatch, push, redizo]
   )
 
   const onCancel = useCallback(() => {
+    dispatch(schoolCompareSet(undefined))
     push(`${RoutePathEnum.SCHOOL}/${redizo}`)
-  }, [push, redizo])
+  }, [dispatch, push, redizo])
 
   return (
     <>

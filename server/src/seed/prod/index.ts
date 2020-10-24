@@ -1,12 +1,12 @@
 import { getRepository, getConnection } from 'typeorm'
 import { School } from '../../services/school/school-entity'
 import { Result, Subject } from '../../services/result/result-entity'
-import { typeormConnection } from '../../utils/typeorm-connection'
+import { typeormConnection } from '../../utils/typeorm/typeorm-connection'
 import { DataProd } from './types'
 const data = require('../../../../data/data.json') as DataProd
 
 const createData = async <T>(Entity: any, seed: T[]) => {
-  const repo = await getRepository(Entity)
+  const repo = getRepository(Entity)
   for (const s of seed) {
     const created = await repo.create(s)
     await repo.save(created)

@@ -42,7 +42,9 @@ export const Navbar = () => {
   const onSubmit = useCallback(
     (formData: FormData) => {
       const school = data?.find?.((d) => d.id === formData.school?.value)
-      dispatch(schoolSet(school))
+      if (school) {
+        dispatch(schoolSet(school))
+      }
       if (school && schoolCompare) {
         push(
           `${RoutePathEnum.SCHOOL}/${school.redizo}${RoutePathEnum.SCHOOL_COMPARE}/${schoolCompare.redizo}`
