@@ -97,7 +97,7 @@ export const CompareHistory = ({
                     [`${parseSchoolSubject(
                       cur.subject,
                       true
-                    )} (B)`]: yearsDictB[year].find(
+                    )} (B)`]: yearsDictB[year]?.find(
                       (r) => r.subject === subject
                     )?.shareChosen,
                   }

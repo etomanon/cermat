@@ -1,7 +1,7 @@
 import { ControlLink } from '@/components/control/control-link'
 import { Option } from '@/components/form/form-autocomplete'
 import { LayoutWrapper } from '@/components/layout/layout-wrapper'
-import { SchoolResults } from '@/store/modules/school/school-types'
+import { EnumSubject, SchoolResults } from '@/store/modules/school/school-types'
 import { getSchoolUrl } from '@/store/modules/school/school-utils'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -28,23 +28,29 @@ type FormData = {
   subjects: Option<string>[]
 }
 
-const defaultValuesInit: FormData = {
+const getDefaultValuesInit = (redizoCompare?: string): FormData => ({
   year: years[years.length - 1],
-  subjects,
-}
+  subjects: redizoCompare
+    ? subjects
+    : subjects.filter((s) => s.value !== EnumSubject.MEAN),
+})
 
 const schema = yup.object().shape({
   year: yup.object().nullable().required('Povinné'),
 })
 
 export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
+  const { redizoCompare } = useParams<SchoolParams>()
+  const defaultValues = useMemo(() => getDefaultValuesInit(redizoCompare), [
+    redizoCompare,
+  ])
   const methods = useForm<FormData>({
-    defaultValues: defaultValuesInit,
+    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema),
   })
   const { watch } = methods
-  const { redizoCompare } = useParams<SchoolParams>()
+
   const schoolUrl = useMemo(
     () => (schoolResults ? getSchoolUrl(schoolResults.redizo) : ''),
     [schoolResults]
