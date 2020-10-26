@@ -12,7 +12,7 @@ import {
 
 export type GraphLineData = {
   name: string
-  [value: string]: number | string
+  [value: string]: number | string | undefined
 }
 
 export type GraphLineLine = {

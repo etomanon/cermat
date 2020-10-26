@@ -7,7 +7,7 @@ import {
   showSubjectShare,
 } from '@/store/modules/school/school-utils'
 import { Box, Typography } from '@material-ui/core'
-import { groupBy } from 'lodash'
+import { groupBy, meanBy, round, uniq } from 'lodash'
 import React, { useMemo } from 'react'
 
 type Props = {
@@ -24,27 +24,62 @@ export const CompareHistory = ({
   const data = useMemo(() => {
     const yearsDict = groupBy(schoolResultsA?.results, 'year')
     const yearsDictB = groupBy(schoolResultsB?.results, 'year')
-    const subjectsDict = groupBy(schoolResultsB?.results, 'subject')
+    const resultSubjects = Object.keys(
+      groupBy(schoolResultsA?.results, 'subject')
+    )
+    const resultSubjectsB = Object.keys(
+      groupBy(schoolResultsB?.results, 'subject')
+    )
+    const unique = uniq([...resultSubjects, ...resultSubjectsB])
     const years = Object.keys(yearsDict)
-    const percentil = subjects
-      .filter((cur) => subjects.some((s) => s.value === cur.value))
-      .map((subject) => ({
-        subject: subject.value,
-        values: years.map((year) => ({
-          name: year,
-          ...yearsDict[year].reduce(
-            (acc, cur) => ({
-              ...acc,
-              [`${parseSchoolSubject(cur.subject)} (A)`]: cur.successPercentil,
-              [`${parseSchoolSubject(cur.subject)} (B)`]: yearsDictB[
-                year
-              ]?.find((r) => r.subject === subject.value)?.successPercentil,
+    const subjectsFiltered = subjects.filter(
+      (cur) =>
+        subjects.some((s) => s.value === cur.value) &&
+        cur.value !== EnumSubject.MEAN
+    )
+    const mean = subjects.some((s) => s.value === EnumSubject.MEAN)
+      ? [
+          {
+            subject: EnumSubject.MEAN as string,
+            values: years.map((year) => {
+              const valueA = round(
+                meanBy(yearsDict[year], (el) => el.successPercentil),
+                1
+              ) as number | undefined
+              const valueB = round(
+                meanBy(yearsDictB[year], (el) => el.successPercentil),
+                1
+              )
+              return {
+                name: year,
+                [`${parseSchoolSubject(EnumSubject.MEAN)} (A)`]: valueA,
+                [`${parseSchoolSubject(EnumSubject.MEAN)} (B)`]: valueB,
+              }
             }),
-            {}
-          ),
-        })),
+          },
+        ]
+      : []
+
+    const percentil = mean.concat(
+      ...subjectsFiltered.map((subject) => ({
+        subject: subject.value,
+        values: years.map((year) => {
+          const valueA = yearsDict[year]?.find(
+            (r) => r.subject === subject.value
+          )?.successPercentil
+          const valueB = yearsDictB[year]?.find(
+            (r) => r.subject === subject.value
+          )?.successPercentil
+          return {
+            name: year,
+            [`${parseSchoolSubject(subject.value as EnumSubject)} (A)`]: valueA,
+            [`${parseSchoolSubject(subject.value as EnumSubject)} (B)`]: valueB,
+          }
+        }),
       }))
-    const share = Object.keys(subjectsDict)
+    )
+
+    const share = unique
       .filter((s) => showSubjectShare(s as EnumSubject))
       .map((subject) => ({
         subject: subject,
@@ -87,8 +122,15 @@ export const CompareHistory = ({
       lines: GraphLineLine[]
     }[]
   }>(() => {
-    const resultSubjects = groupBy(schoolResultsA?.results, 'subject')
-    const keys = Object.keys(resultSubjects)
+    const resultSubjects = Object.keys(
+      groupBy(schoolResultsA?.results, 'subject')
+    )
+    const resultSubjectsB = Object.keys(
+      groupBy(schoolResultsB?.results, 'subject')
+    )
+    const unique = uniq([...resultSubjects, ...resultSubjectsB])
+
+    const keys = unique.concat(EnumSubject.MEAN)
     const percentil = keys
       .filter((key) => subjects.some((s) => s.value === key))
       .map((s) => ({
@@ -121,7 +163,7 @@ export const CompareHistory = ({
       }))
 
     return { percentil, share }
-  }, [schoolResultsA, subjects])
+  }, [schoolResultsA, subjects, schoolResultsB])
 
   return (
     <>

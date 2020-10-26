@@ -17,6 +17,11 @@ export const schoolResultsToSchool = (
 })
 
 const subjectMap = {
+  [EnumSubject.MEAN]: {
+    name: 'Průměr všech předmětů',
+    simple: 'Průměr všech předmětů',
+    color: '#4f4f4f',
+  },
   [EnumSubject.MA]: {
     name: 'Matematika',
     simple: 'Matematika',
@@ -39,7 +44,6 @@ const subjectMap = {
     simple: 'Angličtina',
     color: '#fa9a0a',
   },
-
   [EnumSubject.AJ_UZ]: {
     name: 'Anglický jazyk - ústní zkouška',
     simple: 'Angličtina',
@@ -58,8 +62,12 @@ export const parseSchoolSubject = (subject: EnumSubject, simple?: boolean) =>
 export const parseSchoolSubjectColor = (subject: EnumSubject) =>
   subjectMap[subject].color
 export const showSubjectShare = (subject: EnumSubject) =>
-  [EnumSubject.CJ_DT, EnumSubject.CJ_UZ, EnumSubject.AJ_DT].indexOf(subject) ===
-  -1
+  [
+    EnumSubject.CJ_DT,
+    EnumSubject.CJ_UZ,
+    EnumSubject.AJ_DT,
+    EnumSubject.MEAN,
+  ].indexOf(subject) === -1
 
 export const parseSchoolCompareColor = (type: 'A' | 'B') =>
   type === 'A' ? '#18068f' : '#b50713'

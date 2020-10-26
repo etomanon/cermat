@@ -18,6 +18,10 @@ export const years = range(2013, 2021).map((n) => ({
 
 export const subjects = [
   {
+    value: EnumSubject.MEAN,
+    label: parseSchoolSubject(EnumSubject.MEAN),
+  },
+  {
     value: EnumSubject.CJ_DT,
     label: parseSchoolSubject(EnumSubject.CJ_DT),
   },

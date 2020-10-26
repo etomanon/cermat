@@ -18,6 +18,7 @@ export interface SchoolResults {
   results?: ResultsEntity[] | null
 }
 export enum EnumSubject {
+  MEAN = 'MEAN',
   MA = 'MA',
   CJ_DT = 'CJ_DT',
   CJ_UZ = 'CJ_UZ',
