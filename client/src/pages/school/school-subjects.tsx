@@ -1,7 +1,12 @@
 import { Option } from '@/components/form/form-autocomplete'
 import { GraphPie } from '@/components/graph/graph-pie'
-import { SchoolResults } from '@/store/modules/school/school-types'
 import {
+  EnumSubject,
+  ResultsEntity,
+  SchoolResults,
+} from '@/store/modules/school/school-types'
+import {
+  getResultsMean,
   parseSchoolSubject,
   showSubjectShare,
 } from '@/store/modules/school/school-utils'
@@ -22,8 +27,18 @@ export const SchoolSubjects = ({ schoolResults, year, subjects }: Props) => {
     const yearResults = groupedYear[year]?.filter((a) =>
       subjects.some((s) => s.value === a.subject)
     )
-    return yearResults ?? []
-  }, [schoolResults, year, subjects])
+    if (isNil(yearResults)) {
+      return []
+    }
+
+    const dataMean: ResultsEntity[] = subjects.some(
+      (s) => s.value === EnumSubject.MEAN
+    )
+      ? [getResultsMean(groupedYear[year] ?? [])]
+      : []
+
+    return dataMean.concat(yearResults)
+  }, [schoolResults, subjects, year])
 
   return (
     <>

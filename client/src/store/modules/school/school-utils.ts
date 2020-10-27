@@ -1,4 +1,5 @@
-import { EnumSubject } from './school-types'
+import { isNil, isNumber, round, sum } from 'lodash'
+import { EnumSubject, ResultsEntity } from './school-types'
 import { SchoolResults, School } from './school-types'
 
 export const getSchoolUrl = (redizo: string) =>
@@ -71,3 +72,44 @@ export const showSubjectShare = (subject: EnumSubject) =>
 
 export const parseSchoolCompareColor = (type: 'A' | 'B') =>
   type === 'A' ? '#18068f' : '#b50713'
+
+const getSumForNumbers = (
+  acc: ResultsEntity | null,
+  entity: ResultsEntity
+): ResultsEntity => {
+  const keys = Object.keys(entity) as (keyof ResultsEntity)[]
+  const mapped = keys.reduce(
+    (a, key) => ({
+      ...a,
+      subject: EnumSubject.MEAN,
+      [key]: isNumber(entity[key])
+        ? isNil(acc?.[key])
+          ? entity[key]
+          : sum([entity[key], acc?.[key]])
+        : entity[key],
+    }),
+    {} as ResultsEntity
+  )
+
+  return mapped
+}
+
+/**
+ * Get mean values for each ResultsEntity number property
+ * @param results school results
+ */
+export const getResultsMean = (results: ResultsEntity[]): ResultsEntity =>
+  (Object.entries(
+    results.reduce(
+      (acc, cur) => getSumForNumbers(acc, cur),
+      {} as ResultsEntity
+    )
+  ).map(([key, value]) => ({
+    [key]: isNumber(value)
+      ? round(
+          value /
+            results.filter((r) => !isNil(r[key as keyof ResultsEntity])).length,
+          1
+        )
+      : value,
+  })) as ResultsEntity[]).reduce((acc, cur) => ({ ...acc, ...cur }))

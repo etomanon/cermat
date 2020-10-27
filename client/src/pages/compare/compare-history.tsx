@@ -24,6 +24,10 @@ export const CompareHistory = ({
   const data = useMemo(() => {
     const yearsDict = groupBy(schoolResultsA?.results, 'year')
     const yearsDictB = groupBy(schoolResultsB?.results, 'year')
+    const yearsAll = uniq([
+      ...Object.keys(yearsDict),
+      ...Object.keys(yearsDictB),
+    ])
     const resultSubjects = Object.keys(
       groupBy(schoolResultsA?.results, 'subject')
     )
@@ -31,7 +35,7 @@ export const CompareHistory = ({
       groupBy(schoolResultsB?.results, 'subject')
     )
     const unique = uniq([...resultSubjects, ...resultSubjectsB])
-    const years = Object.keys(yearsDict)
+
     const subjectsFiltered = subjects.filter(
       (cur) =>
         subjects.some((s) => s.value === cur.value) &&
@@ -41,7 +45,7 @@ export const CompareHistory = ({
       ? [
           {
             subject: EnumSubject.MEAN as string,
-            values: years.map((year) => {
+            values: yearsAll.map((year) => {
               const valueA = round(
                 meanBy(yearsDict[year], (el) => el.successPercentil),
                 1
@@ -63,7 +67,7 @@ export const CompareHistory = ({
     const percentil = mean.concat(
       ...subjectsFiltered.map((subject) => ({
         subject: subject.value,
-        values: years.map((year) => {
+        values: yearsAll.map((year) => {
           const valueA = yearsDict[year]?.find(
             (r) => r.subject === subject.value
           )?.successPercentil
@@ -83,28 +87,17 @@ export const CompareHistory = ({
       .filter((s) => showSubjectShare(s as EnumSubject))
       .map((subject) => ({
         subject: subject,
-        values: years.map((year) => ({
-          name: year,
-          ...yearsDict[year].reduce(
-            (acc, cur) =>
-              cur.subject === subject
-                ? {
-                    ...acc,
-                    [`${parseSchoolSubject(
-                      cur.subject,
-                      true
-                    )} (A)`]: cur.shareChosen,
-                    [`${parseSchoolSubject(
-                      cur.subject,
-                      true
-                    )} (B)`]: yearsDictB[year]?.find(
-                      (r) => r.subject === subject
-                    )?.shareChosen,
-                  }
-                : acc,
-            {}
-          ),
-        })),
+        values: yearsAll.map((year) => {
+          const valueA = yearsDict[year]?.find((r) => r.subject === subject)
+            ?.shareChosen
+          const valueB = yearsDictB[year]?.find((r) => r.subject === subject)
+            ?.shareChosen
+          return {
+            name: year,
+            [`${parseSchoolSubject(subject as EnumSubject, true)} (A)`]: valueA,
+            [`${parseSchoolSubject(subject as EnumSubject, true)} (B)`]: valueB,
+          }
+        }),
       }))
     return {
       percentil,
