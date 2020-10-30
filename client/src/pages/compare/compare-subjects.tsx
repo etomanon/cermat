@@ -1,10 +1,10 @@
 import { Option } from '@/components/form/form-autocomplete'
 import { GraphPie } from '@/components/graph/graph-pie'
-import { EnumSubject, SchoolResults } from '@/store/modules/school/school-types'
+import { SchoolResults } from '@/store/modules/school/school-types'
 import {
-  getResultsMean,
   parseSchoolSubject,
   showSubjectShare,
+  sortSchoolResults,
 } from '@/store/modules/school/school-utils'
 import { theme } from '@/theme/theme'
 import { Box, Typography, useMediaQuery } from '@material-ui/core'
@@ -45,18 +45,9 @@ export const CompareSubjects = ({
         }
       })
     const dataValid = compact(data)
+    const dataSorted = sortSchoolResults(dataValid)
 
-    const dataMean = subjects.some((s) => s.value === EnumSubject.MEAN)
-      ? [
-          {
-            subject: EnumSubject.MEAN,
-            A: getResultsMean(yearResultsA),
-            B: getResultsMean(yearResultsB),
-          },
-        ]
-      : []
-
-    return dataMean.concat(dataValid)
+    return dataSorted
   }, [schoolResultsA, schoolResultsB, year, subjects])
 
   return (

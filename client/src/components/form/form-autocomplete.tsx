@@ -66,7 +66,7 @@ export const FormAutocomplete = <T extends {}>({
         control={control as any}
         render={(props) => (
           <Autocomplete
-            id={id}
+            id={props.name}
             loading={isLoading}
             options={options}
             value={props.value}
@@ -103,6 +103,7 @@ export const FormAutocomplete = <T extends {}>({
             }}
             disableClearable={disableClearable}
             openOnFocus
+            onBlur={props.onBlur}
             multiple={multiple}
             limitTags={1}
             disableCloseOnSelect={multiple}

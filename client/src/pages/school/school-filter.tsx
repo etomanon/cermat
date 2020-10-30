@@ -22,14 +22,6 @@ export const subjects = [
     label: parseSchoolSubject(EnumSubject.MEAN),
   },
   {
-    value: EnumSubject.CJ_DT,
-    label: parseSchoolSubject(EnumSubject.CJ_DT),
-  },
-  {
-    value: EnumSubject.CJ_UZ,
-    label: parseSchoolSubject(EnumSubject.CJ_UZ),
-  },
-  {
     value: EnumSubject.MA,
     label: parseSchoolSubject(EnumSubject.MA),
   },
@@ -41,6 +33,14 @@ export const subjects = [
     value: EnumSubject.AJ_UZ,
     label: parseSchoolSubject(EnumSubject.AJ_UZ),
   },
+  {
+    value: EnumSubject.CJ_DT,
+    label: parseSchoolSubject(EnumSubject.CJ_DT),
+  },
+  {
+    value: EnumSubject.CJ_UZ,
+    label: parseSchoolSubject(EnumSubject.CJ_UZ),
+  },
 ]
 
 export const SchoolFilter = <T extends {}>({
@@ -50,7 +50,7 @@ export const SchoolFilter = <T extends {}>({
   return (
     <>
       <Box width={1} pt="2.5rem" />
-      <Form onSubmit={onSubmit} methods={methods}>
+      <Form onSubmit={onSubmit} methods={methods} storageKey="school-form">
         <Box
           display="flex"
           justifyContent="center"

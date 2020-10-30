@@ -1,14 +1,10 @@
 import { Option } from '@/components/form/form-autocomplete'
 import { GraphPie } from '@/components/graph/graph-pie'
+import { SchoolResults } from '@/store/modules/school/school-types'
 import {
-  EnumSubject,
-  ResultsEntity,
-  SchoolResults,
-} from '@/store/modules/school/school-types'
-import {
-  getResultsMean,
   parseSchoolSubject,
   showSubjectShare,
+  sortSchoolResults,
 } from '@/store/modules/school/school-utils'
 import { theme } from '@/theme/theme'
 import { Box, Typography } from '@material-ui/core'
@@ -24,20 +20,13 @@ type Props = {
 export const SchoolSubjects = ({ schoolResults, year, subjects }: Props) => {
   const results = useMemo(() => {
     const groupedYear = groupBy(schoolResults?.results, 'year')
-    const yearResults = groupedYear[year]?.filter((a) =>
+    const data = groupedYear[year]?.filter((a) =>
       subjects.some((s) => s.value === a.subject)
     )
-    if (isNil(yearResults)) {
+    if (isNil(data)) {
       return []
     }
-
-    const dataMean: ResultsEntity[] = subjects.some(
-      (s) => s.value === EnumSubject.MEAN
-    )
-      ? [getResultsMean(groupedYear[year] ?? [])]
-      : []
-
-    return dataMean.concat(yearResults)
+    return sortSchoolResults(data)
   }, [schoolResults, subjects, year])
 
   return (

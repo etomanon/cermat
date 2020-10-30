@@ -7,7 +7,7 @@ import {
   showSubjectShare,
 } from '@/store/modules/school/school-utils'
 import { Box, Typography } from '@material-ui/core'
-import { groupBy, meanBy, round } from 'lodash'
+import { groupBy } from 'lodash'
 import React, { useMemo } from 'react'
 
 type Props = {
@@ -22,12 +22,6 @@ export const SchoolHistory = ({ schoolResults, subjects }: Props) => {
 
     const percentil = years.map((year) => ({
       name: year,
-      ...(subjects.some((s) => s.value === EnumSubject.MEAN) && {
-        [`${parseSchoolSubject(EnumSubject.MEAN)}`]: round(
-          meanBy(yearsDict[year], (el) => el.successPercentil),
-          1
-        ),
-      }),
       // add each subject for this year with successPercentil as value
       ...yearsDict[year].reduce((acc, cur) => {
         return subjects.some((s) => s.value === cur.subject)
@@ -60,8 +54,7 @@ export const SchoolHistory = ({ schoolResults, subjects }: Props) => {
     share: GraphLineLine[]
     percentil: GraphLineLine[]
   }>(() => {
-    const resultSubjects = groupBy(schoolResults?.results, 'subject')
-    const keys = Object.keys(resultSubjects).concat(EnumSubject.MEAN)
+    const keys = Object.keys(groupBy(schoolResults?.results, 'subject'))
     const parseSubject = (s: string, simple?: boolean) => ({
       dataKey: parseSchoolSubject(s as EnumSubject, simple),
       color: parseSchoolSubjectColor(s as EnumSubject),

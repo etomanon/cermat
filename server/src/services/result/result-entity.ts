@@ -9,7 +9,8 @@ import {
 } from 'typeorm'
 import { ColumnNumericTransformer } from '../../utils/typeorm/typeorm-transformers'
 
-export enum Subject {
+export enum EnumSubject {
+  MEAN = 'MEAN',
   MA = 'MA',
   CJ_DT = 'CJ_DT',
   CJ_UZ = 'CJ_UZ',
@@ -25,8 +26,8 @@ export class Result {
   @Column()
   year: number
 
-  @Column({ type: 'enum', enum: Subject })
-  subject: Subject
+  @Column({ type: 'enum', enum: EnumSubject })
+  subject: EnumSubject
 
   @Column({
     type: 'decimal',
@@ -37,22 +38,58 @@ export class Result {
   })
   shareChosen: number
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   signed: number
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   excused: number
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   expelled: number
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   tested: number
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   failed: number
 
-  @Column()
+  @Column({
+    type: 'decimal',
+    nullable: true,
+    precision: 4,
+    scale: 1,
+    transformer: new ColumnNumericTransformer(),
+  })
   success: number
 
   @Column({

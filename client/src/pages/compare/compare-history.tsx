@@ -7,7 +7,7 @@ import {
   showSubjectShare,
 } from '@/store/modules/school/school-utils'
 import { Box, Typography } from '@material-ui/core'
-import { groupBy, meanBy, round, uniq } from 'lodash'
+import { groupBy, uniq } from 'lodash'
 import React, { useMemo } from 'react'
 
 type Props = {
@@ -36,36 +36,12 @@ export const CompareHistory = ({
     )
     const unique = uniq([...resultSubjects, ...resultSubjectsB])
 
-    const subjectsFiltered = subjects.filter(
-      (cur) =>
-        subjects.some((s) => s.value === cur.value) &&
-        cur.value !== EnumSubject.MEAN
+    const subjectsFiltered = subjects?.filter((cur) =>
+      subjects.some((s) => s.value === cur.value)
     )
-    const mean = subjects.some((s) => s.value === EnumSubject.MEAN)
-      ? [
-          {
-            subject: EnumSubject.MEAN as string,
-            values: yearsAll.map((year) => {
-              const valueA = round(
-                meanBy(yearsDict[year], (el) => el.successPercentil),
-                1
-              ) as number | undefined
-              const valueB = round(
-                meanBy(yearsDictB[year], (el) => el.successPercentil),
-                1
-              )
-              return {
-                name: year,
-                [`${parseSchoolSubject(EnumSubject.MEAN)} (A)`]: valueA,
-                [`${parseSchoolSubject(EnumSubject.MEAN)} (B)`]: valueB,
-              }
-            }),
-          },
-        ]
-      : []
 
-    const percentil = mean.concat(
-      ...subjectsFiltered.map((subject) => ({
+    const percentil =
+      subjectsFiltered?.map((subject) => ({
         subject: subject.value,
         values: yearsAll.map((year) => {
           const valueA = yearsDict[year]?.find(
@@ -80,8 +56,7 @@ export const CompareHistory = ({
             [`${parseSchoolSubject(subject.value as EnumSubject)} (B)`]: valueB,
           }
         }),
-      }))
-    )
+      })) ?? []
 
     const share = unique
       .filter((s) => showSubjectShare(s as EnumSubject))
@@ -121,9 +96,8 @@ export const CompareHistory = ({
     const resultSubjectsB = Object.keys(
       groupBy(schoolResultsB?.results, 'subject')
     )
-    const unique = uniq([...resultSubjects, ...resultSubjectsB])
+    const keys = uniq([...resultSubjects, ...resultSubjectsB])
 
-    const keys = unique.concat(EnumSubject.MEAN)
     const percentil = keys
       .filter((key) => subjects.some((s) => s.value === key))
       .map((s) => ({
