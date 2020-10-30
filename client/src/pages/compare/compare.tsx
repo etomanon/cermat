@@ -2,7 +2,7 @@ import { useSchool } from '@/api/fetchers/school/school'
 import { ControlLink } from '@/components/control/control-link'
 import { Form } from '@/components/form/form'
 import { FormAutocomplete, Option } from '@/components/form/form-autocomplete'
-import { RoutePathEnum } from '@/router/routes'
+import { EnumRoutePath } from '@/router/routes'
 import { schoolCompareSet } from '@/store/modules/school/school'
 import { getSchoolUrl } from '@/store/modules/school/school-utils'
 import { useAppDispatch, useAppSelector } from '@/store/store'
@@ -49,7 +49,7 @@ export const Compare = () => {
       if (school) {
         dispatch(schoolCompareSet(school))
         push(
-          `${RoutePathEnum.SCHOOL}/${redizo}${RoutePathEnum.SCHOOL_COMPARE}/${school.redizo}`
+          `${EnumRoutePath.SCHOOL}/${redizo}${EnumRoutePath.SCHOOL_COMPARE}/${school.redizo}`
         )
         return
       }
@@ -59,7 +59,7 @@ export const Compare = () => {
 
   const onCancel = useCallback(() => {
     dispatch(schoolCompareSet(undefined))
-    push(`${RoutePathEnum.SCHOOL}/${redizo}`)
+    push(`${EnumRoutePath.SCHOOL}/${redizo}`)
   }, [dispatch, push, redizo])
 
   return (

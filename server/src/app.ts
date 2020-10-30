@@ -20,7 +20,9 @@ typeormConnection().then(async () => {
   // no cache
   app.use(noCache())
   // register routes
-  ROUTES.forEach((r) => app.use(`/api/${r.path}`, r.router))
+  for (const route of ROUTES) {
+    app.use(`/api/${route.path}`, route.router)
+  }
   // serve react build in production mode
   app.use(express.static(join(__dirname, '/../../client/build')))
   app.get('*', (req, res) => {

@@ -1,14 +1,19 @@
+import { useMemo } from 'react'
 import useSWR from 'swr'
 
 export type ApiArgs = {
-  key: string
+  key?: string
   url: RequestInfo
   init?: RequestInit
 } | null
 
 export const useApi = <T>(api: ApiArgs) => {
+  const key = useMemo(
+    () => (api?.key ? api?.key : api?.url ? api?.url.toString() : ''),
+    [api]
+  )
   const { data, error, revalidate, mutate, isValidating } = useSWR<T>(
-    api ? api.key : null,
+    key,
     async () => {
       if (api) {
         const response = await fetch(`/api/${api.url}`, {

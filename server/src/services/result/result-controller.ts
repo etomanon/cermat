@@ -11,3 +11,19 @@ export const resultGetId = async (
   })
   return res.send(results)
 }
+
+/**
+ * Get data for table view in client
+ * @param req
+ * @param res
+ */
+export const resultPostTable = async (
+  req: Request,
+  res: Response
+): Promise<Response<Result[]>> => {
+  const results = await getRepository(Result).find({
+    relations: ['school'],
+    take: 20,
+  })
+  return res.send(results)
+}

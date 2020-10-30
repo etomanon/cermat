@@ -8,7 +8,9 @@ const router = Router({
 
 router.get(':id', result.resultGetId)
 
+router.post('/table', result.resultPostTable)
+
 export const resultRoute = {
-  path: '/result',
+  path: 'result',
   router: router,
 } as Route

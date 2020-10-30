@@ -1,10 +1,12 @@
 import { Home } from '@/pages/home/home'
+import { Results } from '@/pages/results/results'
 import { School } from '@/pages/school/school'
 
-export enum RoutePathEnum {
+export enum EnumRoutePath {
   HOME = '/',
   SCHOOL = '/school',
   SCHOOL_COMPARE = '/compare',
+  RESULTS = '/results',
 }
 
 export interface Route {
@@ -16,16 +18,20 @@ export interface Route {
 export const routes: Route[] = [
   {
     component: Home,
-    path: RoutePathEnum.HOME,
+    path: EnumRoutePath.HOME,
   },
   {
     component: School,
-    path: `${RoutePathEnum.SCHOOL}/:redizo`,
+    path: `${EnumRoutePath.SCHOOL}/:redizo`,
     disableExact: false,
   },
   {
     component: School,
-    path: `${RoutePathEnum.SCHOOL}/:redizo${RoutePathEnum.SCHOOL_COMPARE}/:redizoCompare`,
+    path: `${EnumRoutePath.SCHOOL}/:redizo${EnumRoutePath.SCHOOL_COMPARE}/:redizoCompare`,
     disableExact: false,
+  },
+  {
+    component: Results,
+    path: EnumRoutePath.RESULTS,
   },
 ]
