@@ -18,6 +18,7 @@
   ],
   "include": [
     "src/**/*.ts",
+    "knexfile.ts",
   ],
   "files": [
     "src/app.ts"

@@ -6,8 +6,6 @@ const router = Router({
   mergeParams: true,
 })
 
-router.get(':id', result.resultGetId)
-
 router.post('/table', result.resultPostTable)
 
 export const resultRoute = {

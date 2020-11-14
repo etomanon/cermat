@@ -1,34 +1,22 @@
-import { getRepository, getConnection } from 'typeorm'
-import { School } from '../../services/school/school-entity'
-import { Result, EnumSubject } from '../../services/result/result-entity'
-import { typeormConnection } from '../../utils/typeorm/typeorm-connection'
 import { DataProd } from './types'
-import { isAllNull } from '../../utils/object/isAllNull'
+import { EnumSubject, Result } from '../../services/result/result-model'
+import { School } from '../../services/school/school-model'
+import { raw } from 'objection'
+import { prepare } from '../utils'
+import { objectionPostgisPoint } from '../../utils/objection/objection-postgis'
 const data = require('../../../../data/data.json') as DataProd
 
-const createData = async <T>(Entity: any, seed: T[]) => {
-  const repo = getRepository(Entity)
-  for (const s of seed) {
-    const created = await repo.create(s)
-    await repo.save(created)
-  }
-}
-
-typeormConnection().then(async () => {
-  await getConnection().synchronize(true) // remove data
+;(async () => {
+  prepare()
 
   const schools: Partial<School>[] = data.schools.map((s) => ({
     name: s.name,
     redizo: s.redizo,
     region: s.region,
-    geom: {
-      type: 'Point',
-      coordinates: [s.lng, s.lat],
-    },
+    geom: objectionPostgisPoint(s.lng, s.lat),
   }))
 
-  await createData(School, schools)
-
+  await School.query().insert(schools)
   const results: Partial<Result>[] = await Promise.all(
     data.results.map(async (r) => ({
       year: parseInt(r.year),
@@ -41,60 +29,58 @@ typeormConnection().then(async () => {
       failed: r.failed,
       success: r.success,
       successPercentil: r.successPercentil,
-      school: await getRepository(School).findOne({ redizo: r.school }),
+      schoolId: (await School.query().select('id').findOne('redizo', r.school))
+        .id,
     }))
   )
 
-  await createData(Result, results)
+  for (const result of results) {
+    await Result.query().insert(result)
+  }
 
   // calculate average for all results per year per school
-  const dataSchools = await getRepository(School).find()
-  const dataYears = await getRepository(Result)
-    .createQueryBuilder('result')
-    .select('DISTINCT result.year', 'year')
-    .getRawMany<{ year: number }>()
-
+  const dataSchools = await School.query()
+  const dataYears = await Result.query().distinct('year')
   const years = dataYears.map((y) => y.year)
-
-  const meanColumns = getConnection()
-    .getMetadata(Result)
-    .ownColumns.filter((c) => c.type === 'decimal')
-    .map((c) => c.databasePath)
+  const meanColumns = [
+    'share_chosen',
+    'signed',
+    'excused',
+    'expelled',
+    'tested',
+    'failed',
+    'success',
+    'success_percentil',
+  ]
 
   const meanSelect = `${meanColumns
     .map(
       (c, i) =>
-        `ROUND(AVG(result.${c}), 1) AS "${c}"${
-          i + 1 < meanColumns.length ? ', ' : ''
-        }`
+        `ROUND(AVG(${c}), 1) AS "${c}"${i + 1 < meanColumns.length ? ', ' : ''}`
     )
     .join('')}`
 
-  for (const s of dataSchools) {
-    for (const y of years) {
-      const dataResults = await getRepository(Result)
-        .createQueryBuilder('result')
-        .leftJoinAndSelect('result.school', 'school')
-        .where('result.year = :year AND school.id = :schoolId', {
-          schoolId: s.id,
-          year: y,
+  for (const school of dataSchools) {
+    for (const year of years) {
+      const resultMean = await school
+        .$relatedQuery('results')
+        .where({
+          year,
         })
-        .select(meanSelect)
-        .getRawOne<Partial<Result>>()
-      if (isAllNull(dataResults)) {
-        continue
-      }
-      await createData(Result, [
-        {
-          ...dataResults,
+        .select(raw(meanSelect))
+        .first()
+
+      if (resultMean) {
+        await Result.query().insert({
+          ...resultMean,
           subject: EnumSubject.MEAN,
-          year: y,
-          school: s,
-        },
-      ])
+          year: year,
+          schoolId: school.id,
+        })
+      }
     }
   }
 
   console.log('Database seeded with prod data')
   process.exit()
-})
+})()

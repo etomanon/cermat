@@ -1,6 +1,5 @@
-import { getRepository } from 'typeorm'
 import { Request, Response } from 'express'
-import { School } from './school-entity'
+import { School } from './school-model'
 
 /**
  * Get schools based on name or redizo (light full text search)
@@ -15,16 +14,15 @@ export const schoolPostName = async (
   if (!name) {
     return null
   }
-  const results = await getRepository(School)
-    .createQueryBuilder('school')
-    .where(`(school.name ILIKE :name OR school.redizo = :redizo)`, {
+
+  const results = await School.query()
+    .whereRaw(`(school.name ILIKE :name OR school.redizo = :redizo)`, {
       name: `%${name}%`,
       redizo: name,
     })
-    .take(8)
-    .getMany()
+    .page(0, 8)
 
-  return res.send(results)
+  return res.send(results.results)
 }
 
 /**
@@ -40,11 +38,11 @@ export const schoolPostResults = async (
   if (!redizo) {
     return null
   }
-  const result = await getRepository(School)
-    .createQueryBuilder('school')
-    .where(`school.redizo = :redizo`, { redizo })
-    .innerJoinAndSelect('school.results', 'results')
-    .getOne()
+
+  const result = await School.query()
+    .where('redizo', redizo)
+    .withGraphFetched('results')
+    .first()
 
   return res.send(result)
 }
