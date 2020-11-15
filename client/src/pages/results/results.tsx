@@ -1,14 +1,19 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { ResultsTable } from './results-table'
-import { Box } from '@material-ui/core'
+import { Box, Paper, Popper } from '@material-ui/core'
 import { Result } from './types'
-import { Columns, RowParams } from '@material-ui/data-grid'
+import { CellParams, Columns, RowParams } from '@material-ui/data-grid'
 import { parseSchoolSubject } from '@/store/modules/school/school-utils'
 import { EnumSubject } from '@/store/modules/school/school-types'
 import { isNil } from 'lodash'
 import { EnumRoutePath } from '@/router/routes'
 
 export const Results = () => {
+  const [{ open, text, anchorEl }, setPoper] = useState({
+    open: false,
+    text: '',
+    anchorEl: null as HTMLElement | null,
+  })
   const columns = React.useMemo<Columns>(
     () => [
       {
@@ -22,7 +27,7 @@ export const Results = () => {
         field: 'subject',
         headerName: 'Předmět',
         width: 220,
-        valueFormatter: (params) =>
+        valueGetter: (params) =>
           parseSchoolSubject(params.value as EnumSubject),
       },
       {
@@ -36,7 +41,7 @@ export const Results = () => {
         headerName: 'Podíl volby předmětu',
         width: 100,
         type: 'number',
-        valueFormatter: (params) =>
+        valueGetter: (params) =>
           isNil(params.value) ? `` : `${params.value} %`,
       },
       { field: 'signed', headerName: 'Přihlášení', width: 100, type: 'number' },
@@ -62,13 +67,50 @@ export const Results = () => {
     }
   }, [])
 
+  const clearPoper = useCallback(
+    () =>
+      setPoper({
+        open: false,
+        text: '',
+        anchorEl: null,
+      }),
+    []
+  )
+
+  const onCellHover = useCallback(
+    (params: CellParams) => {
+      if (['school.name', 'subject'].includes(params.colDef.field)) {
+        setPoper({
+          open: true,
+          text: params.value?.toString() ?? '',
+          anchorEl: params.element as HTMLElement,
+        })
+        return
+      }
+      clearPoper()
+    },
+    [clearPoper]
+  )
+
   return (
     <Box width={1} mt="2rem" px="1rem">
-      <ResultsTable<Result>
-        url="result/table"
-        columns={columns}
-        onRowClick={onRowClick}
-      />
+      <Box width={1} onMouseLeave={clearPoper}>
+        <ResultsTable<Result>
+          url="result/table"
+          columns={columns}
+          onRowClick={onRowClick}
+          onCellHover={onCellHover}
+        />
+      </Box>
+      <Popper open={open} anchorEl={anchorEl}>
+        <div>
+          <Paper>
+            <Box py="0.5rem" px="1rem">
+              {text}
+            </Box>
+          </Paper>
+        </div>
+      </Popper>
     </Box>
   )
 }

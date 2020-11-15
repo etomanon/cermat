@@ -13,13 +13,17 @@ export interface Paging {
 
 export const objectionPaging = async <T>(
   paging: Paging,
-  model: typeof ModelBase
+  model: typeof ModelBase,
+  graphJoin?: string[] | string
 ): Promise<{
   results: T[]
   total: number
 }> => {
   const { sort, page, pageSize } = paging
   const query = model.query()
+  if (graphJoin) {
+    query.withGraphJoined(graphJoin)
+  }
   if (sort) {
     query.whereNotNull(sort.field).orderBy(sort.field, sort.order)
   }

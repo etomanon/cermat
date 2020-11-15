@@ -1,6 +1,7 @@
 import { useApi } from '@/api/swr'
 import { Box } from '@material-ui/core'
 import {
+  CellParams,
   Columns,
   DataGrid,
   DataGridProps,
@@ -18,6 +19,7 @@ type Props = {
   url: string
   columns: Columns
   onRowClick?: (params: RowParams) => void
+  onCellHover?: (params: CellParams) => void
 }
 
 type Sort = {
@@ -29,6 +31,7 @@ export const ResultsTable = <T extends { id: number }>({
   url,
   columns,
   onRowClick,
+  onCellHover,
 }: Props) => {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(INIT_PAGE_SIZE)
@@ -93,6 +96,7 @@ export const ResultsTable = <T extends { id: number }>({
       onRowClick,
       hideFooterSelectedRowCount: true,
       sortingOrder: ['desc', 'asc', null],
+      onCellHover,
     }),
     [
       columns,
@@ -103,6 +107,7 @@ export const ResultsTable = <T extends { id: number }>({
       page,
       pageSize,
       onRowClick,
+      onCellHover,
     ]
   )
 
