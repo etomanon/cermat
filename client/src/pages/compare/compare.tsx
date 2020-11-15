@@ -1,7 +1,7 @@
 import { useSchool } from '@/api/fetchers/school/school'
 import { ControlLink } from '@/components/control/control-link'
 import { Form } from '@/components/form/form'
-import { FormAutocomplete, Option } from '@/components/form/form-autocomplete'
+import { Option } from '@/components/form/form-autocomplete'
 import { EnumRoutePath } from '@/router/routes'
 import { schoolCompareSet } from '@/store/modules/school/school'
 import { getSchoolUrl } from '@/store/modules/school/school-utils'
@@ -12,6 +12,8 @@ import { useForm } from 'react-hook-form'
 import { useHistory, useParams } from 'react-router-dom'
 import { SchoolParams } from '../school/school'
 import CloseIcon from '@material-ui/icons/Close'
+import { FormAutocompleteRemote } from '@/components/form/form-autocomplete-remote'
+import { School } from '@/store/modules/school/school-types'
 
 type FormData = {
   schoolCompare: Option<number> | null
@@ -22,30 +24,32 @@ const defaultValues: Partial<FormData> = {
 }
 
 export const Compare = () => {
-  const [name, setName] = useState('')
+  const [schools, setSchools] = useState<School[]>([])
   const dispatch = useAppDispatch()
   const school = useAppSelector((state) => state.school.schoolSelectedCompare)
   const { redizoCompare, redizo } = useParams<SchoolParams>()
-  const { data, isValidating } = useSchool(name)
   const { push } = useHistory()
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
 
-  const options = useMemo(
-    () =>
+  const onChangeOptions = useCallback((data: School[]) => setSchools(data), [])
+
+  const formatOptions = useCallback(
+    (data: School[]) =>
       data
         ?.filter((d) => d.redizo !== redizo)
         .map((d) => ({ value: d.id, label: `${d.name} (${d.redizo})` })) ?? [],
-    [data, redizo]
+    [redizo]
   )
   const schoolUrl = useMemo(
     () => (redizoCompare ? getSchoolUrl(redizoCompare) : ''),
     [redizoCompare]
   )
-  const onInputChange = useCallback((value: string) => setName(value), [])
   const onSubmit = useCallback(
     (formData: FormData) => {
-      const school = data?.find?.((d) => d.id === formData.schoolCompare?.value)
+      const school = schools.find?.(
+        (d) => d.id === formData.schoolCompare?.value
+      )
       if (school) {
         dispatch(schoolCompareSet(school))
         push(
@@ -54,7 +58,7 @@ export const Compare = () => {
         return
       }
     },
-    [data, dispatch, push, redizo]
+    [schools, dispatch, push, redizo]
   )
 
   const onCancel = useCallback(() => {
@@ -87,14 +91,16 @@ export const Compare = () => {
       <Form onSubmit={onSubmit} methods={methods}>
         <Box display="flex" justifyContent="center" mt="1rem">
           <Box width={[1, '50rem']}>
-            <FormAutocomplete
-              id="schoolCompare"
-              options={options}
-              onChange={handleSubmit(onSubmit)}
-              onInputChange={onInputChange}
-              isLoading={isValidating}
-              placeholder="Hledej název školy / REDIZO"
-              label="Škola pro porovnání"
+            <FormAutocompleteRemote
+              useFetch={useSchool}
+              formatOptions={formatOptions}
+              onChangeOptions={onChangeOptions}
+              autocompleteProps={{
+                id: 'schoolCompare',
+                onChange: handleSubmit(onSubmit),
+                placeholder: 'Hledej název školy / REDIZO',
+                label: 'Škola pro porovnání',
+              }}
             />
           </Box>
         </Box>

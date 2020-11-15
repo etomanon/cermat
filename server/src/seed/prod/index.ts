@@ -2,7 +2,7 @@ import { DataProd } from './types'
 import { EnumSubject, Result } from '../../services/result/result-model'
 import { School } from '../../services/school/school-model'
 import { raw } from 'objection'
-import { prepare } from '../utils'
+import { prepare, REGIONS } from '../utils'
 import { objectionPostgisPoint } from '../../utils/objection/objection-postgis'
 const data = require('../../../../data/data.json') as DataProd
 
@@ -12,7 +12,7 @@ const data = require('../../../../data/data.json') as DataProd
   const schools: Partial<School>[] = data.schools.map((s) => ({
     name: s.name,
     redizo: s.redizo,
-    region: s.region,
+    region: REGIONS[s.region],
     geom: objectionPostgisPoint(s.lng, s.lat),
   }))
 
@@ -43,7 +43,6 @@ const data = require('../../../../data/data.json') as DataProd
   const dataYears = await Result.query().distinct('year')
   const years = dataYears.map((y) => y.year)
   const meanColumns = [
-    'share_chosen',
     'signed',
     'excused',
     'expelled',

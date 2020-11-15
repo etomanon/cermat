@@ -9,3 +9,20 @@ export const prepare = async () => {
     await knexClient(table.tableName).truncate()
   }
 }
+
+export const REGIONS = {
+  A: 'Praha',
+  C: 'Jihočeský',
+  B: 'Jihomoravský',
+  K: 'Karlovarský',
+  J: 'Vysočina',
+  H: 'Královéhradecký',
+  L: 'Liberecký',
+  T: 'Moravskoslezský',
+  M: 'Olomoucký',
+  E: 'Pardubický',
+  P: 'Plzeňský',
+  S: 'Středočeský',
+  U: 'Ústecký',
+  Z: 'Zlínský',
+}

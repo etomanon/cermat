@@ -1,5 +1,5 @@
 import { useApi } from '@/api/swr'
-import { Box } from '@material-ui/core'
+import { Box, createStyles } from '@material-ui/core'
 import {
   CellParams,
   Columns,
@@ -8,18 +8,23 @@ import {
   RowParams,
   SortModelParams,
 } from '@material-ui/data-grid'
+import { makeStyles } from '@material-ui/styles'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { ResultsNoRows } from './results-no-row'
 import {
   INIT_PAGE_SIZE,
   ResultsPagination,
   ROWS_PER_PAGE,
 } from './results-pagination'
 
+export type Filter = Record<string, any[]> | null
+
 type Props = {
   url: string
   columns: Columns
   onRowClick?: (params: RowParams) => void
   onCellHover?: (params: CellParams) => void
+  filter?: Filter
 }
 
 type Sort = {
@@ -27,12 +32,24 @@ type Sort = {
   order: 'ASC' | 'DESC'
 }
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      '& .MuiDataGrid-row': {
+        cursor: 'pointer',
+      },
+    },
+  })
+)
+
 export const ResultsTable = <T extends { id: number }>({
   url,
   columns,
   onRowClick,
   onCellHover,
+  filter,
 }: Props) => {
+  const classes = useStyles()
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(INIT_PAGE_SIZE)
   const [sort, setSort] = useState<Sort | null>(null)
@@ -43,8 +60,9 @@ export const ResultsTable = <T extends { id: number }>({
         sort,
         pageSize: pageSize,
         page: page - 1,
+        filter,
       }),
-    [sort, pageSize, page]
+    [sort, pageSize, page, filter]
   )
   const { data: dataApi, isValidating } = useApi<{
     results: T[]
@@ -91,12 +109,14 @@ export const ResultsTable = <T extends { id: number }>({
       onPageChange: (param) => setPage(param.page),
       components: {
         pagination: ResultsPagination,
+        noRowsOverlay: ResultsNoRows,
       },
       hideFooterRowCount: true,
       onRowClick,
       hideFooterSelectedRowCount: true,
       sortingOrder: ['desc', 'asc', null],
       onCellHover,
+      className: classes.root,
     }),
     [
       columns,
@@ -108,12 +128,13 @@ export const ResultsTable = <T extends { id: number }>({
       pageSize,
       onRowClick,
       onCellHover,
+      classes,
     ]
   )
 
   useEffect(() => {
     setPage(1)
-  }, [sort])
+  }, [sort, filter])
 
   return (
     <>

@@ -2,7 +2,11 @@ import { ControlLink } from '@/components/control/control-link'
 import { Option } from '@/components/form/form-autocomplete'
 import { LayoutWrapper } from '@/components/layout/layout-wrapper'
 import { SchoolResults } from '@/store/modules/school/school-types'
-import { getSchoolUrl } from '@/store/modules/school/school-utils'
+import {
+  getSchoolUrl,
+  SUBJECTS_OPTIONS,
+  YEARS_OPTIONS,
+} from '@/store/modules/school/school-utils'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Box, Typography } from '@material-ui/core'
@@ -15,7 +19,7 @@ import { Compare } from '../compare/compare'
 import { useParams } from 'react-router-dom'
 import { SchoolParams } from './school'
 import { CompareSubjects } from '../compare/compare-subjects'
-import { years, subjects, SchoolFilter } from './school-filter'
+import { SchoolFilter } from './school-filter'
 import { CompareHistory } from '../compare/compare-history'
 
 type Props = {
@@ -29,8 +33,8 @@ type FormData = {
 }
 
 const getDefaultValuesInit = (): FormData => ({
-  year: years[years.length - 1],
-  subjects: subjects,
+  year: YEARS_OPTIONS[YEARS_OPTIONS.length - 1],
+  subjects: SUBJECTS_OPTIONS,
 })
 
 const schema = yup.object().shape({

@@ -11,10 +11,10 @@ export const resultPostTable = async (
   req: Request<any, any, Paging>,
   res: Response
 ): Promise<Response<Result[]>> => {
-  const { page, pageSize, sort } = req.body
+  const { page, pageSize, sort, filter } = req.body
 
   const { results, total } = await objectionPaging<Result>(
-    { page, pageSize, sort },
+    { page, pageSize, sort, filter },
     Result,
     'school'
   )

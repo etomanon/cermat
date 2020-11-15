@@ -4,14 +4,16 @@ import { useAppDispatch, useAppSelector } from '@/store/store'
 import { useForm } from 'react-hook-form'
 import { AppBar, Toolbar } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useStyles } from './navbar-styles'
-import { FormAutocomplete, Option } from '../form/form-autocomplete'
+import { Option } from '../form/form-autocomplete'
 import { useHistory } from 'react-router-dom'
 import { EnumRoutePath } from '@/router/routes'
 import { Form } from '../form/form'
 import { LayoutWrapper } from '../layout/layout-wrapper'
 import { NavbarPanel } from './navbar-panel'
+import { FormAutocompleteRemote } from '../form/form-autocomplete-remote'
+import { School } from '@/store/modules/school/school-types'
 
 type FormData = {
   school: Option<number> | null
@@ -23,26 +25,28 @@ const defaultValues: Partial<FormData> = {
 
 export const Navbar = () => {
   const classes = useStyles()
-  const [name, setName] = useState('')
+  const [schools, setSchools] = useState<School[]>([])
   const dispatch = useAppDispatch()
   const schoolCompare = useAppSelector(
     (state) => state.school.schoolSelectedCompare
   )
-  const { data, isValidating } = useSchool(name)
   const { push } = useHistory()
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
 
-  const options = useMemo(
-    () =>
-      data?.map?.((d) => ({ value: d.id, label: `${d.name} (${d.redizo})` })) ??
-      [],
-    [data]
+  const onChangeOptions = useCallback((data: School[]) => setSchools(data), [])
+
+  const formatOptions = useCallback(
+    (data: School[]) =>
+      data.map?.((d) => ({
+        value: d.id,
+        label: `${d.name} (${d.redizo})`,
+      })) ?? [],
+    []
   )
-  const onInputChange = useCallback((value: string) => setName(value), [])
   const onSubmit = useCallback(
     (formData: FormData) => {
-      const school = data?.find?.((d) => d.id === formData.school?.value)
+      const school = schools?.find?.((d) => d.id === formData.school?.value)
       if (school) {
         dispatch(schoolSet(school))
       }
@@ -56,7 +60,7 @@ export const Navbar = () => {
         push(`${EnumRoutePath.SCHOOL}/${school.redizo}`)
       }
     },
-    [data, dispatch, push, schoolCompare]
+    [schools, dispatch, push, schoolCompare]
   )
   return (
     <>
@@ -69,18 +73,20 @@ export const Navbar = () => {
                 <SearchIcon />
               </div>
               <Form onSubmit={onSubmit} methods={methods}>
-                <FormAutocomplete
-                  id="school"
-                  options={options}
-                  classesInput={{
-                    root: classes.inputRoot,
+                <FormAutocompleteRemote
+                  useFetch={useSchool}
+                  formatOptions={formatOptions}
+                  onChangeOptions={onChangeOptions}
+                  autocompleteProps={{
+                    id: 'school',
+                    classesInput: {
+                      root: classes.inputRoot,
+                    },
+                    onChange: handleSubmit(onSubmit),
+                    placeholder: 'Název školy / REDIZO',
+                    classNameTextField: classes.autocompleteTextField,
+                    disableUnderline: true,
                   }}
-                  onChange={handleSubmit(onSubmit)}
-                  onInputChange={onInputChange}
-                  isLoading={isValidating}
-                  placeholder="Název školy / REDIZO"
-                  classNameTextField={classes.autocompleteTextField}
-                  disableUnderline
                 />
               </Form>
             </div>

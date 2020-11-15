@@ -5,7 +5,7 @@ export const SCHOOL: Partial<School>[] = [
   {
     name: 'Střední škola Praha',
     redizo: '123',
-    region: 'P',
+    region: 'A',
     geom: objectionPostgisPoint(14.4360319, 50.0901679),
   },
 ]

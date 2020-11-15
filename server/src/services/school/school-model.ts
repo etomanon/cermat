@@ -1,4 +1,5 @@
-import { Model } from 'objection'
+import { QueryBuilder } from 'knex'
+import { Model, raw } from 'objection'
 import { ModelBase } from '../../utils/objection/objection-model-base'
 import { Result } from '../result/result-model'
 
@@ -22,13 +23,9 @@ export class School extends ModelBase {
     },
   }
 
-  // This object defines the relations to other models. The relationMappings
-  // property can be a thunk to prevent circular dependencies.
   static relationMappings = () => ({
     results: {
       relation: Model.HasManyRelation,
-      // The related model. This can be either a Model subclass constructor or an
-      // absolute file path to a module that exports one.
       modelClass: Result,
       join: {
         from: 'school.id',
@@ -36,4 +33,14 @@ export class School extends ModelBase {
       },
     },
   })
+
+  static modifiers = {
+    selectDefault(query: QueryBuilder<School>) {
+      query.select(
+        raw(
+          'redizo, name, region, created_at, updated_at, ST_AsGeoJSON("geom")::json AS "geom"'
+        )
+      )
+    },
+  } as any
 }

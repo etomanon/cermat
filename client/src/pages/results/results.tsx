@@ -1,63 +1,22 @@
 import React, { useCallback, useState } from 'react'
-import { ResultsTable } from './results-table'
-import { Box, Paper, Popper } from '@material-ui/core'
+import { Filter, ResultsTable } from './results-table'
+import { Box, Grow, Paper, Popper } from '@material-ui/core'
 import { Result } from './types'
-import { CellParams, Columns, RowParams } from '@material-ui/data-grid'
-import { parseSchoolSubject } from '@/store/modules/school/school-utils'
-import { EnumSubject } from '@/store/modules/school/school-types'
-import { isNil } from 'lodash'
+import { CellParams, RowParams } from '@material-ui/data-grid'
 import { EnumRoutePath } from '@/router/routes'
+import { useResultsColumns } from './use-results-columns'
+import { ResultsFilter } from './results-filter'
 
 export const Results = () => {
+  const columns = useResultsColumns()
   const [{ open, text, anchorEl }, setPoper] = useState({
     open: false,
     text: '',
     anchorEl: null as HTMLElement | null,
   })
-  const columns = React.useMemo<Columns>(
-    () => [
-      {
-        field: 'school.name',
-        headerName: 'Škola',
-        width: 300,
-        valueGetter: (params) => params.data?.school?.name,
-        sortable: true,
-      },
-      {
-        field: 'subject',
-        headerName: 'Předmět',
-        width: 220,
-        valueGetter: (params) =>
-          parseSchoolSubject(params.value as EnumSubject),
-      },
-      {
-        field: 'successPercentil',
-        headerName: 'Percentilová úspěšnost',
-        width: 100,
-        type: 'number',
-      },
-      {
-        field: 'shareChosen',
-        headerName: 'Podíl volby předmětu',
-        width: 100,
-        type: 'number',
-        valueGetter: (params) =>
-          isNil(params.value) ? `` : `${params.value} %`,
-      },
-      { field: 'signed', headerName: 'Přihlášení', width: 100, type: 'number' },
-      { field: 'success', headerName: 'Úspěšní', width: 100, type: 'number' },
-      { field: 'failed', headerName: 'Neúspěšní', width: 100, type: 'number' },
-      { field: 'tested', headerName: 'Testovaní', width: 100, type: 'number' },
-      { field: 'excused', headerName: 'Omluvení', width: 100, type: 'number' },
-      {
-        field: 'expelled',
-        headerName: 'Vyloučení',
-        width: 100,
-        type: 'number',
-      },
-    ],
-    []
-  )
+  const [filter, setFilter] = useState<Filter>(null)
+
+  const onChangeFilter = useCallback((filter: Filter) => setFilter(filter), [])
 
   const onRowClick = useCallback((params: RowParams) => {
     const origin = window.location.origin
@@ -93,24 +52,30 @@ export const Results = () => {
   )
 
   return (
-    <Box width={1} mt="2rem" px="1rem">
-      <Box width={1} onMouseLeave={clearPoper}>
-        <ResultsTable<Result>
-          url="result/table"
-          columns={columns}
-          onRowClick={onRowClick}
-          onCellHover={onCellHover}
-        />
+    <>
+      <ResultsFilter onChangeFilter={onChangeFilter} />
+      <Box width={1} mt="2rem" px="1rem">
+        <Box width={1} onMouseLeave={clearPoper}>
+          <ResultsTable<Result>
+            url="result/table"
+            columns={columns}
+            onRowClick={onRowClick}
+            onCellHover={onCellHover}
+            filter={filter}
+          />
+        </Box>
+        <Popper open={open} anchorEl={anchorEl}>
+          <div>
+            <Grow in>
+              <Paper>
+                <Box py="0.5rem" px="1rem" maxWidth="25rem">
+                  {text}
+                </Box>
+              </Paper>
+            </Grow>
+          </div>
+        </Popper>
       </Box>
-      <Popper open={open} anchorEl={anchorEl}>
-        <div>
-          <Paper>
-            <Box py="0.5rem" px="1rem">
-              {text}
-            </Box>
-          </Paper>
-        </div>
-      </Popper>
-    </Box>
+    </>
   )
 }

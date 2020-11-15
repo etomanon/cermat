@@ -5,10 +5,13 @@ type Sort = {
   order: 'ASC' | 'DESC'
 }
 
+type Filter = Record<string, (string | number)[]>
+
 export interface Paging {
   page: number
   pageSize: number
   sort?: Sort
+  filter?: Filter
 }
 
 export const objectionPaging = async <T>(
@@ -19,10 +22,18 @@ export const objectionPaging = async <T>(
   results: T[]
   total: number
 }> => {
-  const { sort, page, pageSize } = paging
+  const { sort, page, pageSize, filter } = paging
   const query = model.query()
   if (graphJoin) {
-    query.withGraphJoined(graphJoin)
+    query.withGraphJoined(`${graphJoin}(selectDefault)`)
+  }
+  if (filter) {
+    const fields = Object.keys(filter)
+    for (const field of fields) {
+      if (filter[field].length > 0) {
+        query.whereIn(field, filter[field])
+      }
+    }
   }
   if (sort) {
     query.whereNotNull(sort.field).orderBy(sort.field, sort.order)

@@ -1,3 +1,4 @@
+import { range } from 'lodash'
 import { EnumSubject } from './school-types'
 import { SchoolResults, School } from './school-types'
 
@@ -86,3 +87,55 @@ export const sortSchoolResults = <T extends { subject: EnumSubject }>(
     (a, b) =>
       parseSchoolSubjectOrder(a.subject) - parseSchoolSubjectOrder(b.subject)
   )
+
+export const SUBJECTS_OPTIONS = [
+  {
+    value: EnumSubject.MEAN,
+    label: parseSchoolSubject(EnumSubject.MEAN),
+  },
+  {
+    value: EnumSubject.MA,
+    label: parseSchoolSubject(EnumSubject.MA),
+  },
+  {
+    value: EnumSubject.AJ_DT,
+    label: parseSchoolSubject(EnumSubject.AJ_DT),
+  },
+  {
+    value: EnumSubject.AJ_UZ,
+    label: parseSchoolSubject(EnumSubject.AJ_UZ),
+  },
+  {
+    value: EnumSubject.CJ_DT,
+    label: parseSchoolSubject(EnumSubject.CJ_DT),
+  },
+  {
+    value: EnumSubject.CJ_UZ,
+    label: parseSchoolSubject(EnumSubject.CJ_UZ),
+  },
+]
+
+export const YEARS_OPTIONS = range(2013, 2021).map((n) => ({
+  value: n,
+  label: n.toString(),
+}))
+
+export const REGIONS_OPTIONS = [
+  'Praha',
+  'Jihočeský',
+  'Jihomoravský',
+  'Karlovarský',
+  'Vysočina',
+  'Královéhradecký',
+  'Liberecký',
+  'Moravskoslezský',
+  'Olomoucký',
+  'Pardubický',
+  'Plzeňský',
+  'Středočeský',
+  'Ústecký',
+  'Zlínský',
+].map((n) => ({
+  value: n,
+  label: n,
+}))
