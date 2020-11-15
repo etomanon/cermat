@@ -2,6 +2,7 @@ import { useSchool } from '@/api/fetchers/school/school'
 import { Form } from '@/components/form/form'
 import { FormAutocomplete, Option } from '@/components/form/form-autocomplete'
 import { FormAutocompleteRemote } from '@/components/form/form-autocomplete-remote'
+import { Filter } from '@/components/table/table'
 import { School } from '@/store/modules/school/school-types'
 import {
   REGIONS_OPTIONS,
@@ -11,7 +12,6 @@ import {
 import { Box } from '@material-ui/core'
 import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { Filter } from './results-table'
 
 type Props = {
   onChangeFilter: (filter: Filter) => void

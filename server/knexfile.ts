@@ -23,6 +23,9 @@ const database: Config = {
     port: parseInt(KNEX_PORT),
   },
   debug: false,
+  migrations: {
+    directory: './src/migrations',
+  },
   ...knexSnakeCaseMappers(),
 }
 

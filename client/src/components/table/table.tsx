@@ -10,12 +10,12 @@ import {
 } from '@material-ui/data-grid'
 import { makeStyles } from '@material-ui/styles'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { ResultsNoRows } from './results-no-row'
+import { TableNoRows } from './table-no-row'
 import {
   INIT_PAGE_SIZE,
-  ResultsPagination,
+  TablePagination,
   ROWS_PER_PAGE,
-} from './results-pagination'
+} from './table-pagination'
 
 export type Filter = Record<string, any[]> | null
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-export const ResultsTable = <T extends { id: number }>({
+export const Table = <T extends { id: number }>({
   url,
   columns,
   onRowClick,
@@ -108,8 +108,8 @@ export const ResultsTable = <T extends { id: number }>({
       loading: isValidating,
       onPageChange: (param) => setPage(param.page),
       components: {
-        pagination: ResultsPagination,
-        noRowsOverlay: ResultsNoRows,
+        pagination: TablePagination,
+        noRowsOverlay: TableNoRows,
       },
       hideFooterRowCount: true,
       onRowClick,

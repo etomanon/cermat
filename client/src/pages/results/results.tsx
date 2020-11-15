@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import { Filter, ResultsTable } from './results-table'
 import { Box, Grow, Paper, Popper } from '@material-ui/core'
 import { Result } from './types'
 import { CellParams, RowParams } from '@material-ui/data-grid'
 import { EnumRoutePath } from '@/router/routes'
 import { useResultsColumns } from './use-results-columns'
 import { ResultsFilter } from './results-filter'
+import { Filter, Table } from '@/components/table/table'
 
 export const Results = () => {
   const columns = useResultsColumns()
@@ -56,7 +56,7 @@ export const Results = () => {
       <ResultsFilter onChangeFilter={onChangeFilter} />
       <Box width={1} mt="2rem" px="1rem">
         <Box width={1} onMouseLeave={clearPoper}>
-          <ResultsTable<Result>
+          <Table<Result>
             url="result/table"
             columns={columns}
             onRowClick={onRowClick}

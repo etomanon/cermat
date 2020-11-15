@@ -32,7 +32,7 @@ const defaultValues: FormData = {
   pageSize: options.find((o) => o.value === INIT_PAGE_SIZE) as Option<number>,
 }
 
-export const ResultsPagination = ({ paginationProps }: ComponentProps) => {
+export const TablePagination = ({ paginationProps }: ComponentProps) => {
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
   const classes = useStyles()
