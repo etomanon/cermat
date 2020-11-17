@@ -11,7 +11,8 @@ export const useResultsColumns = () => {
         field: 'school.name',
         headerName: 'Škola',
         width: 300,
-        valueGetter: (params) => params.data?.school?.name,
+        valueGetter: (params) =>
+          `${params.data?.school?.name} (${params.data?.school?.redizo})`,
         sortable: true,
       },
       {

@@ -1,7 +1,7 @@
 /**
- * Check if all properties in object are null
+ * Check if all properties in object are undefined or null
  * @param object
  */
-export const isAllNull = <T extends Record<string, unknown>>(
+export const isAllNil = <T extends Record<string, unknown>>(
   object: T
-): boolean => !Object.values(object).some((x) => x !== null && x !== '')
+): boolean => Object.values(object).every((x) => x === undefined || x === null)

@@ -9,12 +9,16 @@ import {
   SUBJECTS_OPTIONS,
   YEARS_OPTIONS,
 } from '@/store/modules/school/school-utils'
-import { Box } from '@material-ui/core'
-import React, { useCallback } from 'react'
+import { Box, Button } from '@material-ui/core'
+import React, { useCallback, useEffect, useState } from 'react'
+import MyLocationIcon from '@material-ui/icons/MyLocation'
 import { useForm } from 'react-hook-form'
+import { ResultsGeom } from './results-geom'
 
 type Props = {
   onChangeFilter: (filter: Filter) => void
+  onChangeGeom: (geom: GeoJSON.Point | null) => void
+  geom: GeoJSON.Point | null
 }
 
 type FormData = {
@@ -35,7 +39,13 @@ const defaultValues: FormData = {
   year: [],
 }
 
-export const ResultsFilter = ({ onChangeFilter }: Props) => {
+export const ResultsFilter = ({
+  onChangeFilter,
+  onChangeGeom,
+  geom,
+}: Props) => {
+  const [orderByLocation, setOrderByLocation] = useState(false)
+
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
   const onSubmit = useCallback(
@@ -59,10 +69,24 @@ export const ResultsFilter = ({ onChangeFilter }: Props) => {
     []
   )
 
+  useEffect(() => {
+    if (geom === null) {
+      setOrderByLocation(false)
+    }
+  }, [geom])
+
   return (
     <>
-      <Form methods={methods} onSubmit={onSubmit}>
-        <Box display="flex" ml="1.2rem" mt="1rem" flexWrap="wrap">
+      <Box display="flex" ml="1.2rem" mt="1rem" flexWrap="wrap">
+        <Form
+          methods={methods}
+          onSubmit={onSubmit}
+          formProps={{
+            display: 'flex',
+            width: [1, 1, 'auto'],
+            flexWrap: 'wrap',
+          }}
+        >
           <Box width={[1, 1, '30rem']} px="1rem" mt={['1rem', '1rem', 0]}>
             <FormAutocompleteRemote
               useFetch={useSchool}
@@ -103,8 +127,40 @@ export const ResultsFilter = ({ onChangeFilter }: Props) => {
               onChange={handleSubmit(onSubmit)}
             />
           </Box>
+        </Form>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          alignItems="center"
+          width={[1, 1, 'auto']}
+          px="1rem"
+          mt={['1rem', '1rem', 0]}
+          pt={[0, 0, '1rem']}
+        >
+          <Button
+            variant={geom && orderByLocation ? 'contained' : 'outlined'}
+            color="primary"
+            startIcon={<MyLocationIcon />}
+            onClick={() => {
+              if (geom && orderByLocation) {
+                setOrderByLocation(false)
+                onChangeGeom(null)
+                return
+              }
+              setOrderByLocation(true)
+            }}
+          >
+            Seřadit od nejbližší školy
+          </Button>
+          {orderByLocation && (
+            <ResultsGeom
+              orderByLocation={orderByLocation}
+              onChangeGeom={onChangeGeom}
+            />
+          )}
         </Box>
-      </Form>
+      </Box>
     </>
   )
 }

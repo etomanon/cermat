@@ -32,16 +32,16 @@ const defaultValues: FormData = {
   pageSize: options.find((o) => o.value === INIT_PAGE_SIZE) as Option<number>,
 }
 
-export const TablePagination = ({ paginationProps }: ComponentProps) => {
+export const TablePagination = ({ paginationProps, api }: ComponentProps) => {
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
   const classes = useStyles()
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      paginationProps.setPageSize(data.pageSize.value)
+      api.current.setPageSize(data.pageSize.value)
     },
-    [paginationProps]
+    [api]
   )
   return (
     <Box
@@ -79,7 +79,7 @@ export const TablePagination = ({ paginationProps }: ComponentProps) => {
         color="primary"
         page={paginationProps.page}
         count={paginationProps.pageCount}
-        onChange={(event, value) => paginationProps.setPage(value)}
+        onChange={(event, value) => api.current.setPage(value)}
         siblingCount={3}
       />
     </Box>

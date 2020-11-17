@@ -38,7 +38,7 @@ export class School extends ModelBase {
     selectDefault(query: QueryBuilder<School>) {
       query.select(
         raw(
-          'redizo, name, region, created_at, updated_at, ST_AsGeoJSON("geom")::json AS "geom"'
+          'redizo, name, region, created_at, updated_at, ST_AsGeoJSON("geom")::json AS "geom", geom AS geom_raw'
         )
       )
     },

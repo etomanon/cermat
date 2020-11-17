@@ -1,3 +1,4 @@
+import { isNil } from 'lodash'
 import { ModelBase } from './objection-model-base'
 
 type Sort = {
@@ -12,6 +13,7 @@ export interface Paging {
   pageSize: number
   sort?: Sort
   filter?: Filter
+  geom?: GeoJSON.Point | null
 }
 
 export const objectionPaging = async <T>(
@@ -22,7 +24,7 @@ export const objectionPaging = async <T>(
   results: T[]
   total: number
 }> => {
-  const { sort, page, pageSize, filter } = paging
+  const { sort, page, pageSize, filter, geom } = paging
   const query = model.query()
   if (graphJoin) {
     query.withGraphJoined(`${graphJoin}(selectDefault)`)
@@ -35,8 +37,17 @@ export const objectionPaging = async <T>(
       }
     }
   }
-  if (sort) {
+  if (sort && isNil(geom)) {
     query.whereNotNull(sort.field).orderBy(sort.field, sort.order)
+  }
+  if (geom) {
+    query
+      .whereNotNull(`${graphJoin}.geom`)
+      .orderByRaw(
+        `ST_Distance(${graphJoin}.geom_raw, ST_GeomFromGeoJSON('${JSON.stringify(
+          geom
+        )}')) ASC`
+      )
   }
 
   const { results, total } = await query.page(page, pageSize)

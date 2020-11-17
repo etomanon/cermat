@@ -3,6 +3,7 @@ import { knexClient } from '../../knexfile'
 import { OBJECTION_TABLES } from '../utils/objection/objection-constants'
 
 export const prepare = async () => {
+  console.log('Seeding started')
   Model.knex(knexClient)
   // remove data
   for (const table of OBJECTION_TABLES) {

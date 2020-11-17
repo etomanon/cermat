@@ -14,6 +14,11 @@ export const Results = () => {
     text: '',
     anchorEl: null as HTMLElement | null,
   })
+  const [geom, setGeom] = useState<GeoJSON.Point | null>(null)
+  const onChangeGeom = useCallback(
+    (geom: GeoJSON.Point | null) => setGeom(geom),
+    []
+  )
   const [filter, setFilter] = useState<Filter>(null)
 
   const onChangeFilter = useCallback((filter: Filter) => setFilter(filter), [])
@@ -53,7 +58,11 @@ export const Results = () => {
 
   return (
     <>
-      <ResultsFilter onChangeFilter={onChangeFilter} />
+      <ResultsFilter
+        onChangeFilter={onChangeFilter}
+        onChangeGeom={onChangeGeom}
+        geom={geom}
+      />
       <Box width={1} mt="2rem" px="1rem">
         <Box width={1} onMouseLeave={clearPoper}>
           <Table<Result>
@@ -62,6 +71,8 @@ export const Results = () => {
             onRowClick={onRowClick}
             onCellHover={onCellHover}
             filter={filter}
+            geom={geom}
+            onChangeGeom={onChangeGeom}
           />
         </Box>
         <Popper open={open} anchorEl={anchorEl}>

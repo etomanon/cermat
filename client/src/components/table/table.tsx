@@ -6,6 +6,8 @@ import {
   DataGrid,
   DataGridProps,
   RowParams,
+  SortDirection,
+  SortModel,
   SortModelParams,
 } from '@material-ui/data-grid'
 import { makeStyles } from '@material-ui/styles'
@@ -16,6 +18,7 @@ import {
   TablePagination,
   ROWS_PER_PAGE,
 } from './table-pagination'
+import { TableRef } from './table-ref'
 
 export type Filter = Record<string, any[]> | null
 
@@ -25,6 +28,8 @@ type Props = {
   onRowClick?: (params: RowParams) => void
   onCellHover?: (params: CellParams) => void
   filter?: Filter
+  geom: GeoJSON.Point | null
+  onChangeGeom?: (geom: GeoJSON.Point | null) => void
 }
 
 type Sort = {
@@ -48,6 +53,8 @@ export const Table = <T extends { id: number }>({
   onRowClick,
   onCellHover,
   filter,
+  geom,
+  onChangeGeom,
 }: Props) => {
   const classes = useStyles()
   const [page, setPage] = useState(1)
@@ -61,9 +68,11 @@ export const Table = <T extends { id: number }>({
         pageSize: pageSize,
         page: page - 1,
         filter,
+        geom,
       }),
-    [sort, pageSize, page, filter]
+    [sort, pageSize, page, filter, geom]
   )
+
   const { data: dataApi, isValidating } = useApi<{
     results: T[]
     total: number
@@ -78,24 +87,48 @@ export const Table = <T extends { id: number }>({
 
   const rows = useMemo(() => dataApi?.results ?? [], [dataApi])
 
-  const onSortModelChange = useCallback((params: SortModelParams) => {
-    const sort = params.sortModel[0]
-    if (sort) {
-      setSort({
-        field: sort.field,
-        order: sort.sort?.toUpperCase() as 'ASC' | 'DESC',
-      })
-      return
-    }
-    setSort(null)
-  }, [])
+  const sortModel = useMemo<SortModel>(
+    () =>
+      sort
+        ? [
+            {
+              field: sort.field,
+              sort: sort.order.toLowerCase() as SortDirection,
+            },
+          ]
+        : [],
+    [sort]
+  )
+
+  const onSortModelChange = useCallback(
+    (params: SortModelParams) => {
+      const sortModel = params.sortModel[0]
+      if (
+        sortModel &&
+        (sortModel.field !== sort?.field ||
+          sortModel.sort?.toUpperCase() !== sort?.order)
+      ) {
+        setSort({
+          field: sortModel.field,
+          order: sortModel.sort?.toUpperCase() as 'ASC' | 'DESC',
+        })
+        return
+      }
+      if (params.sortModel.length === 0) {
+        setSort(null)
+      }
+    },
+    [sort]
+  )
+
   const dataGridProps = useMemo<DataGridProps>(
     () => ({
       columns,
       rows,
       disableSelectionOnClick: false,
       onSortModelChange,
-      // disableExtendRowFullWidth: true,
+      // not working ATM
+      // sortModel,
       columnBuffer: 0,
       autoHeight: true,
       rowsPerPageOptions: ROWS_PER_PAGE,
@@ -103,6 +136,7 @@ export const Table = <T extends { id: number }>({
       onPageSizeChange: (param) => setPageSize(param.pageSize),
       page,
       paginationMode: 'server',
+      sortingMode: 'server',
       rowCount: dataApi?.total,
       pagination: true,
       loading: isValidating,
@@ -110,6 +144,8 @@ export const Table = <T extends { id: number }>({
       components: {
         pagination: TablePagination,
         noRowsOverlay: TableNoRows,
+        // eslint-disable-next-line react/display-name
+        header: (params) => <TableRef params={params} sortModel={sortModel} />,
       },
       hideFooterRowCount: true,
       onRowClick,
@@ -129,12 +165,25 @@ export const Table = <T extends { id: number }>({
       onRowClick,
       onCellHover,
       classes,
+      sortModel,
     ]
   )
 
   useEffect(() => {
     setPage(1)
-  }, [sort, filter])
+  }, [sort, filter, geom])
+
+  useEffect(() => {
+    if (geom) {
+      setSort(null)
+    }
+  }, [geom, onChangeGeom])
+
+  useEffect(() => {
+    if (sort) {
+      onChangeGeom?.(null)
+    }
+  }, [sort, onChangeGeom])
 
   return (
     <>

@@ -4,6 +4,7 @@ import { School } from '../../services/school/school-model'
 import { raw } from 'objection'
 import { prepare, REGIONS } from '../utils'
 import { objectionPostgisPoint } from '../../utils/objection/objection-postgis'
+import { isAllNil } from '../../utils/object/isAllNull'
 const data = require('../../../../data/data.json') as DataProd
 
 ;(async () => {
@@ -68,8 +69,16 @@ const data = require('../../../../data/data.json') as DataProd
         })
         .select(raw(meanSelect))
         .first()
+      const json = resultMean.$toJson()
+      const jsonSelected = meanColumns.reduce(
+        (acc, cur) => ({
+          ...acc,
+          [cur]: json[cur],
+        }),
+        {}
+      )
 
-      if (resultMean) {
+      if (resultMean && !isAllNil(jsonSelected)) {
         await Result.query().insert({
           ...resultMean,
           subject: EnumSubject.MEAN,
@@ -79,6 +88,8 @@ const data = require('../../../../data/data.json') as DataProd
       }
     }
   }
+
+  await School.query().where('name', 'unknown').delete()
 
   console.log('Database seeded with prod data')
   process.exit()

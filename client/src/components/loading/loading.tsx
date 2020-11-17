@@ -24,7 +24,7 @@ export const Loading = ({ isValidating, error }: Props) => {
   const [showLoader, setShowLoader] = useState(false)
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout | null = null
+    let timeout: number | null = null
     if (isValidating) {
       timeout = setTimeout(() => {
         setShowLoader(true)
