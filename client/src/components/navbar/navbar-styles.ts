@@ -4,7 +4,11 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  name: {
+    cursor: 'pointer',
+  },
   menuButton: {
+    marginLeft: 'auto',
     marginRight: theme.spacing(2),
   },
   title: {
@@ -53,5 +57,11 @@ export const useStyles = makeStyles((theme) => ({
       color: '#000',
       opacity: 0.7,
     },
+  },
+  itemIcon: {
+    color: theme.palette.primary.main,
+  },
+  itemIconActive: {
+    color: theme.palette.secondary.main,
   },
 }))

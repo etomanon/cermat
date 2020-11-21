@@ -1,38 +1,14 @@
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  SwipeableDrawer,
-} from '@material-ui/core'
+import { IconButton, List, SwipeableDrawer } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useStyles } from './navbar-styles'
-import HomeIcon from '@material-ui/icons/Home'
-import TableChartIcon from '@material-ui/icons/TableChart'
 import { EnumRoutePath } from '@/router/routes'
 import { useHistory } from 'react-router-dom'
+import { NavbarItem } from './navbar-item'
+import { ITEMS } from './utils'
 
 const iOS =
   (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
-type Item = {
-  label: string
-  Icon: React.ReactNode
-  path: EnumRoutePath
-}
-const items: Item[] = [
-  {
-    label: 'Domů',
-    Icon: <HomeIcon color="primary" />,
-    path: EnumRoutePath.HOME,
-  },
-  {
-    label: 'Tabulka',
-    Icon: <TableChartIcon color="primary" />,
-    path: EnumRoutePath.RESULTS,
-  },
-]
 
 export const NavbarPanel = () => {
   const [open, setOpen] = useState(false)
@@ -64,14 +40,16 @@ export const NavbarPanel = () => {
         onOpen={onOpen}
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
+        anchor="right"
       >
         <div>
           <List>
-            {items.map(({ label, Icon, path }) => (
-              <ListItem button key={label} onClick={() => onNavigation(path)}>
-                <ListItemIcon>{Icon}</ListItemIcon>
-                <ListItemText primary={label} />
-              </ListItem>
+            {ITEMS.map((item) => (
+              <NavbarItem
+                key={item.path}
+                item={item}
+                onNavigation={onNavigation}
+              />
             ))}
           </List>
         </div>

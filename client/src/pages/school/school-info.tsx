@@ -21,6 +21,7 @@ import { SchoolParams } from './school'
 import { CompareSubjects } from '../compare/compare-subjects'
 import { SchoolFilter } from './school-filter'
 import { CompareHistory } from '../compare/compare-history'
+import { SearchSchool } from '@/components/search/search-school'
 
 type Props = {
   schoolResults?: SchoolResults
@@ -63,6 +64,9 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
     <>
       <LayoutWrapper>
         <Box width={1} pt="2rem" />
+        <Box mx="auto" mb="2rem" width={[1, '60rem']}>
+          <SearchSchool />
+        </Box>
         <Typography align="center" variant="h2">{`${
           redizoCompare ? '(A) ' : ''
         }${schoolResults?.name}`}</Typography>

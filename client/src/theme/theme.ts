@@ -4,6 +4,8 @@ import green from '@material-ui/core/colors/green'
 
 const colorPrimary = purple[500]
 
+const themeBreakpoints = createMuiTheme()
+
 export const theme = createMuiTheme({
   typography: {
     htmlFontSize: 10,
@@ -26,6 +28,16 @@ export const theme = createMuiTheme({
       },
     },
     MuiTypography: {
+      h1: {
+        fontSize: '4rem',
+        width: '100%',
+        [themeBreakpoints.breakpoints.up('sm')]: {
+          fontSize: '6rem',
+        },
+        [themeBreakpoints.breakpoints.up('md')]: {
+          fontSize: '8.6rem',
+        },
+      },
       h2: {
         fontSize: '2.4rem',
         letterSpacing: 0,
