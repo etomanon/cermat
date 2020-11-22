@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Link from '@material-ui/core/Link'
-import { useStyles } from './control-nav-link-styles'
+import { useStyles } from './control-styles'
 
 type Props = {
   to: string

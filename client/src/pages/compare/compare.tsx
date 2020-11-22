@@ -78,7 +78,7 @@ export const Compare = () => {
             variant="h2"
           >{`(B) ${school.name}`}</Typography>
           <Typography align="center">
-            <ControlLink url={schoolUrl} label={`Detail školy`} />
+            <ControlLink url={schoolUrl}>Detail školy</ControlLink>
             &nbsp;(redizo: {school.redizo})
           </Typography>
           <Box mt="1rem" display="flex" justifyContent="center">

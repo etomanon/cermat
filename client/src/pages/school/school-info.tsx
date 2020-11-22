@@ -71,7 +71,7 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
           redizoCompare ? '(A) ' : ''
         }${schoolResults?.name}`}</Typography>
         <Typography align="center">
-          <ControlLink url={schoolUrl} label={`Detail školy`} />
+          <ControlLink url={schoolUrl}>Detail školy</ControlLink>
           &nbsp;(redizo: {schoolResults?.redizo})
         </Typography>
         <Compare />

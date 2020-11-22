@@ -1,3 +1,4 @@
+import { About } from '@/pages/about/about'
 import { Home } from '@/pages/home/home'
 import { Results } from '@/pages/results/results'
 import { School } from '@/pages/school/school'
@@ -7,6 +8,7 @@ export enum EnumRoutePath {
   SCHOOL = '/school',
   SCHOOL_COMPARE = '/compare',
   RESULTS = '/results',
+  ABOUT = '/about',
 }
 
 export interface Route {
@@ -33,5 +35,9 @@ export const routes: Route[] = [
   {
     component: Results,
     path: EnumRoutePath.RESULTS,
+  },
+  {
+    component: About,
+    path: EnumRoutePath.ABOUT,
   },
 ]

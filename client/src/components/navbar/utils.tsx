@@ -1,6 +1,7 @@
 import React from 'react'
 import HomeIcon from '@material-ui/icons/Home'
 import TableChartIcon from '@material-ui/icons/TableChart'
+import InfoIcon from '@material-ui/icons/Info'
 import { EnumRoutePath } from '@/router/routes'
 
 export type Item = {
@@ -18,5 +19,10 @@ export const ITEMS: Item[] = [
     label: 'Tabulka',
     Icon: <TableChartIcon />,
     path: EnumRoutePath.RESULTS,
+  },
+  {
+    label: 'O projektu',
+    Icon: <InfoIcon />,
+    path: EnumRoutePath.ABOUT,
   },
 ]

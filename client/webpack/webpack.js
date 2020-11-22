@@ -77,7 +77,7 @@ module.exports = {
     new webpack.HashedModuleIdsPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(PATH_PUBLIC, 'index.html'),
-      // favicon: path.join(PATH_PUBLIC, 'icon.svg'),
+      favicon: path.join(PATH_PUBLIC, 'icon.svg'),
     }),
     // extracts CSS into separate files.
     // It creates a CSS file per JS file which contains CSS.

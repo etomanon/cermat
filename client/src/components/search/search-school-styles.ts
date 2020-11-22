@@ -10,7 +10,6 @@ export const useStyles = makeStyles((theme) => ({
     },
     marginLeft: 0,
     width: '100%',
-    transition: `0.25s ease-in border`,
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
