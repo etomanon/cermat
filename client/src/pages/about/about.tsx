@@ -11,7 +11,7 @@ export const About = () => {
       <Fade in>
         <LayoutWrapper>
           <Box mt="2rem" overflow="hidden">
-            <Typography variant="h1" align="center">
+            <Typography variant="h2" align="center">
               O projektu
             </Typography>
             <Flex mx="-2rem" mt={['2rem', '2rem', '4rem']}>

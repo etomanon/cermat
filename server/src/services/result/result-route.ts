@@ -8,6 +8,8 @@ const router = Router({
 
 router.post('/table', result.resultPostTable)
 
+router.post('/radius', result.resultPostRadius)
+
 export const resultRoute = {
   path: 'result',
   router: router,

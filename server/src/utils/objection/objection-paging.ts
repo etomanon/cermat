@@ -43,11 +43,10 @@ export const objectionPaging = async <T>(
   if (geom) {
     query
       .whereNotNull(`${graphJoin}.geom`)
-      .orderByRaw(
-        `ST_Distance(${graphJoin}.geom_raw, ST_GeomFromGeoJSON('${JSON.stringify(
-          geom
-        )}')) ASC`
-      )
+      .orderByRaw(`ST_Distance(:graphJoin:, ST_GeomFromGeoJSON(:geom)) ASC`, {
+        geom: JSON.stringify(geom),
+        graphJoin: `${graphJoin}.geom_raw`,
+      })
   }
 
   const { results, total } = await query.page(page, pageSize)

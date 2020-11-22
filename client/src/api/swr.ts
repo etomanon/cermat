@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
+import { toast } from 'react-toastify'
 import useSWR from 'swr'
 
 export type ApiArgs = {
@@ -9,7 +10,8 @@ export type ApiArgs = {
 
 export const useApi = <T>(api: ApiArgs) => {
   const key = useMemo(
-    () => (api?.key ? api?.key : api?.url ? api?.url.toString() : ''),
+    () =>
+      api?.key ? api?.key : `${api?.url}${api?.init?.body}${api?.init?.method}`,
     [api]
   )
   const { data, error, revalidate, mutate, isValidating } = useSWR<T>(
@@ -28,6 +30,12 @@ export const useApi = <T>(api: ApiArgs) => {
       return null as any
     }
   )
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message ?? error)
+    }
+  }, [error])
 
   return {
     data,
