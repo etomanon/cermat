@@ -2,11 +2,23 @@ import { Model } from 'objection'
 import { Parser } from 'json2csv'
 import { knexClient } from '../../../knexfile'
 import { join } from 'path'
-import { promises as fs } from 'fs'
+import fs from 'fs-extra'
 import { Result } from '../../services/result/result-model'
 import { first } from 'lodash'
 
 export const CSV_FILE_NAME = 'maturoid.csv'
+
+const DOWNLOAD_PATH = join(__dirname, '..', '..', 'download')
+const FILE_PATH = join(DOWNLOAD_PATH, CSV_FILE_NAME)
+const DOWNLOAD_PATH_PROD = join(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'build',
+  'src',
+  'download'
+)
 
 /**Generate csv from results & school data */
 const csvGenerate = async () => {
@@ -24,7 +36,8 @@ const csvGenerate = async () => {
     fields,
   })
   const csv = parser.parse(results)
-  await fs.writeFile(join(__dirname, CSV_FILE_NAME), csv)
+  await fs.writeFile(join(FILE_PATH), csv)
+  await fs.copy(DOWNLOAD_PATH, DOWNLOAD_PATH_PROD)
   console.log('CSV generated')
 }
 
