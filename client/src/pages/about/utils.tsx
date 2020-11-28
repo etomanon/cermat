@@ -13,7 +13,7 @@ export const ABOUT_ITEMS: AboutItemType[] = [
     description: (
       <Typography>
         V případě dotazů, chyb, námětů apod. nás kontaktujte na&nbsp;
-        <ControlLink url="mailto:maturoid.contact@gmail.com">
+        <ControlLink href="mailto:maturoid.contact@gmail.com">
           maturoid.contact@gmail.com
         </ControlLink>
         .
@@ -26,11 +26,11 @@ export const ABOUT_ITEMS: AboutItemType[] = [
     description: (
       <Typography>
         Data o maturitních výsledcích jsou z&nbsp;
-        <ControlLink url="https://vysledky.cermat.cz/data/Default.aspx">
+        <ControlLink href="https://vysledky.cermat.cz/data/Default.aspx">
           CERMATu
         </ControlLink>
         .&nbsp;Data o školách jsou od&nbsp;
-        <ControlLink url=" https://portal.csicr.cz/Search/School">
+        <ControlLink href=" https://portal.csicr.cz/Search/School">
           České školní inspekce
         </ControlLink>
         .
@@ -43,8 +43,8 @@ export const ABOUT_ITEMS: AboutItemType[] = [
     description: (
       <Typography>
         Ikony a ilustrace jsou z open-source knihoven&nbsp;
-        <ControlLink url="https://undraw.co/">UnDraw</ControlLink> a&nbsp;
-        <ControlLink url="https://material-ui.com/">Material UI</ControlLink>.
+        <ControlLink href="https://undraw.co/">UnDraw</ControlLink> a&nbsp;
+        <ControlLink href="https://material-ui.com/">Material UI</ControlLink>.
       </Typography>
     ),
   },

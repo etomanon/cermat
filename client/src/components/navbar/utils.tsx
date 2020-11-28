@@ -4,6 +4,7 @@ import TableChartIcon from '@material-ui/icons/TableChart'
 import InfoIcon from '@material-ui/icons/Info'
 import { EnumRoutePath } from '@/router/routes'
 import GpsFixedIcon from '@material-ui/icons/GpsFixed'
+import CloudDownload from '@material-ui/icons/CloudDownload'
 
 export type Item = {
   label: string
@@ -25,6 +26,11 @@ export const ITEMS: Item[] = [
     label: 'Rádius',
     Icon: <GpsFixedIcon />,
     path: EnumRoutePath.RADIUS,
+  },
+  {
+    label: 'Ke stažení',
+    Icon: <CloudDownload />,
+    path: EnumRoutePath.DOWNLOAD,
   },
   {
     label: 'O projektu',

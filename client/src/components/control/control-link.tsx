@@ -3,14 +3,14 @@ import Link from '@material-ui/core/Link'
 import { useStyles } from './control-styles'
 
 type Props = {
-  url: string
+  href: string
   children: React.ReactNode
 }
-export const ControlLink = ({ url, children }: Props) => {
+export const ControlLink = ({ href, children }: Props) => {
   const classes = useStyles()
   return (
     <Link
-      href={url}
+      href={href}
       target="_blank"
       rel="noopener"
       underline="always"

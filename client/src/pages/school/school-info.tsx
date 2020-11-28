@@ -22,6 +22,7 @@ import { CompareSubjects } from '../compare/compare-subjects'
 import { SchoolFilter } from './school-filter'
 import { CompareHistory } from '../compare/compare-history'
 import { SearchSchool } from '@/components/search/search-school'
+import { first } from 'lodash'
 
 type Props = {
   schoolResults?: SchoolResults
@@ -34,7 +35,7 @@ type FormData = {
 }
 
 const getDefaultValuesInit = (): FormData => ({
-  year: YEARS_OPTIONS[YEARS_OPTIONS.length - 1],
+  year: first(YEARS_OPTIONS) as Option<number>,
   subjects: SUBJECTS_OPTIONS,
 })
 
@@ -71,7 +72,7 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
           redizoCompare ? '(A) ' : ''
         }${schoolResults?.name}`}</Typography>
         <Typography align="center">
-          <ControlLink url={schoolUrl}>Detail školy</ControlLink>
+          <ControlLink href={schoolUrl}>Detail školy</ControlLink>
           &nbsp;(redizo: {schoolResults?.redizo})
         </Typography>
         <Compare />

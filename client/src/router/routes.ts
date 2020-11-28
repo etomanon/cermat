@@ -1,8 +1,11 @@
 import { About } from '@/pages/about/about'
+import { Download } from '@/pages/download/download'
 import { Home } from '@/pages/home/home'
 import { Radius } from '@/pages/radius/radius'
 import { Results } from '@/pages/results/results'
 import { School } from '@/pages/school/school'
+
+export const DEVELOPMENT_SERVER = 'localhost:3001'
 
 export enum EnumRoutePath {
   HOME = '/',
@@ -11,6 +14,7 @@ export enum EnumRoutePath {
   RESULTS = '/results',
   ABOUT = '/about',
   RADIUS = '/radius',
+  DOWNLOAD = '/download',
 }
 
 export interface Route {
@@ -45,5 +49,9 @@ export const routes: Route[] = [
   {
     component: Radius,
     path: EnumRoutePath.RADIUS,
+  },
+  {
+    component: Download,
+    path: EnumRoutePath.DOWNLOAD,
   },
 ]

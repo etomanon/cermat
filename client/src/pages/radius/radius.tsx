@@ -12,7 +12,7 @@ import { useGeolocation } from '@/utils/hooks/useGeolocation'
 import { stringToFloat } from '@/utils/string/string-to-float'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, CircularProgress, Typography } from '@material-ui/core'
-import { debounce, last } from 'lodash'
+import { debounce, first } from 'lodash'
 import React, { useEffect, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -33,7 +33,7 @@ const defaultValues: FormData = {
   subject: SUBJECTS_OPTIONS.find((o) => o.value === EnumSubject.MEAN) as Option<
     EnumSubject
   >,
-  year: last(YEARS_OPTIONS) as Option<number>,
+  year: first(YEARS_OPTIONS) as Option<number>,
 }
 
 const schema = yup.object().shape({

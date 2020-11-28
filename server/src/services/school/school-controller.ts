@@ -1,11 +1,7 @@
 import { Request, Response } from 'express'
 import { School } from './school-model'
 
-/**
- * Get schools based on name or redizo (light full text search)
- * @param req
- * @param res
- */
+/** Get schools based on name or redizo (simple text search) */
 export const schoolPostName = async (
   req: Request,
   res: Response
@@ -25,11 +21,7 @@ export const schoolPostName = async (
   return res.send(results.results)
 }
 
-/**
- * Get all results for 1 school by redizo
- * @param req
- * @param res
- */
+/** Get all results for 1 school by redizo */
 export const schoolPostResults = async (
   req: Request,
   res: Response

@@ -6,7 +6,8 @@
     "start": "ts-node-dev --respawn --no-notify --transpileOnly ./src/app.ts",
     "lint:es": "eslint ./src/**/*.ts --fix",
     "db:seed-test": "ts-node-dev --no-notify ./src/seed/test/index.ts",
-    "db:seed-prod": "ts-node-dev --no-notify ./src/seed/prod/index.ts"
+    "db:seed-prod": "ts-node-dev --no-notify ./src/seed/prod/index.ts",
+    "csv": "ts-node-dev --no-notify ./src/scripts/csv/csv-generate.ts"
   },
   "engines": {
     "node": ">=12.14.1"
@@ -17,6 +18,7 @@
     "@types/express": "^4.17.8",
     "@types/express-session": "^1.17.0",
     "@types/geojson": "^7946.0.7",
+    "@types/json2csv": "^5.0.1",
     "@types/lodash": "^4.14.162",
     "@types/passport": "^1.0.4",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
@@ -38,12 +40,12 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^4.1.0",
+    "json2csv": "^5.0.5",
     "knex": "^0.21.12",
     "lodash": "^4.17.20",
     "nocache": "^2.1.0",
     "objection": "^2.2.3",
     "pg": "^8.3.3",
-    "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.25",
     "typeorm-static": "^1.1.1"
   }

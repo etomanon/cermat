@@ -1,12 +1,10 @@
 import { Request, Response } from 'express'
 import { objectionPaging, Paging } from '../../utils/objection/objection-paging'
 import { EnumSubject, Result } from './result-model'
+import { join } from 'path'
+import { CSV_FILE_NAME } from '../../scripts/csv/csv-generate'
 
-/**
- * Get data for table view in client
- * @param req
- * @param res
- */
+/** Get data for table view in client */
 export const resultPostTable = async (
   req: Request<any, any, Paging>,
   res: Response
@@ -32,11 +30,7 @@ type PostRadius = {
   year: number
 }
 
-/**
- * Get the best 50 results for 1 school, subject & year in specified radius
- * @param req
- * @param res
- */
+/** Get the best 50 results for 1 school, subject & year in specified radius */
 export const resultPostRadius = async (
   req: Request<any, any, PostRadius>,
   res: Response
@@ -61,4 +55,11 @@ export const resultPostRadius = async (
   return res.send({
     results,
   })
+}
+
+/** Download all results & school data as csv */
+export const resultGetDownload = async (req: Request, res: Response) => {
+  return res.download(
+    join(__dirname, '..', '..', 'scripts', 'csv', CSV_FILE_NAME)
+  )
 }

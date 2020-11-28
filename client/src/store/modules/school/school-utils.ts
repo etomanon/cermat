@@ -115,10 +115,12 @@ export const SUBJECTS_OPTIONS = [
   },
 ]
 
-export const YEARS_OPTIONS = range(2013, 2021).map((n) => ({
-  value: n,
-  label: n.toString(),
-}))
+export const YEARS_OPTIONS = range(2013, 2021)
+  .map((n) => ({
+    value: n,
+    label: n.toString(),
+  }))
+  .reverse()
 
 export const REGIONS_OPTIONS = [
   'Praha',
