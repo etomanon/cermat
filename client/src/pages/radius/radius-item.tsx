@@ -12,15 +12,12 @@ const SCALE = chroma.scale(['#f00', '#0f0']).mode('lch')
 
 type Props = {
   result: Result
-  index: number
-  resultsTotal: number
 }
 
-export const RadiusItem = ({ result, resultsTotal, index }: Props) => {
+export const RadiusItem = ({ result }: Props) => {
   const backgroundColor = useMemo(() => {
-    const percent = (100 - (index + 1) / (resultsTotal / 100)) / 100
-    return SCALE(percent).hex()
-  }, [index, resultsTotal])
+    return SCALE(result.successPercentil / 100).hex()
+  }, [result])
 
   return (
     <>

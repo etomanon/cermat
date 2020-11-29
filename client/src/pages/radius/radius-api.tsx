@@ -49,13 +49,9 @@ export const RadiusApi = ({ radiusApi }: Props) => {
       )}
       <Fade in>
         <Flex mx="-1rem" mt={['2rem', '2rem', '4rem']}>
-          {data?.results?.map?.((d, i) => (
+          {data?.results?.map?.((d) => (
             <Flex key={d.id} width={[1, 0.5, 0.25]} px="1rem" mb="2rem">
-              <RadiusItem
-                result={d}
-                index={i}
-                resultsTotal={data.results.length}
-              />
+              <RadiusItem result={d} />
             </Flex>
           ))}
         </Flex>
