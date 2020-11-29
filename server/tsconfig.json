@@ -14,11 +14,7 @@
   },
   "exclude": [
     "node_modules",
-    "build"
-  ],
-  "include": [
-    "src/**/*.ts",
-    "knexfile.ts",
+    "build",
   ],
   "files": [
     "src/app.ts"

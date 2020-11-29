@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { objectionPaging, Paging } from '../../utils/objection/objection-paging'
 import { EnumSubject, Result } from './result-model'
 import { join } from 'path'
-import { CSV_FILE_NAME } from '../../scripts/csv/csv-generate'
+import { CSV_FILE_NAME } from '../../scripts/csv/constants'
 
 /** Get data for table view in client */
 export const resultPostTable = async (

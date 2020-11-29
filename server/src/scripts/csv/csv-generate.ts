@@ -5,8 +5,7 @@ import { join } from 'path'
 import fs from 'fs-extra'
 import { Result } from '../../services/result/result-model'
 import { first } from 'lodash'
-
-export const CSV_FILE_NAME = 'maturoid.csv'
+import { CSV_FILE_NAME } from './constants'
 
 const DOWNLOAD_PATH = join(__dirname, '..', '..', 'download')
 const FILE_PATH = join(DOWNLOAD_PATH, CSV_FILE_NAME)
