@@ -38,6 +38,7 @@ const csvGenerate = async () => {
   await fs.writeFile(join(FILE_PATH), csv)
   await fs.copy(DOWNLOAD_PATH, DOWNLOAD_PATH_PROD)
   console.log('CSV generated')
+  process.exit()
 }
 
 csvGenerate()
