@@ -5,7 +5,7 @@ import { Radius } from '@/pages/radius/radius'
 import { Results } from '@/pages/results/results'
 import { School } from '@/pages/school/school'
 
-export const DEVELOPMENT_SERVER = 'localhost:3001'
+export const DEVELOPMENT_SERVER = 'localhost:3002'
 
 export enum EnumRoutePath {
   HOME = '/',

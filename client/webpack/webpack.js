@@ -99,7 +99,7 @@ module.exports = {
     historyApiFallback: true,
     contentBase: PATH_BUILD,
     proxy: {
-      '/api': 'http://localhost:3001'
+      '/api': 'http://localhost:3002'
     },
     clientLogLevel: 'silent'
   }

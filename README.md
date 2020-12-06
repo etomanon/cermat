@@ -23,7 +23,7 @@
   * `npm run csv` to generate CSV from database
   * `npm run db:seed-test` to insert test data to database
   * npm start
-  * Express runs on <http://localhost:3001>
+  * Express runs on <http://localhost:3002>
 * Production
   * npm install
   * npm run build
@@ -51,7 +51,6 @@
 * Production
   * npm install
   * npm run build
-  * Server hosts build folder in production mode on <http://localhost:3001>
 
 ### Web scraping
 
