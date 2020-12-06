@@ -31,6 +31,7 @@
   * Change `NODE_ENV` in .env file to `production`
   * `knex migrate:latest` to sync database
   * `npm run db:seed-prod` to update school data
+  * `npm run build` to compile
   * Run Express and serve React code (`client/build/index.html`): `node build/app.js`
 
 ### Client

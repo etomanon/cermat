@@ -1,6 +1,6 @@
 import * as school from './school-controller'
 import { Router } from 'express'
-import { Route } from '../../types/Route'
+import { Route } from '../../types/route'
 
 const router = Router({
   mergeParams: true,

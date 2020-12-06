@@ -1,6 +1,6 @@
 import * as result from './result-controller'
 import { Router } from 'express'
-import { Route } from '../../types/Route'
+import { Route } from '../../types/route'
 
 const router = Router({
   mergeParams: true,
