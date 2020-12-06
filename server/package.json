@@ -5,6 +5,7 @@
     "build": "concurrently \"tsc\" \"npm run csv\"",
     "start": "ts-node-dev --respawn --no-notify --transpile-only ./src/app.ts",
     "lint:es": "eslint ./src/**/*.ts --fix",
+    "db:migrate": "knex migrate:latest",
     "db:seed-test": "ts-node-dev --no-notify ./src/seed/test/index.ts",
     "db:seed-prod": "ts-node-dev --no-notify ./src/seed/prod/index.ts",
     "csv": "ts-node-dev --no-notify ./src/scripts/csv/csv-generate.ts"
