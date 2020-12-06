@@ -32,4 +32,4 @@ app.get('*', (req, res) => {
 })
 
 // start express server
-app.listen(3001)
+app.listen(3002)
