@@ -52,7 +52,7 @@
   * npm install
   * npm run build
 
-### Web scraping
+### Data setup - Web scraping
 
 * Go to `data` folder
 * `npm start` to create `data.json` file in the `data` folder
