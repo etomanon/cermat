@@ -27,9 +27,10 @@
   * Express runs on <http://localhost:3002>
 * Production
   * npm install
-  * Copy your .env file to `server/build/` folder
   * Change `NODE_ENV` in .env file to `production`
+  * Seed database with prod data - `npm run db:setup`
   * `npm run build` to compile
+  * Copy your .env file to `server/build/` folder
   * Run Express and serve React code (`client/build/index.html`): `node build/src/app.js`
 
 ### Client
