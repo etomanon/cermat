@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   inputRoot: {
     color: 'inherit',
-    padding: "0.6rem 0.6rem 0.6rem 4.8rem",
+    padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
@@ -34,4 +34,4 @@ export const useStyles = makeStyles((theme) => ({
       opacity: 0.7,
     },
   },
-}))
+}), {index: 1})

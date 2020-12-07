@@ -90,7 +90,8 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all'
-    }
+    },
+    runtimeChunk: true,
   },
   devServer: {
     open: false,
