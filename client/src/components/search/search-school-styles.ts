@@ -22,7 +22,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   inputRoot: {
     color: 'inherit',
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: "0.6rem 0.6rem 0.6rem 4.8rem",
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),

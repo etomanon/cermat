@@ -37,4 +37,4 @@ jobs:
             npm install
             npm run build
             cp .env build/
-            pm2 restart cermat
+            pm2 restart maturoid
