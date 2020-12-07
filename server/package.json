@@ -12,7 +12,7 @@
     "csv": "ts-node-dev --no-notify ./src/scripts/csv/csv-generate.ts"
   },
   "engines": {
-    "node": ">=12.14.1"
+    "node": ">=14.15.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
@@ -50,7 +50,7 @@
     "lodash": "^4.17.20",
     "nocache": "^2.1.0",
     "objection": "^2.2.3",
-    "pg": "^8.3.3",
+    "pg": "^8.5.1",
     "typeorm": "^0.2.25",
     "typeorm-static": "^1.1.1"
   }
