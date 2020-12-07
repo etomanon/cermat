@@ -26,9 +26,9 @@ for (const route of ROUTES) {
   app.use(`/api/${route.path}`, route.router)
 }
 // serve react build in production mode
-app.use(express.static(join(__dirname, '/../../client/build')))
+app.use(express.static(join(__dirname, '../../../client/build')))
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, '/../../client/build/index.html'))
+  res.sendFile(join(__dirname, '../../../client/build/index.html'))
 })
 
 // start express server

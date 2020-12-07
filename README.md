@@ -20,17 +20,17 @@
 * Change .env values to match your settings (PostgreSQL)
 * Development:
   * npm install
-  * `npm run csv` to generate CSV from database
+  * `npm run db:migrate` to apply PostgreSQL migrations
   * `npm run db:seed-test` to insert test data to database
+  * `npm run csv` to generate CSV from database
   * npm start
   * Express runs on <http://localhost:3002>
 * Production
   * npm install
-  * npm run build
   * Copy your .env file to `server/build/` folder
   * Change `NODE_ENV` in .env file to `production`
   * `npm run build` to compile
-  * Run Express and serve React code (`client/build/index.html`): `node build/app.js`
+  * Run Express and serve React code (`client/build/index.html`): `node build/src/app.js`
 
 ### Client
 
