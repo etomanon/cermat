@@ -18,8 +18,13 @@ const data = require('../../../../data/data.json') as DataProd
   }))
 
   await School.query().insert(schools)
-  const results: Partial<Result>[] = await Promise.all(
-    data.results.map(async (r) => ({
+
+  let results: Partial<Result>[] = []
+  for (const r of data.results) {
+    const school = await School.query().select('id').findOne('redizo', r.school)
+    const schoolId = school.id
+    
+    const parsed = {
       year: parseInt(r.year),
       subject: EnumSubject[r.subject],
       shareChosen: r.shareChosen,
@@ -30,10 +35,10 @@ const data = require('../../../../data/data.json') as DataProd
       failed: r.failed,
       success: r.success,
       successPercentil: r.successPercentil,
-      schoolId: (await School.query().select('id').findOne('redizo', r.school))
-        .id,
-    }))
-  )
+      schoolId: schoolId,
+    }
+    results.push(parsed)
+  }
 
   for (const result of results) {
     await Result.query().insert(result)
