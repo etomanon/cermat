@@ -27,7 +27,8 @@ const database: Config = {
     directory: './src/migrations',
   },
   pool: {
-    propagateCreateError: false
+    max: 40,
+    min: 2,
   },
   ...knexSnakeCaseMappers(),
 }
