@@ -13,7 +13,7 @@ const App: React.FC = () => {
   return (
     <>
       <SwrConfig>
-        <StylesProvider injectFirst>
+        <StylesProvider>
           <ThemeProvider theme={theme}>
             <ThemeProviderStyled theme={theme}>
               <CssBaseline />

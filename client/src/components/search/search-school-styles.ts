@@ -34,4 +34,4 @@ export const useStyles = makeStyles((theme) => ({
       opacity: 0.7,
     },
   },
-}), {index: 1})
+}))
