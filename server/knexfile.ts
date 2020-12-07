@@ -26,6 +26,9 @@ const database: Config = {
   migrations: {
     directory: './src/migrations',
   },
+  pool: {
+    propagateCreateError: false
+  },
   ...knexSnakeCaseMappers(),
 }
 
