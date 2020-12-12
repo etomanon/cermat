@@ -25,7 +25,7 @@ export const Results = () => {
 
   const onRowClick = useCallback((params: RowParams) => {
     const origin = window.location.origin
-    const redizo = params.data?.school?.redizo
+    const redizo = params.row?.school?.redizo
     if (redizo) {
       window.open(`${origin}${EnumRoutePath.SCHOOL}/${redizo}`, '_blank')
     }

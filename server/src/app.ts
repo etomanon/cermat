@@ -9,6 +9,8 @@ import ROUTES from './router'
 import { knexClient } from '../knexfile'
 import { Model } from 'objection'
 
+const PORT = 3002
+
 // Initialize knex.
 Model.knex(knexClient)
 // create and setup express app
@@ -32,4 +34,5 @@ app.get('*', (req, res) => {
 })
 
 // start express server
-app.listen(3002)
+app.listen(PORT)
+console.log(`Server is listening on port ${PORT}`)

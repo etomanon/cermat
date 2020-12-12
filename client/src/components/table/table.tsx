@@ -128,7 +128,7 @@ export const Table = <T extends { id: number }>({
       disableSelectionOnClick: false,
       onSortModelChange,
       // not working ATM
-      // sortModel,
+      sortModel,
       columnBuffer: 0,
       autoHeight: true,
       rowsPerPageOptions: ROWS_PER_PAGE,

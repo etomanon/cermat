@@ -32,7 +32,7 @@ const defaultValues: FormData = {
   pageSize: options.find((o) => o.value === INIT_PAGE_SIZE) as Option<number>,
 }
 
-export const TablePagination = ({ paginationProps, api }: ComponentProps) => {
+export const TablePagination = ({ pagination, api }: ComponentProps) => {
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
   const classes = useStyles()
@@ -77,8 +77,8 @@ export const TablePagination = ({ paginationProps, api }: ComponentProps) => {
           ul: classes.ul,
         }}
         color="primary"
-        page={paginationProps.page}
-        count={paginationProps.pageCount}
+        page={pagination.page}
+        count={pagination.pageCount}
         onChange={(event, value) => api.current.setPage(value)}
         siblingCount={3}
       />

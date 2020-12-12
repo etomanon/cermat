@@ -30,9 +30,9 @@ const defaultValues: FormData = {
   lng: 0,
   lat: 0,
   radius: 50,
-  subject: SUBJECTS_OPTIONS.find((o) => o.value === EnumSubject.MEAN) as Option<
-    EnumSubject
-  >,
+  subject: SUBJECTS_OPTIONS.find(
+    (o) => o.value === EnumSubject.MEAN
+  ) as Option<EnumSubject>,
   year: first(YEARS_OPTIONS) as Option<number>,
 }
 

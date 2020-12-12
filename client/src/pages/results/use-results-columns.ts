@@ -12,7 +12,7 @@ export const useResultsColumns = () => {
         headerName: 'Škola',
         width: 300,
         valueGetter: (params) =>
-          `${params.data?.school?.name} (${params.data?.school?.redizo})`,
+          `${params.row?.school?.name} (${params.row?.school?.redizo})`,
         sortable: true,
       },
       {
@@ -20,7 +20,7 @@ export const useResultsColumns = () => {
         headerName: 'Kraj',
         width: 160,
         sortable: true,
-        valueGetter: (params) => params.data?.school?.region,
+        valueGetter: (params) => params.row?.school?.region,
       },
       {
         field: 'subject',

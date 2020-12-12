@@ -1,27 +1,9 @@
-import {
-  InputBaseClassKey,
-  makeStyles,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { ObjectAny } from '@/utils/types/object-any'
+import { InputBaseClassKey, TextField, Typography } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-
-const useStyles = makeStyles((theme) => ({
-  option: {
-    // Hover
-    '&[data-focus="true"]': {
-      backgroundColor: theme.palette.primary.light,
-      color: theme.palette.getContrastText(theme.palette.primary.light),
-    },
-    // Selected
-    '&[aria-selected="true"]': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.getContrastText(theme.palette.primary.main),
-    },
-  },
-}))
+import styled, { css } from 'styled-components'
 
 export type Option<T> = {
   value: T
@@ -42,7 +24,7 @@ type Props<T> = {
   multiple?: boolean
 }
 
-export const FormAutocomplete = <T extends {}>({
+export const FormAutocomplete = <T extends string | number>({
   id,
   options,
   label,
@@ -58,7 +40,6 @@ export const FormAutocomplete = <T extends {}>({
 }: Props<T>) => {
   const { control, errors } = useFormContext()
   const error = errors[id]?.message
-  const classes = useStyles()
   return (
     <>
       <Controller
@@ -98,9 +79,11 @@ export const FormAutocomplete = <T extends {}>({
             noOptionsText="Nic nenalezeno"
             loadingText="Načítám..."
             autoHighlight
-            classes={{
-              option: classes.option,
-            }}
+            classes={
+              {
+                // option: classes.option,
+              }
+            }
             disableClearable={disableClearable}
             openOnFocus
             onBlur={props.onBlur}
@@ -114,3 +97,30 @@ export const FormAutocomplete = <T extends {}>({
     </>
   )
 }
+
+// const useStyles = makeStyles((theme) => ({
+//   option: {
+//     // Hover
+//     '&[data-focus="true"]': {
+//       backgroundColor: theme.palette.primary.light,
+//       color: theme.palette.getContrastText(theme.palette.primary.light),
+//     },
+//     // Selected
+//     '&[aria-selected="true"]': {
+//       backgroundColor: theme.palette.primary.main,
+//       color: theme.palette.getContrastText(theme.palette.primary.main),
+//     },
+//   },
+// }))
+
+const AutocompleteStyled = styled(Autocomplete)`
+  ${(props) => {
+    const { light, main } = props.theme.palette.primary
+    const { getContrastText } = props.theme.palette
+    return css`
+      .MuiAutocomplete-option {
+        background-color: ${light};
+      }
+    `
+  }}
+`

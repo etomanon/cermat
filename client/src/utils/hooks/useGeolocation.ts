@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
+import { ObjectAny } from '../types/object-any'
 
 export interface GeoLocationSensorState {
   loading: boolean
@@ -31,7 +32,7 @@ export const useGeolocation = (
     timestamp: Date.now(),
   })
 
-  const onEvent = (event: Position) => {
+  const onEvent = (event: ObjectAny) => {
     if (mounted.current) {
       setState({
         loading: false,
@@ -46,7 +47,7 @@ export const useGeolocation = (
       })
     }
   }
-  const onEventError = (error: PositionError) => {
+  const onEventError = (error: ObjectAny) => {
     if (mounted.current) {
       setState((oldState) => ({
         ...oldState,

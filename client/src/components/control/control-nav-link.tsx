@@ -1,7 +1,6 @@
+import { Link } from '@material-ui/core'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
-import Link from '@material-ui/core/Link'
-import { useStyles } from './control-styles'
+import { CLASS_NAME_NAVLINK_ACTIVE, NavLinkStyled } from './control-styles'
 
 type Props = {
   to: string
@@ -9,17 +8,11 @@ type Props = {
   underline?: 'none' | 'always' | 'hover'
 }
 export const ControlNavLink = ({ to, children, underline }: Props) => {
-  const classes = useStyles()
   return (
-    <Link
-      to={to}
-      component={NavLink}
-      activeClassName={classes.active}
-      underline={underline}
-      color="inherit"
-      exact
-    >
-      {children}
-    </Link>
+    <NavLinkStyled to={to} activeClassName={CLASS_NAME_NAVLINK_ACTIVE} exact>
+      <Link color="inherit" underline={underline} component="span">
+        {children}
+      </Link>
+    </NavLinkStyled>
   )
 }
