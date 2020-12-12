@@ -73,6 +73,10 @@ module.exports = {
   plugins: [
     // clean build folder
     new CleanWebpackPlugin(),
+    // access process.env.NODE_ENV
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new HtmlWebpackPlugin({
       template: path.join(PATH_PUBLIC, 'index.html'),
       favicon: path.join(PATH_PUBLIC, 'icon.svg'),
@@ -84,6 +88,7 @@ module.exports = {
       async: true,
     }),
     ...(isDev ? [new webpack.HotModuleReplacementPlugin()] : []),
+   
   ],
   optimization: {
     splitChunks: {
