@@ -50,6 +50,7 @@ module.exports = {
             plugins: [
               '@babel/plugin-transform-runtime', 
               '@babel/plugin-syntax-dynamic-import', 
+              'babel-plugin-styled-components',
               ...(isDev ? ['react-hot-loader/babel'] : [])
             ],
             presets: [

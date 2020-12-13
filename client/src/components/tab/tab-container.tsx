@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import MUITab from '@material-ui/core/Tab'
 import { TabItem } from './tab-item'
-
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-  },
-}))
+import { ObjectAny } from '@/utils/types/object-any'
+import styled from 'styled-components'
 
 type TabsProps = {
   label: string
@@ -22,15 +16,17 @@ type Props = {
 }
 
 export const TabContainer = ({ tabs }: Props) => {
-  const classes = useStyles()
   const [value, setValue] = useState(0)
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (
+    event: React.ChangeEvent<ObjectAny>,
+    newValue: number
+  ) => {
     setValue(newValue)
   }
 
   return (
-    <div className={classes.root}>
+    <Wrapper>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -49,6 +45,10 @@ export const TabContainer = ({ tabs }: Props) => {
           {typeof t.render === 'function' ? t.render() : t.render}
         </TabItem>
       ))}
-    </div>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  flex-grow: 1;
+`

@@ -1,9 +1,9 @@
 import { EnumRoutePath } from '@/router/routes'
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import { ListItem, ListItemText } from '@material-ui/core'
 import React from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { Item } from './utils'
-import { useStyles } from './navbar-styles'
+import { ItemStyled } from './navbar-styles'
 
 type Props = {
   item: Item
@@ -14,18 +14,15 @@ export const NavbarItem = ({
   onNavigation,
   item: { label, path, Icon },
 }: Props) => {
-  const isMatch = useRouteMatch({
-    path,
-    exact: true,
-  })
-  const classes = useStyles()
+  const isMatch = Boolean(
+    useRouteMatch({
+      path,
+      exact: true,
+    })
+  )
   return (
     <ListItem button key={label} onClick={() => onNavigation(path)}>
-      <ListItemIcon
-        className={isMatch ? classes.itemIconActive : classes.itemIcon}
-      >
-        {Icon}
-      </ListItemIcon>
+      <ItemStyled $active={isMatch}>{Icon}</ItemStyled>
       <ListItemText primary={label} />
     </ListItem>
   )

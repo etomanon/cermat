@@ -54,5 +54,10 @@ export const theme = createMuiTheme({
         fontSize: '2rem',
       },
     },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '1.3rem',
+      },
+    },
   },
 })

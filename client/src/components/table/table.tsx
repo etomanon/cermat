@@ -1,5 +1,5 @@
 import { useApi } from '@/api/swr'
-import { Box, createStyles } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import {
   CellParams,
   Columns,
@@ -10,8 +10,8 @@ import {
   SortModel,
   SortModelParams,
 } from '@material-ui/data-grid'
-import { makeStyles } from '@material-ui/styles'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { TableNoRows } from './table-no-row'
 import {
   INIT_PAGE_SIZE,
@@ -37,16 +37,6 @@ type Sort = {
   order: 'ASC' | 'DESC'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      '& .MuiDataGrid-row': {
-        cursor: 'pointer',
-      },
-    },
-  })
-)
-
 export const Table = <T extends { id: number }>({
   url,
   columns,
@@ -56,7 +46,6 @@ export const Table = <T extends { id: number }>({
   geom,
   onChangeGeom,
 }: Props) => {
-  const classes = useStyles()
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(INIT_PAGE_SIZE)
   const [sort, setSort] = useState<Sort | null>(null)
@@ -136,7 +125,7 @@ export const Table = <T extends { id: number }>({
       onPageSizeChange: (param) => setPageSize(param.pageSize),
       page,
       paginationMode: 'server',
-      sortingMode: 'server',
+      sortingMode: 'client',
       rowCount: dataApi?.total,
       pagination: true,
       loading: isValidating,
@@ -152,7 +141,6 @@ export const Table = <T extends { id: number }>({
       hideFooterSelectedRowCount: true,
       sortingOrder: ['desc', 'asc', null],
       onCellHover,
-      className: classes.root,
     }),
     [
       columns,
@@ -164,7 +152,6 @@ export const Table = <T extends { id: number }>({
       pageSize,
       onRowClick,
       onCellHover,
-      classes,
       sortModel,
     ]
   )
@@ -188,8 +175,14 @@ export const Table = <T extends { id: number }>({
   return (
     <>
       <Box width={1} height="40rem">
-        <DataGrid {...dataGridProps} />
+        <DataGridStyled {...dataGridProps} />
       </Box>
     </>
   )
 }
+
+const DataGridStyled = styled(DataGrid)`
+  .MuiDataGrid-row {
+    cursor: pointer;
+  }
+`

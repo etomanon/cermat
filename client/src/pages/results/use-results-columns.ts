@@ -45,7 +45,7 @@ export const useResultsColumns = () => {
         headerName: 'Podíl volby předmětu',
         width: 100,
         type: 'number',
-        valueGetter: (params) =>
+        valueFormatter: (params) =>
           isNil(params.value) ? `` : `${params.value} %`,
       },
       { field: 'signed', headerName: 'Přihlášení', width: 100, type: 'number' },

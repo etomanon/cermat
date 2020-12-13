@@ -1,4 +1,5 @@
 import { useLocalStorage } from '@/utils/hooks/useLocalStorage'
+import { ObjectAny } from '@/utils/types/object-any'
 import { Box, BoxProps } from '@material-ui/core'
 import {
   display,
@@ -34,7 +35,7 @@ export type FormProps<T> = {
   formProps?: FormStyledProps
 }
 
-export const Form = <T extends {}>({
+export const Form = <T extends ObjectAny>({
   children,
   onSubmit,
   methods,

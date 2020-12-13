@@ -1,7 +1,7 @@
-import { IconButton, List, SwipeableDrawer } from '@material-ui/core'
+import { List, SwipeableDrawer } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
 import MenuIcon from '@material-ui/icons/Menu'
-import { useStyles } from './navbar-styles'
+import { MenuButtonStyled } from './navbar-styles'
 import { EnumRoutePath } from '@/router/routes'
 import { useHistory } from 'react-router-dom'
 import { NavbarItem } from './navbar-item'
@@ -23,17 +23,11 @@ export const NavbarPanel = () => {
     },
     [push]
   )
-  const classes = useStyles()
   return (
     <>
-      <IconButton
-        edge="start"
-        className={classes.menuButton}
-        color="inherit"
-        onClick={onClick}
-      >
+      <MenuButtonStyled edge="start" color="inherit" onClick={onClick}>
         <MenuIcon />
-      </IconButton>
+      </MenuButtonStyled>
       <SwipeableDrawer
         open={open}
         onClose={onClose}

@@ -82,7 +82,7 @@ export const Compare = () => {
             &nbsp;(redizo: {school.redizo})
           </Typography>
           <Box mt="1rem" display="flex" justifyContent="center">
-            <Button color="secondary" variant="outlined" onClick={onCancel}>
+            <Button color="primary" variant="outlined" onClick={onCancel}>
               Zrušit srovnání
             </Button>
           </Box>

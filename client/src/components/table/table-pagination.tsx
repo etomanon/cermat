@@ -1,20 +1,11 @@
 import React, { useCallback } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Pagination from '@material-ui/lab/Pagination'
 import { ComponentProps } from '@material-ui/data-grid'
 import { useForm } from 'react-hook-form'
 import { FormAutocomplete, Option } from '@/components/form/form-autocomplete'
 import { Form } from '@/components/form/form'
 import { Box } from '@material-ui/core'
-
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-  },
-  ul: {
-    justifyContent: 'center',
-  },
-})
+import styled from 'styled-components'
 
 type FormData = {
   pageSize: Option<number>
@@ -35,7 +26,6 @@ const defaultValues: FormData = {
 export const TablePagination = ({ pagination, api }: ComponentProps) => {
   const methods = useForm<FormData>({ defaultValues })
   const { handleSubmit } = methods
-  const classes = useStyles()
 
   const onSubmit = useCallback(
     (data: FormData) => {
@@ -71,11 +61,7 @@ export const TablePagination = ({ pagination, api }: ComponentProps) => {
           </Box>
         </Form>
       </Box>
-      <Pagination
-        className={classes.root}
-        classes={{
-          ul: classes.ul,
-        }}
+      <PaginationStyled
         color="primary"
         page={pagination.page}
         count={pagination.pageCount}
@@ -85,3 +71,10 @@ export const TablePagination = ({ pagination, api }: ComponentProps) => {
     </Box>
   )
 }
+
+const PaginationStyled = styled(Pagination)`
+  display: flex;
+  ul {
+    justify-content: center;
+  }
+`

@@ -1,18 +1,7 @@
 import { LinearProgress } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-
-const useStyles = makeStyles(() => ({
-  root: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    height: '1rem',
-    zIndex: 9999,
-  },
-}))
+import styled from 'styled-components'
 
 type Props = {
   isValidating?: boolean
@@ -20,7 +9,6 @@ type Props = {
 }
 
 export const Loading = ({ isValidating, error }: Props) => {
-  const classes = useStyles()
   const [showLoader, setShowLoader] = useState(false)
 
   useEffect(() => {
@@ -51,7 +39,16 @@ export const Loading = ({ isValidating, error }: Props) => {
   }, [error])
 
   if (isValidating && showLoader) {
-    return <LinearProgress classes={{ root: classes.root }} />
+    return <LinearProgressStyled />
   }
   return null
 }
+
+const LinearProgressStyled = styled(LinearProgress)`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1rem;
+  z-index: 9999;
+`

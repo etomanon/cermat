@@ -59,7 +59,5 @@ export const resultPostRadius = async (
 
 /** Download all results & school data as csv */
 export const resultGetDownload = async (req: Request, res: Response) => {
-  return res.download(
-    join(__dirname, '..', '..', 'scripts', 'csv', CSV_FILE_NAME)
-  )
+  return res.download(join(__dirname, '..', '..', 'download', CSV_FILE_NAME))
 }

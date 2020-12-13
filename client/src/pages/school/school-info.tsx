@@ -68,13 +68,18 @@ export const SchoolInfo = ({ schoolResults, schoolResultsCompare }: Props) => {
         <Box mx="auto" mb="2rem" width={[1, '60rem']}>
           <SearchSchool />
         </Box>
-        <Typography align="center" variant="h2">{`${
-          redizoCompare ? '(A) ' : ''
-        }${schoolResults?.name}`}</Typography>
-        <Typography align="center">
-          <ControlLink href={schoolUrl}>Detail školy</ControlLink>
-          &nbsp;(redizo: {schoolResults?.redizo})
-        </Typography>
+        {schoolResults && (
+          <>
+            <Typography align="center" variant="h2">{`${
+              redizoCompare ? '(A) ' : ''
+            }${schoolResults.name}`}</Typography>
+            <Typography align="center">
+              <ControlLink href={schoolUrl}>Detail školy</ControlLink>
+              &nbsp;(redizo: {schoolResults.redizo})
+            </Typography>
+          </>
+        )}
+
         <Compare />
 
         <Box mt="2rem">

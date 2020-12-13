@@ -1,37 +1,44 @@
-import { makeStyles } from '@material-ui/core'
+import styled, { css } from 'styled-components'
+import { FormAutocompleteRemote } from '../form/form-autocomplete-remote'
 
-export const useStyles = makeStyles((theme) => ({
-  search: {
-    position: 'relative',
-    borderRadius: '0.5rem',
-    border: `2px solid ${theme.palette.secondary.main}`,
-    '&:hover, &:focus': {
-      border: `2px solid ${theme.palette.primary.main}`,
-    },
-    marginLeft: 0,
-    width: '100%',
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-  },
-  autocompleteTextField: {
-    '& ::placeholder': {
-      color: '#000',
-      opacity: 0.7,
-    },
-  },
-}))
+export const Wrapper = styled.div`
+  ${(props) => {
+    const mainSecondary = props.theme.palette.secondary.main
+    const mainPrimary = props.theme.palette.primary.main
+
+    return css`
+    position: relative;
+    border-radius: 0.5rem;
+    border 2px solid ${mainSecondary};
+    margin-left: 0;
+    width: 100%;
+    &:hover, &:focus {
+      border: 2px solid ${mainPrimary};
+    }
+`
+  }}
+`
+
+export const SearchIconWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 0 0.8rem;
+  height: 100%;
+  pointer-events: none;
+  justify-content: center;
+`
+
+export const FormAutocompleteRemoteStyled = styled(FormAutocompleteRemote)`
+  &&&&& .MuiAutocomplete-input {
+    color: inherit;
+    padding: 1rem;
+    padding-left: 4rem;
+    width: 100%;
+
+    &::placeholder {
+      color: #000;
+      opacity: 0.7;
+    }
+  }
+` as typeof FormAutocompleteRemote

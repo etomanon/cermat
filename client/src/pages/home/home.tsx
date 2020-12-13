@@ -6,13 +6,12 @@ import { SearchSchool } from '@/components/search/search-school'
 import { EnumRoutePath } from '@/router/routes'
 import { Box, Button, Fade, Typography } from '@material-ui/core'
 import React from 'react'
-import { useStyles } from './home-styles'
+import { ButtonTableWrapper } from './home-styles'
 import NavigateNextIcon from '@material-ui/icons/NavigateNext'
 import SchoolSvg from './school.svg'
 import TableSvg from './table-primary.svg'
 
 export const Home = () => {
-  const classes = useStyles()
   return (
     <>
       <Fade in>
@@ -52,17 +51,19 @@ export const Home = () => {
               px="2rem"
             >
               <ControlNavLink to={EnumRoutePath.RESULTS} underline="none">
-                <Box className={classes.buttonTableWrapper}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    endIcon={<NavigateNextIcon fontSize="large" />}
-                    size="large"
-                    className={classes.buttonTable}
-                  >
-                    Procházejte data v tabulce
-                  </Button>
-                </Box>
+                <ButtonTableWrapper>
+                  <Flex width={['31rem']} height={['7rem', '10rem']}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      endIcon={<NavigateNextIcon fontSize="large" />}
+                      size="large"
+                      fullWidth
+                    >
+                      Procházejte data v tabulce
+                    </Button>
+                  </Flex>
+                </ButtonTableWrapper>
               </ControlNavLink>
               <Img width={[1, 0.66, 0.5]} src={TableSvg} alt="table" />
             </Box>

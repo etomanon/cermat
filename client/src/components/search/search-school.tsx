@@ -6,11 +6,14 @@ import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { Option } from '../form/form-autocomplete'
-import { useStyles } from './search-school-styles'
+import {
+  Wrapper,
+  SearchIconWrapper,
+  FormAutocompleteRemoteStyled,
+} from './search-school-styles'
 import SearchIcon from '@material-ui/icons/Search'
 import { useSchool } from '@/api/fetchers/school/school'
 import { Form } from '../form/form'
-import { FormAutocompleteRemote } from '../form/form-autocomplete-remote'
 
 type FormData = {
   school: Option<number> | null
@@ -21,7 +24,6 @@ const defaultValues: Partial<FormData> = {
 }
 
 export const SearchSchool = () => {
-  const classes = useStyles()
   const [schools, setSchools] = useState<School[]>([])
   const dispatch = useAppDispatch()
   const schoolCompare = useAppSelector(
@@ -61,27 +63,23 @@ export const SearchSchool = () => {
   )
 
   return (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
+    <Wrapper>
+      <SearchIconWrapper>
         <SearchIcon />
-      </div>
+      </SearchIconWrapper>
       <Form onSubmit={onSubmit} methods={methods}>
-        <FormAutocompleteRemote
+        <FormAutocompleteRemoteStyled
           useFetch={useSchool}
           formatOptions={formatOptions}
           onChangeOptions={onChangeOptions}
           autocompleteProps={{
             id: 'school',
-            classesInput: {
-              root: classes.inputRoot,
-            },
             onChange: handleSubmit(onSubmit),
             placeholder: 'Název školy / REDIZO',
-            classNameTextField: classes.autocompleteTextField,
             disableUnderline: true,
           }}
         />
       </Form>
-    </div>
+    </Wrapper>
   )
 }
