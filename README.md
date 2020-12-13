@@ -2,9 +2,16 @@
 
 ## Requirements
 
-* Node v12.x
+* Node v14.15.1
 * npm v6.x
 * PostgreSQL + PostGIS (default username: postgres; password: postgres; database: cermat)
+
+### Data - Web scraping
+
+* Go to `data` folder
+* `npm start` to create `data.json` file in the `data` folder
+* `data.json` should include all schools and results
+* The `data.json` is then used in server by `npm run db:seed-prod`
 
 ### Server
 
@@ -20,9 +27,7 @@
 * Change .env values to match your settings (PostgreSQL)
 * Development:
   * npm install
-  * `npm run db:migrate` to apply PostgreSQL migrations
-  * `npm run db:seed-test` to insert test data to database
-  * `npm run csv` to generate CSV from database
+  * `npm run db:setup` to apply PostgreSQL migrations, seed prod data and generate CSV file
   * npm start
   * Express runs on <http://localhost:3002>
 * Production
@@ -40,6 +45,7 @@
 * TypeScript
 * React
 * Material UI
+* styled-components
 * react-hook-form
 * @reduxjs/toolkit
 
@@ -52,10 +58,3 @@
 * Production
   * npm install
   * npm run build
-
-### Data - Web scraping
-
-* Go to `data` folder
-* `npm start` to create `data.json` file in the `data` folder
-* `data.json` should include all schools and results
-* The `data.json` is then used in server by `npm run db:seed-prod`
