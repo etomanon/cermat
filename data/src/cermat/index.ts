@@ -49,15 +49,12 @@ export default async (): Promise<void> => {
     // }
     await navigationPromise
     await page.waitForSelector(`${REGION} ${SELECT_OPTION}`)
-    let optionsRegion = await page.$$(`${REGION} ${SELECT_OPTION}`)
+    let regions = await page.$$eval(`${REGION} ${SELECT_OPTION}`, options => 
+        options.map(el => el.getAttribute('value'))
+    )
 
-    for (const [i] of optionsRegion.entries()) {
-      if (!optionsRegion[i]) {
-        continue
-      }
+    for (const region of regions) {
       await page.waitForSelector(`${REGION} ${SELECT_OPTION}`)
-      optionsRegion = await page.$$(`${REGION} ${SELECT_OPTION}`)
-      const region = await optionsRegion[i].evaluate(optionGetValue)
       if (region === 'X') {
         continue
       }
