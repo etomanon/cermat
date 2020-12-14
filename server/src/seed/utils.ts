@@ -7,7 +7,7 @@ export const prepare = async () => {
   Model.knex(knexClient)
   // remove data
   for (const table of OBJECTION_TABLES) {
-    await knexClient(table.tableName).truncate()
+    await knexClient(table.tableName).del()
   }
 }
 

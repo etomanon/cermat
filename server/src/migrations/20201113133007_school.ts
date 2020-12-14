@@ -30,7 +30,7 @@ export async function up(knex: Knex): Promise<void> {
       table
         .integer('school_id')
         .references('id')
-        .inTable('result')
+        .inTable('school')
         .notNullable()
         .index()
         .onDelete('cascade')

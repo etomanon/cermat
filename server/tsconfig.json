@@ -16,6 +16,9 @@
     "node_modules",
     "build",
   ],
+  "include": [
+    "src"
+  ],
   "files": [
     "src/app.ts"
   ]

@@ -12,6 +12,7 @@
 * `npm start` to create `data.json` file in the `data` folder
 * `data.json` should include all schools and results
 * The `data.json` is then used in server by `npm run db:seed-prod`
+* Try `npm run fix` to get data for schools which could not be loaded before
 
 ### Server
 

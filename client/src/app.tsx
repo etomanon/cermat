@@ -19,7 +19,7 @@ const App: React.FC = () => {
             <ThemeProviderStyled theme={theme}>
               <CssBaseline />
               <GlobalStyle />
-              <ToastContainer position="bottom-right" />
+              <ToastContainer position="bottom-right" limit={2} />
               <Router />
             </ThemeProviderStyled>
           </ThemeProvider>

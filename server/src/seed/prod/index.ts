@@ -6,24 +6,26 @@ import { prepare, REGIONS } from '../utils'
 import { objectionPostgisPoint } from '../../utils/objection/objection-postgis'
 import { isAllNil } from '../../utils/object/isAllNull'
 const data = require('../../../../data/data.json') as DataProd
-
+// try older versions
 ;(async () => {
-  prepare()
+  await prepare()
 
   const schools: Partial<School>[] = data.schools.map((s) => ({
     name: s.name,
     redizo: s.redizo,
-    region: REGIONS[s.region],
+    region: REGIONS[s.region] ?? s.region,
     geom: objectionPostgisPoint(s.lng, s.lat),
   }))
 
-  await School.query().insert(schools)
+  for (const school of schools) {
+    await School.query().insert(school)
+  }
 
-  let results: Partial<Result>[] = []
+  const results: Partial<Result>[] = []
   for (const r of data.results) {
     const school = await School.query().select('id').findOne('redizo', r.school)
     const schoolId = school.id
-    
+
     const parsed = {
       year: parseInt(r.year),
       subject: EnumSubject[r.subject],

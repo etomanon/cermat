@@ -4,7 +4,7 @@ import { School } from '../../services/school/school-model'
 import { Result } from '../../services/result/result-model'
 import { prepare } from '../utils'
 ;(async () => {
-  prepare()
+  await prepare()
 
   await School.query().insert(SCHOOL)
 
