@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { store } from './store/store'
 
 const render = () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const App = require('./app.tsx').default
   ReactDOM.render(
     <Provider store={store}>

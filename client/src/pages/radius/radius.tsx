@@ -13,7 +13,7 @@ import { stringToFloat } from '@/utils/string/string-to-float'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, CircularProgress, Typography } from '@material-ui/core'
 import { debounce, first } from 'lodash'
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { RadiusApi, RadiusApiType } from './radius-api'
@@ -78,12 +78,15 @@ export const Radius = () => {
     })
   }, [])
 
-  const onChange = useCallback(
-    debounce(() => {
-      handleSubmit(onSubmit)()
-    }, 300),
+  const debounced = useMemo(
+    () =>
+      debounce(() => {
+        handleSubmit(onSubmit)()
+      }, 300),
     [handleSubmit, onSubmit]
   )
+
+  const onChange = useCallback(() => debounced(), [debounced])
 
   useEffect(() => {
     if (init) {

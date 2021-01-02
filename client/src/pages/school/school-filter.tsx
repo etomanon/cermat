@@ -4,6 +4,7 @@ import {
   SUBJECTS_OPTIONS,
   YEARS_OPTIONS,
 } from '@/store/modules/school/school-utils'
+import { ObjectAny } from '@/utils/types/object-any'
 import { Box } from '@material-ui/core'
 import React from 'react'
 
@@ -12,7 +13,7 @@ type Props<T> = {
   hideYear?: boolean
 }
 
-export const SchoolFilter = <T extends {}>({
+export const SchoolFilter = <T extends ObjectAny>({
   propsForm: { onSubmit, methods },
   hideYear,
 }: Props<T>) => {

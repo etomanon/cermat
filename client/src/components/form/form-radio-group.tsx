@@ -13,17 +13,13 @@ export type Radio = {
   label?: string
 }
 
-type Props<T> = {
+type Props = {
   id: string
   radios: Radio[]
   label?: string
 }
 
-export const FormRadioGroup = <T extends {}>({
-  id,
-  label,
-  radios,
-}: Props<T>) => {
+export const FormRadioGroup = ({ id, label, radios }: Props) => {
   const { control } = useFormContext()
   return (
     <Controller

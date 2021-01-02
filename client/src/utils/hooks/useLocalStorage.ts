@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { ObjectAny } from '../types/object-any'
 
-export const useLocalStorage = <T extends {} | null>(
+export const useLocalStorage = <T extends ObjectAny | null>(
   key: string,
   initialValue: T
 ) => {
