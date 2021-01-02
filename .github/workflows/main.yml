@@ -10,19 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Copy app to Digital Ocean
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-      with:
-        source: "."
-        target: "/home/js/cermat"
-
-    - name: Build app and restart pm2
+    - name: Git pull, build app and restart pm2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -30,7 +18,9 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-            cd cermat/client
+            cd cermat
+            git pull
+            cd client
             npm install
             npm run build
             cd ../server

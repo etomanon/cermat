@@ -27,7 +27,7 @@ export const Home = () => {
               mb={['1rem', '1rem', 0]}
             >
               <Typography variant="h1" gutterBottom>
-                Zjistěte maturitní výsledky škol
+                Zjistěte maturitní výsledky škol v2
               </Typography>
               <SearchSchool />
             </Box>
