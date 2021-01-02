@@ -48,8 +48,8 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             plugins: [
-              '@babel/plugin-transform-runtime', 
-              '@babel/plugin-syntax-dynamic-import', 
+              '@babel/plugin-transform-runtime',
+              '@babel/plugin-syntax-dynamic-import',
               'babel-plugin-styled-components',
               ...(isDev ? ['react-hot-loader/babel'] : [])
             ],
@@ -85,11 +85,10 @@ module.exports = {
     // extracts CSS into separate files.
     // It creates a CSS file per JS file which contains CSS.
     new MiniCssExtractPlugin(),
-    new ForkTsCheckerWebpackPlugin({
+    ...(isDev ? [new ForkTsCheckerWebpackPlugin({
       async: true,
-    }),
-    ...(isDev ? [new webpack.HotModuleReplacementPlugin()] : []),
-   
+    }), new webpack.HotModuleReplacementPlugin()] : []),
+
   ],
   optimization: {
     splitChunks: {
