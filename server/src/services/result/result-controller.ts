@@ -3,6 +3,7 @@ import { objectionPaging, Paging } from '../../utils/objection/objection-paging'
 import { EnumSubject, Result } from './result-model'
 import { join } from 'path'
 import { CSV_FILE_NAME } from '../../scripts/csv/constants'
+import { objectionPostgisPointStringify } from '../../utils/objection/objection-postgis'
 
 /** Get data for table view in client */
 export const resultPostTable = async (
@@ -45,7 +46,7 @@ export const resultPostRadius = async (
     .whereRaw(
       `ST_Distance(school.geom_raw::geography, ST_GeomFromGeoJSON(:geom)::geography) < :radius`,
       {
-        geom: JSON.stringify(geom),
+        geom: objectionPostgisPointStringify(geom),
         radius,
       }
     )

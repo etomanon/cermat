@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "db:setup": "npm-run-all -s db:migrate db:seed-prod csv",
-    "start": "ts-node-dev --respawn --no-notify --transpile-only ./src/app.ts",
+    "start": "ts-node-dev --respawn --no-notify ./src/app.ts",
     "lint:es": "eslint ./src/**/*.ts --fix",
     "db:migrate": "knex migrate:latest",
     "db:seed-test": "ts-node-dev --no-notify ./src/seed/test/index.ts",

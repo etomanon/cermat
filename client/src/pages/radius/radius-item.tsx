@@ -12,9 +12,10 @@ const SCALE = chroma.scale(['#f00', '#0f0']).mode('lch')
 
 type Props = {
   result: Result
+  rank: number
 }
 
-export const RadiusItem = ({ result }: Props) => {
+export const RadiusItem = ({ result, rank }: Props) => {
   const backgroundColor = useMemo(() => {
     return SCALE(result.successPercentil / 100).hex()
   }, [result])
@@ -24,7 +25,7 @@ export const RadiusItem = ({ result }: Props) => {
       <ItemWrapper>
         <ControlNavLink to={`${EnumRoutePath.SCHOOL}/${result.school.redizo}`}>
           <Flex mb="0.5rem" color="primary">
-            {result.school.name}
+            {rank}. {result.school.name}
           </Flex>
         </ControlNavLink>
         <Flex mt="auto" alignItems="center">

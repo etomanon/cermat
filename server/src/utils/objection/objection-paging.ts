@@ -1,5 +1,6 @@
 import { isNil } from 'lodash'
 import { ModelBase } from './objection-model-base'
+import { objectionPostgisPointStringify } from './objection-postgis'
 
 type Sort = {
   field: string
@@ -40,11 +41,12 @@ export const objectionPaging = async <T>(
   if (sort && isNil(geom)) {
     query.whereNotNull(sort.field).orderBy(sort.field, sort.order)
   }
+
   if (geom) {
     query
       .whereNotNull(`${graphJoin}.geom`)
       .orderByRaw(`ST_Distance(:graphJoin:, ST_GeomFromGeoJSON(:geom)) ASC`, {
-        geom: JSON.stringify(geom),
+        geom: objectionPostgisPointStringify(geom),
         graphJoin: `${graphJoin}.geom_raw`,
       })
   }

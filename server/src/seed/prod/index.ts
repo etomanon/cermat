@@ -6,7 +6,7 @@ import { prepare, REGIONS } from '../utils'
 import { objectionPostgisPoint } from '../../utils/objection/objection-postgis'
 import { isAllNil } from '../../utils/object/isAllNull'
 const data = require('../../../../data/data.json') as DataProd
-// try older versions
+
 ;(async () => {
   await prepare()
 
