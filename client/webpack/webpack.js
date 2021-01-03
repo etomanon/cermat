@@ -66,7 +66,7 @@ module.exports = {
         loader: 'ts-loader',
         options: {
           // disable type checker - we will use it in Fork TS Checker Webpack Plugin
-          transpileOnly: true,
+          transpileOnly: isDev,
         }
       }
     ]
