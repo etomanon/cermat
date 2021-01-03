@@ -14,6 +14,14 @@ export const FormTextField = ({ textFieldProps }: Props) => {
       <TextField
         inputRef={register}
         {...textFieldProps}
+        inputProps={
+          textFieldProps.type === 'number'
+            ? {
+                step: 'any',
+                ...textFieldProps.inputProps,
+              }
+            : textFieldProps.inputProps
+        }
         error={Boolean(error) || textFieldProps.error}
       />
       {error && <Typography color="error">{error}</Typography>}
