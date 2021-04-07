@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node-dev --respawn --no-notify ./src/index.ts",
-    "fix": "ts-node-dev --respawn --no-notify ./src/schoolError.ts",
+    "fix": "ts-node-dev --respawn --no-notify ./src/utils/fixSchoolErrors.ts",
     "lint:es": "eslint ./src/**/*.ts --fix"
   },
   "dependencies": {

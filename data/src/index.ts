@@ -1,3 +1,3 @@
-import cermat from './cermat'
+import getSchoolResults from './utils/getSchoolResults'
 
-cermat()
+getSchoolResults()

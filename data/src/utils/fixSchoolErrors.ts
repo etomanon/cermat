@@ -1,8 +1,9 @@
 import fs from 'fs/promises'
 import path from 'path'
 import pup from 'puppeteer'
-import { CSI_URL } from './cermat/constants'
+import { CSI_URL } from '../constants'
 
+/** Load info about schools which could not be loaded - dataSchoolError.json (network error, website down etc.)  */
 const init = async () => {
   const browser = await pup.launch({
     headless: true,

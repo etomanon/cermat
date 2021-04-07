@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer'
-import { DATA_INDEX_RESULTS, DATA_INDEX_SCHOOL, REDIZO } from './constants'
+import { DATA_INDEX_RESULTS, DATA_INDEX_SCHOOL, REDIZO } from '../constants'
 
+/** Parse data from CERMAT table */
 export const getTableData = async (
   page: puppeteer.Page,
   subject: string,

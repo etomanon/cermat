@@ -11,10 +11,11 @@ import {
   SUBJECTS,
   TEST_TYPE,
   TEST_TYPES,
-} from './constants'
-import { SELECT_OPTION, optionGetValue } from '../common/elements'
+} from '../constants'
+import { SELECT_OPTION, optionGetValue } from '../constants'
 import { getTableData } from './getTableData'
 
+/** Get CERMAT results & school info */
 export default async (): Promise<void> => {
   const resultsData = [] as Record<string, string | number>[]
   const schoolsData = [] as Record<string, string | number>[]
@@ -40,19 +41,17 @@ export default async (): Promise<void> => {
     const year = await optionsYear[i].evaluate(optionGetValue)
     optionsYearParsed.push(year)
   }
+  // loop through every year
   for (const [, year] of optionsYearParsed.entries()) {
     console.log('year', year)
     const navigationPromise = page.waitForNavigation()
     await page.select(YEAR, year)
-    // if (i > 0) {
-    //   await navigationPromise
-    // }
     await navigationPromise
     await page.waitForSelector(`${REGION} ${SELECT_OPTION}`)
     const regions = await page.$$eval(`${REGION} ${SELECT_OPTION}`, (options) =>
       options.map((el) => el.getAttribute('value'))
     )
-
+    // loop through every region
     for (const region of regions) {
       await page.waitForSelector(`${REGION} ${SELECT_OPTION}`)
       if (region === 'X') {
@@ -63,7 +62,7 @@ export default async (): Promise<void> => {
       await navigationPromise
 
       await page.waitForSelector(`${SUBJECT}`)
-
+      // loop through selected subjects in constant
       for (const subject of SUBJECTS) {
         const subjectSelected = await page.evaluate((SUBJECT) => {
           const e = document.querySelector(SUBJECT) as HTMLSelectElement
@@ -76,7 +75,7 @@ export default async (): Promise<void> => {
           await page.select(SUBJECT, subject)
           await navigationPromise
         }
-
+        // Get "Ustni zkouska" & "Didakticky test" test types for all but Math
         if (subject !== MATH) {
           for (const testType of TEST_TYPES) {
             await page.waitForSelector(`${TEST_TYPE}`)

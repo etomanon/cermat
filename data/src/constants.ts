@@ -24,3 +24,5 @@ export const DATA_INDEX_RESULTS = {
 
 export const SUBJECTS = [CZECH, MATH, 'AJ']
 export const TEST_TYPES = ['DT', 'UZ']
+export const SELECT_OPTION = 'option'
+export const optionGetValue = (el: Element): string => el.getAttribute('value')
