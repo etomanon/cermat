@@ -27,9 +27,9 @@
 * Copy .env_example as .env
 * Change .env values to match your settings (PostgreSQL)
 * Development:
-  * npm install
+  * `npm install`
   * `npm run db:setup` to apply PostgreSQL migrations, seed prod data and generate CSV file
-  * npm start
+  * `npm start`
   * Express runs on <http://localhost:3002>
 * Production
   * npm install
