@@ -29,3 +29,21 @@ jobs:
             npm run build
             cp .env build/
             pm2 restart maturoid
+  debug:
+      name: Debug
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up secret file
+        env:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+        run: |
+          echo $host >> secrets.txt
+          echo $USERNAME >> secrets.txt
+
+      - name: Run tmate
+        uses: mxschmitt/action-tmate@v2
